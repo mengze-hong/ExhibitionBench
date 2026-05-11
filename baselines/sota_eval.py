@@ -66,15 +66,18 @@ MODELS = {
     "claude-sonnet-4.5":  "claude-sonnet-4.5",  # Anthropic fast
     "gemini-2.5-pro":     "gemini-2.5-pro",     # Google flagship
     "gemini-2.5-flash":   "gemini-2.5-flash",   # Google fast
-    "gemini-3-pro-preview":   "gemini-3-pro-preview",   # Google Gemini-3 flagship preview
-    "gemini-3-flash-preview": "gemini-3-flash-preview", # Google Gemini-3 fast preview
+    "gemini-3-pro-preview":   "gemini-3-pro-preview",     # Google Gemini-3 flagship preview
+    "gemini-3-flash-preview": "gemini-3-flash-preview",   # Google Gemini-3 fast preview
+    "gemini-3.1-pro-preview": "gemini-3.1-pro-preview",   # Google Gemini-3.1 flagship preview
     "deepseek-r1":        "deepseek-r1",         # DeepSeek reasoning
     "deepseek-v3.2":      "deepseek-v3.2",       # DeepSeek chat latest
     "kimi-k2.5":          "kimi-k2.5",           # Moonshot
     "doubao-seed-2.0-pro":"doubao-seed-2.0-pro", # ByteDance flagship
     "doubao-seed-1.6":    "doubao-seed-1.6",     # ByteDance standard
-    "glm-5":              "glm-5",               # Zhipu AI
+    "glm-5":              "glm-5",               # Zhipu AI (reasoning model)
     "minimax-m2.5":       "minimax-m2.5",        # Minimax
+    # "gpt-5-mini":       "gpt-5-mini",          # REMOVED: content often empty (pure reasoning), 已有旧结果 n=0
+    # "qwen-plus-latest": "qwen-plus-latest",    # REMOVED: 401 team无权限访问
 }
 
 ALL_MODELS = list(MODELS.keys())
@@ -92,7 +95,7 @@ DEFAULT_MODELS = [
 ]
 
 # Reasoning models that put answer in reasoning_content, not content
-REASONING_MODELS = {"deepseek-r1", "kimi-k2.5", "minimax-m2.5"}
+REASONING_MODELS = {"deepseek-r1", "kimi-k2.5", "minimax-m2.5", "glm-5"}
 # Models that need larger max_tokens because they use thinking tokens
 # gpt-5 also uses internal reasoning tokens (64-200 thinking + small output),
 # so default 1024 gets fully consumed by reasoning → empty content.
@@ -102,7 +105,8 @@ REASONING_MODELS = {"deepseek-r1", "kimi-k2.5", "minimax-m2.5"}
 LARGE_TOKEN_MODELS = {"deepseek-r1", "kimi-k2.5", "minimax-m2.5",
                       "gemini-2.5-pro", "gemini-2.5-flash",
                       "gemini-3-pro-preview", "gemini-3-flash-preview",
-                      "gpt-5", "gpt-5.1", "gpt-5-codex"}
+                      "gemini-3.1-pro-preview",
+                      "gpt-5", "gpt-5.1", "gpt-5-codex", "glm-5"}
 # Models that require temperature=1 (OpenAI reasoning/codex models)
 TEMP1_MODELS = {"gpt-5", "gpt-5.1", "gpt-5-codex"}
 
@@ -740,6 +744,7 @@ def run_evaluation(
     force: bool = False,
     meip_data: Optional[Path] = None,
     tag: str = "",
+    workers: int = 100,
 ) -> Optional[dict]:
     RESULTS.mkdir(parents=True, exist_ok=True)
     suffix = f"_{tag}" if tag else ""
@@ -767,7 +772,7 @@ def run_evaluation(
             log.error("No MEIP samples found!")
             return None
         samples = load_jsonl(meip_path)
-        result = evaluate_meip(model, samples, objects, max_samples=max_samples, shot=shot)
+        result = evaluate_meip(model, samples, objects, max_samples=max_samples, shot=shot, workers=workers)
 
     elif task == "tes":
         tes_path = find_data_file("tes_samples")
@@ -775,7 +780,7 @@ def run_evaluation(
             log.error("No TES samples found!")
             return None
         samples = load_jsonl(tes_path)
-        result = evaluate_tes(model, samples, max_samples=max_samples, shot=shot)
+        result = evaluate_tes(model, samples, max_samples=max_samples, shot=shot, workers=workers)
 
     elif task == "ecd":
         ecd_path = find_data_file("ecd_samples")
@@ -783,7 +788,7 @@ def run_evaluation(
             log.error("No ECD samples found!")
             return None
         samples = load_jsonl(ecd_path)
-        result = evaluate_ecd(model, samples, objects, max_samples=max_samples, shot=shot)
+        result = evaluate_ecd(model, samples, objects, max_samples=max_samples, shot=shot, workers=workers)
 
     if result:
         with open(out_path, "w") as f:
@@ -852,8 +857,8 @@ def main():
                         help=f"Model(s) or 'all'. Available: {', '.join(ALL_MODELS)}")
     parser.add_argument("--max-samples", type=int, default=500,
                         help="Max samples per task per model")
-    parser.add_argument("--shot", type=int, default=0,
-                        help="Number of few-shot examples (0=zero-shot)")
+    parser.add_argument("--shot", type=int, nargs="+", default=[0],
+                        help="Number of few-shot examples (0=zero-shot). Multiple values allowed, e.g. --shot 0 1 3")
     parser.add_argument("--force", action="store_true",
                         help="Re-run even if results file exists")
     parser.add_argument("--summary", action="store_true",
@@ -862,6 +867,9 @@ def main():
                         help="Path to custom MEIP samples file (e.g. data/meip_samples_v4.jsonl)")
     parser.add_argument("--tag", type=str, default="",
                         help="Tag appended to result filename (e.g. 'v4clean')")
+    parser.add_argument("--workers", type=int, default=100,
+                        help="Number of concurrent worker threads (default: 100). "
+                             "Lower for rate-limited/reasoning models, e.g. --workers 10")
     args = parser.parse_args()
 
     if args.summary:
@@ -905,30 +913,33 @@ def main():
     if not tasks:
         tasks = ["meip", "tes", "ecd"]
 
-    log.info(f"Evaluating {len(models)} model(s) on {len(tasks)} task(s)")
+    shots = args.shot  # now a list, e.g. [0] or [1, 3]
+    log.info(f"Evaluating {len(models)} model(s) on {len(tasks)} task(s), shots={shots}")
     log.info(f"Models: {models}")
     log.info(f"Tasks:  {tasks}")
 
     all_results = []
-    for model in models:
-        for task in tasks:
-            result = run_evaluation(
-                task=task,
-                model=model,
-                max_samples=args.max_samples,
-                shot=args.shot,
-                force=args.force,
-                meip_data=Path(args.meip_data) if args.meip_data else None,
-                tag=args.tag,
-            )
-            if result:
-                all_results.append(result)
+    for shot in shots:
+        for model in models:
+            for task in tasks:
+                result = run_evaluation(
+                    task=task,
+                    model=model,
+                    max_samples=args.max_samples,
+                    shot=shot,
+                    force=args.force,
+                    meip_data=Path(args.meip_data) if args.meip_data else None,
+                    tag=args.tag,
+                    workers=args.workers,
+                )
+                if result:
+                    all_results.append(result)
 
     if all_results:
         print_summary_table(all_results)
 
-        # Save aggregated summary
-        summary_path = RESULTS / f"summary_shot{args.shot}.json"
+        # Save aggregated summary (use last shot value if multiple shots given)
+        summary_path = RESULTS / f"summary_shot{shots[-1]}.json"
         with open(summary_path, "w") as f:
             json.dump(all_results, f, indent=2)
         log.info(f"Summary saved to {summary_path}")

@@ -1,0 +1,20 @@
+\begin{table*}[ht]
+\centering
+\caption{ExhibitionBench Main Results (Zero-shot)}
+\label{tab:main-results}
+\begin{tabular}{l|cc|cc|ccccc}
+\toprule
+\textbf{Model} & \multicolumn{2}{c|}{\textbf{MEIP}} & \multicolumn{2}{c|}{\textbf{TES}} & \multicolumn{5}{c}{\textbf{ECD}} \\
+ & MRR & Hit@1 & NDCG@10 & MRR & L1 & L2 & L3 & L4 & Macro \\
+\midrule
+GPT-5.2 & 0.7389 & 0.6740 & 0.3914 & 0.2351 & 0.8640 & 0.8720 & 0.5520 & 0.8240 & 0.7780 \\
+Claude Opus 4.6 & 0.7758 & 0.7180 & — & — & 0.9360 & 0.9360 & 0.5680 & 0.8960 & 0.8340 \\
+Claude Sonnet 4.5 & 0.6436 & 0.5650 & — & — & — & — & — & — & — \\
+Gemini 2.5 Pro & 0.7690 & 0.7100 & 0.4001 & 0.2484 & 0.9120 & 0.9520 & 0.6080 & 0.9120 & 0.8460 \\
+Gemini 2.5 Flash & 0.6588 & 0.5780 & — & — & — & — & — & — & — \\
+DeepSeek-V3.2 & 0.7195 & 0.6480 & 0.3862 & 0.2352 & 0.6720 & 0.7500 & 0.6240 & 0.7200 & 0.6915 \\
+Kimi K2.5 & 0.5985 & 0.5000 & TBC & TBC & — & — & — & — & — \\
+GPT-5 & 0.7173 & 0.6480 & — & — & — & — & — & — & — \\
+\bottomrule
+\end{tabular}
+\end{table*}

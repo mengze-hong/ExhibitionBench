@@ -23,6 +23,9 @@ MODEL_DISPLAY = {
     "claude-sonnet-4.5":    "Claude Sonnet 4.5",
     "gemini-2.5-pro":       "Gemini 2.5 Pro",
     "gemini-2.5-flash":     "Gemini 2.5 Flash",
+    "gemini-3-pro-preview": "Gemini 3 Pro",
+    "gemini-3-flash-preview": "Gemini 3 Flash",
+    "gemini-3.1-pro-preview": "Gemini 3.1 Pro",
     "deepseek-r1":          "DeepSeek-R1",
     "deepseek-v3.2":        "DeepSeek-V3.2",
     "kimi-k2.5":            "Kimi K2.5",
@@ -41,6 +44,7 @@ MODEL_DISPLAY = {
 MODEL_ORDER = [
     "gpt-5.2", "claude-opus-4.6", "claude-sonnet-4.5",
     "gemini-2.5-pro", "gemini-2.5-flash",
+    "gemini-3-pro-preview", "gemini-3-flash-preview", "gemini-3.1-pro-preview",
     "doubao-seed-2.0-pro",
     "deepseek-r1", "deepseek-v3.2",
     "kimi-k2.5", "glm-5", "minimax-m2.5",
@@ -77,12 +81,27 @@ def load_results(shot: int) -> dict[str, dict[str, dict]]:
     return data
 
 
+# Models with pending few-shot results (shown as "TBC" in shot>0 tables)
+# Format: {model_id: {task, ...}}
+TBC_FEW_SHOT: dict[str, set] = {
+    "kimi-k2.5": {"tes"},
+}
+
+
 def fmt(val, decimals=4):
     if val is None:
         return "—"
     if isinstance(val, float):
         return f"{val:.{decimals}f}"
     return str(val)
+
+
+def fmt_tbc(val, model: str, task: str, shot: int, decimals=4):
+    """Like fmt() but shows 'TBC' for pending few-shot cells instead of '—'."""
+    if val is None and shot > 0:
+        if model in TBC_FEW_SHOT and task in TBC_FEW_SHOT[model]:
+            return "TBC"
+    return fmt(val, decimals)
 
 
 def fmt_int(val):
@@ -151,7 +170,8 @@ def print_main_table(data: dict, shot: int) -> None:
         line = (
             f"{display:<22} | "
             f"{fmt(mr.get('mrr')):>8} {fmt(mr.get('hit@1')):>8} | "
-            f"{fmt(tr.get('ndcg@10')):>8} {fmt(tr.get('mrr')):>8} | "
+            f"{fmt_tbc(tr.get('ndcg@10'), model, 'tes', shot):>8} "
+            f"{fmt_tbc(tr.get('mrr'), model, 'tes', shot):>8} | "
             f"{fmt(er.get('pairaccc_L1')):>8} "
             f"{fmt(er.get('pairaccc_L2')):>8} "
             f"{fmt(er.get('pairaccc_L3')):>8} "
@@ -278,7 +298,8 @@ def export_latex(data: dict, shot: int) -> None:
         row = (
             f"{display} & "
             f"{fmt(mr.get('mrr'))} & {fmt(mr.get('hit@1'))} & "
-            f"{fmt(tr.get('ndcg@10'))} & {fmt(tr.get('mrr'))} & "
+            f"{fmt_tbc(tr.get('ndcg@10'), model, 'tes', shot)} & "
+            f"{fmt_tbc(tr.get('mrr'), model, 'tes', shot)} & "
             f"{fmt(er.get('pairaccc_L1'))} & {fmt(er.get('pairaccc_L2'))} & "
             f"{fmt(er.get('pairaccc_L3'))} & {fmt(er.get('pairaccc_L4'))} & "
             f"{fmt(er.get('macro_pairaccc'))} \\\\"

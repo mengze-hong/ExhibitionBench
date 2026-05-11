@@ -1,0 +1,16 @@
+{
+  "task": "ecd",
+  "model": "deepseek-v3.2",
+  "shot": 1,
+  "n_samples": 479,
+  "total_latency_sec": 39061.46,
+  "avg_latency_sec": 81.548,
+  "total_prompt_tokens": 208123,
+  "total_completion_tokens": 498,
+  "total_tokens": 208621,
+  "pairaccc_L1": 0.6581,
+  "pairaccc_L2": 0.7642,
+  "pairaccc_L3": 0.5833,
+  "pairaccc_L4": 0.6723,
+  "macro_pairaccc": 0.6695
+}

@@ -1,15 +1,54 @@
 [
   {
-    "task": "meip",
-    "model": "minimax-m2.5",
+    "task": "tes",
+    "model": "gpt-5.2",
     "shot": 1,
-    "n_samples": 500,
-    "mrr": 0.5266,
-    "hit@1": 0.408,
-    "total_latency_sec": 7330.06,
-    "avg_latency_sec": 14.66,
-    "total_prompt_tokens": 387206,
-    "total_completion_tokens": 533750,
-    "total_tokens": 920956
+    "n_samples": 283,
+    "ndcg@10": 0.3939,
+    "mrr": 0.2348,
+    "total_latency_sec": 13187.18,
+    "avg_latency_sec": 46.598,
+    "total_prompt_tokens": 1390721,
+    "total_completion_tokens": 12169,
+    "total_tokens": 1402890
+  },
+  {
+    "task": "tes",
+    "model": "gemini-2.5-pro",
+    "shot": 1,
+    "n_samples": 283,
+    "ndcg@10": 0.3963,
+    "mrr": 0.2421,
+    "total_latency_sec": 8103.07,
+    "avg_latency_sec": 28.633,
+    "total_prompt_tokens": 1538882,
+    "total_completion_tokens": 667597,
+    "total_tokens": 2206479
+  },
+  {
+    "task": "tes",
+    "model": "deepseek-v3.2",
+    "shot": 1,
+    "n_samples": 283,
+    "ndcg@10": 0.3776,
+    "mrr": 0.2273,
+    "total_latency_sec": 2689.1,
+    "avg_latency_sec": 9.502,
+    "total_prompt_tokens": 1414646,
+    "total_completion_tokens": 11038,
+    "total_tokens": 1425684
+  },
+  {
+    "task": "tes",
+    "model": "kimi-k2.5",
+    "shot": 1,
+    "n_samples": 197,
+    "ndcg@10": 0.1412,
+    "mrr": 0.1485,
+    "total_latency_sec": 33051.81,
+    "avg_latency_sec": 167.776,
+    "total_prompt_tokens": 995481,
+    "total_completion_tokens": 468000,
+    "total_tokens": 1463481
   }
 ]
