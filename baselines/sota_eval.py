@@ -81,8 +81,8 @@ MODELS = {
     "doubao-seed-1.6":        "doubao-seed-1.6",        # ByteDance v1.6 standard
     "doubao-seed-1.6-251015": "doubao-seed-1.6-251015", # ByteDance v1.6 Oct2025 update
     # "doubao-seed-1.6-thinking":"doubao-seed-1.6-thinking", # REMOVED: endpoint currently closed
-    "doubao-seed-1.6-lite":   "doubao-seed-1.6-lite",   # ByteDance v1.6 lite
-    "doubao-seed-1.6-flash":  "doubao-seed-1.6-flash-250715", # ByteDance v1.6 flash
+    # "doubao-seed-1.6-lite":   "doubao-seed-1.6-lite",   # REMOVED: endpoint currently closed
+    # "doubao-seed-1.6-flash":  "doubao-seed-1.6-flash-250715", # REMOVED: endpoint currently closed
     "glm-5":              "glm-5",               # Zhipu AI (reasoning model)
     "minimax-m2.5":       "minimax-m2.5",        # Minimax
     # "gpt-5-mini":       "gpt-5-mini",          # REMOVED: content often empty (pure reasoning), 已有旧结果 n=0
