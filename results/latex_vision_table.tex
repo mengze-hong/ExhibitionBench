@@ -1,0 +1,35 @@
+%% latex_vision_table.tex
+%% ExhibitionBench — Multimodal (Text + Image) vs Text-Only MEIP Results
+%% Updated: 2026-05-02
+%% All 6 vision models completed. Gemini 2.5 Pro vision is SOTA.
+
+\begin{table}[t]
+\centering
+\small
+\caption{%
+    MEIP performance: \textbf{multimodal} (text + image) vs.\ text-only (zero-shot).
+    $\dagger$\,Models with $n < 1409$ had some samples skipped due to inaccessible or oversized images.
+}
+\label{tab:meip-vision}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}l c c c c@{}}
+\toprule
+\textbf{Model} & \textbf{Modality} & \textbf{MRR}$\uparrow$ & \textbf{Hit@1}$\uparrow$ & $n$ \\
+\midrule
+\multicolumn{5}{l}{\textit{Multimodal (text + image)}} \\
+Gemini 2.5 Pro          & \multirow{6}{*}{text+img} & \textbf{0.6483} & \textbf{0.5451} & 1409 \\
+Doubao Seed 2.0 Pro$^\dagger$ &                      & 0.6388          & 0.5378          & 1402 \\
+Claude Opus 4.6$^\dagger$     &                      & 0.6344          & 0.5300          & 1398 \\
+GPT-5.1$^\dagger$             &                      & 0.6191          & 0.5089          & 1344 \\
+GPT-5.2$^\dagger$             &                      & 0.6166          & 0.5093          & 1294 \\
+Gemini 2.5 Flash$^\dagger$    &                      & 0.5916          & 0.4786          & 1404 \\
+\midrule
+\multicolumn{5}{l}{\textit{Text-only (for reference)}} \\
+Doubao Seed 2.0 Pro & \multirow{5}{*}{text} & 0.6419          & 0.5394          & 1409 \\
+Claude Opus 4.6     &                       & 0.6205          & 0.5096          & 1409 \\
+GPT-5.2             &                       & 0.6189          & 0.5103          & 1409 \\
+Gemini 2.5 Pro      &                       & 0.6152          & 0.5032          & 1409 \\
+Gemini 2.5 Flash    &                       & 0.5522          & 0.4287          & 1409 \\
+\bottomrule
+\end{tabular}
+\end{table}
