@@ -19,7 +19,9 @@ RESULTS_DIR = Path(__file__).resolve().parent
 MODEL_DISPLAY = {
     "gpt-5.2":              "GPT-5.2",
     "gpt-5":                "GPT-5",
+    "gpt-5.1":              "GPT-5.1",
     "claude-opus-4.6":      "Claude Opus 4.6",
+    "claude-opus-4.5":      "Claude Opus 4.5",
     "claude-sonnet-4.5":    "Claude Sonnet 4.5",
     "gemini-2.5-pro":       "Gemini 2.5 Pro",
     "gemini-2.5-flash":     "Gemini 2.5 Flash",
@@ -28,9 +30,16 @@ MODEL_DISPLAY = {
     "gemini-3.1-pro-preview": "Gemini 3.1 Pro",
     "deepseek-r1":          "DeepSeek-R1",
     "deepseek-v3.2":        "DeepSeek-V3.2",
+    "deepseek-v3.1":        "DeepSeek-V3.1",
+    "deepseek-v3":          "DeepSeek-V3",
     "kimi-k2.5":            "Kimi K2.5",
     "doubao-seed-2.0-pro":  "Doubao Seed 2.0 Pro",
+    "doubao-seed-2.0-lite": "Doubao Seed 2.0 Lite",
     "doubao-seed-1.6":      "Doubao Seed 1.6",
+    "doubao-seed-1.6-251015": "Doubao Seed 1.6 (251015)",
+    "doubao-seed-1.6-thinking": "Doubao Seed 1.6 Thinking",
+    "doubao-seed-1.6-lite": "Doubao Seed 1.6 Lite",
+    "doubao-seed-1.6-flash-250715": "Doubao Seed 1.6 Flash",
     "glm-5":                "GLM-5",
     "minimax-m2.5":         "MiniMax M2.5",
     # Open-weight models
@@ -42,11 +51,13 @@ MODEL_DISPLAY = {
 
 # Preferred display order
 MODEL_ORDER = [
-    "gpt-5.2", "claude-opus-4.6", "claude-sonnet-4.5",
+    "gpt-5.2", "gpt-5", "gpt-5.1",
+    "claude-opus-4.6", "claude-opus-4.5", "claude-sonnet-4.5",
     "gemini-2.5-pro", "gemini-2.5-flash",
     "gemini-3-pro-preview", "gemini-3-flash-preview", "gemini-3.1-pro-preview",
-    "doubao-seed-2.0-pro",
-    "deepseek-r1", "deepseek-v3.2",
+    "deepseek-r1", "deepseek-v3.2", "deepseek-v3.1", "deepseek-v3",
+    "doubao-seed-2.0-pro", "doubao-seed-2.0-lite",
+    "doubao-seed-1.6", "doubao-seed-1.6-251015", "doubao-seed-1.6-thinking", "doubao-seed-1.6-lite", "doubao-seed-1.6-flash-250715",
     "kimi-k2.5", "glm-5", "minimax-m2.5",
     # Open-weight models
     "llama-3.3-70b", "qwen2.5-72b",
@@ -141,8 +152,16 @@ def print_main_table(data: dict, shot: int) -> None:
     print(sub)
     print(sep)
 
-    # Collect all models seen
-    all_models = list(data.keys())
+    # Collect all models seen — skip vision variants, failed models (n=0 across all tasks), open-weight aliases
+    SKIP_SUFFIXES = ("_vision", "_v3fixed", "_v4clean", "_noleak", "_cot")
+    all_models = [m for m in data.keys()
+                  if not any(m.endswith(s) for s in SKIP_SUFFIXES)]
+    # Also skip models where all tasks have n_samples == 0
+    all_models = [m for m in all_models
+                  if any(t.get("n_samples", 0) > 0 for t in data[m].values())]
+    # Use Qwen2.5-7B canonical name if present
+    if "Qwen_Qwen2_5-7B-Instruct" in all_models:
+        all_models.remove("Qwen_Qwen2_5-7B-Instruct")
     ordered = [m for m in MODEL_ORDER if m in all_models]
     ordered += [m for m in all_models if m not in ordered]
 
@@ -197,7 +216,11 @@ def print_latency_cost_table(data: dict, shot: int) -> None:
     print(header)
     print("-" * len(header))
 
-    all_models = list(data.keys())
+    SKIP_SUFFIXES = ("_vision", "_v3fixed", "_v4clean", "_noleak", "_cot")
+    all_models = [m for m in data.keys()
+                  if not any(m.endswith(s) for s in SKIP_SUFFIXES)
+                  and any(t.get("n_samples", 0) > 0 for t in data[m].values())
+                  and m != "Qwen_Qwen2_5-7B-Instruct"]
     ordered = [m for m in MODEL_ORDER if m in all_models]
     ordered += [m for m in all_models if m not in ordered]
 
@@ -225,7 +248,11 @@ def print_latency_cost_table(data: dict, shot: int) -> None:
 def export_csv(data: dict, shot: int) -> None:
     out = RESULTS_DIR / f"sota_main_table_shot{shot}.csv"
     rows = []
-    all_models = list(data.keys())
+    SKIP_SUFFIXES = ("_vision", "_v3fixed", "_v4clean", "_noleak", "_cot")
+    all_models = [m for m in data.keys()
+                  if not any(m.endswith(s) for s in SKIP_SUFFIXES)
+                  and any(t.get("n_samples", 0) > 0 for t in data[m].values())
+                  and m != "Qwen_Qwen2_5-7B-Instruct"]
     ordered = [m for m in MODEL_ORDER if m in all_models]
     ordered += [m for m in all_models if m not in ordered]
 
@@ -285,7 +312,11 @@ def export_latex(data: dict, shot: int) -> None:
     )
     lines.append(r"\midrule")
 
-    all_models = list(data.keys())
+    SKIP_SUFFIXES = ("_vision", "_v3fixed", "_v4clean", "_noleak", "_cot")
+    all_models = [m for m in data.keys()
+                  if not any(m.endswith(s) for s in SKIP_SUFFIXES)
+                  and any(t.get("n_samples", 0) > 0 for t in data[m].values())
+                  and m != "Qwen_Qwen2_5-7B-Instruct"]
     ordered = [m for m in MODEL_ORDER if m in all_models]
     ordered += [m for m in all_models if m not in ordered]
 

@@ -2,12 +2,12 @@
   "task": "meip",
   "model": "claude-opus-4.6",
   "shot": 1,
-  "n_samples": 200,
-  "mrr": 0.7217,
-  "hit@1": 0.655,
-  "total_latency_sec": 6009.78,
-  "avg_latency_sec": 30.049,
-  "total_prompt_tokens": 170175,
-  "total_completion_tokens": 5340,
-  "total_tokens": 175515
+  "n_samples": 500,
+  "mrr": 0.7832,
+  "hit@1": 0.728,
+  "total_latency_sec": 6373.84,
+  "avg_latency_sec": 12.748,
+  "total_prompt_tokens": 425509,
+  "total_completion_tokens": 10417,
+  "total_tokens": 435926
 }

@@ -1,0 +1,13 @@
+{
+  "task": "tes",
+  "model": "minimax-m2.5",
+  "shot": 3,
+  "n_samples": 283,
+  "ndcg@10": 0.2247,
+  "mrr": 0.2135,
+  "total_latency_sec": 8509.39,
+  "avg_latency_sec": 30.068,
+  "total_prompt_tokens": 1385004,
+  "total_completion_tokens": 674400,
+  "total_tokens": 2059404
+}

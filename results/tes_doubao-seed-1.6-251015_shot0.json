@@ -1,0 +1,13 @@
+{
+  "task": "tes",
+  "model": "doubao-seed-1.6-251015",
+  "shot": 0,
+  "n_samples": 283,
+  "ndcg@10": 0.3854,
+  "mrr": 0.2313,
+  "total_latency_sec": 20400.37,
+  "avg_latency_sec": 72.086,
+  "total_prompt_tokens": 1613403,
+  "total_completion_tokens": 610371,
+  "total_tokens": 2223774
+}

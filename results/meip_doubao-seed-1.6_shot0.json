@@ -2,12 +2,12 @@
   "task": "meip",
   "model": "doubao-seed-1.6",
   "shot": 0,
-  "n_samples": 200,
-  "mrr": 0.6517,
-  "hit@1": 0.575,
-  "total_latency_sec": 3965.76,
-  "avg_latency_sec": 19.829,
-  "total_prompt_tokens": 135348,
-  "total_completion_tokens": 126912,
-  "total_tokens": 262260
+  "n_samples": 500,
+  "mrr": 0.7362,
+  "hit@1": 0.672,
+  "total_latency_sec": 10831.84,
+  "avg_latency_sec": 21.664,
+  "total_prompt_tokens": 343092,
+  "total_completion_tokens": 295680,
+  "total_tokens": 638772
 }

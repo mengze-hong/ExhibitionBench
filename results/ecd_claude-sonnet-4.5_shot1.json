@@ -1,0 +1,16 @@
+{
+  "task": "ecd",
+  "model": "claude-sonnet-4.5",
+  "shot": 1,
+  "n_samples": 500,
+  "total_latency_sec": 7314.27,
+  "avg_latency_sec": 14.629,
+  "total_prompt_tokens": 249942,
+  "total_completion_tokens": 2000,
+  "total_tokens": 251942,
+  "pairaccc_L1": 0.896,
+  "pairaccc_L2": 0.92,
+  "pairaccc_L3": 0.552,
+  "pairaccc_L4": 0.912,
+  "macro_pairaccc": 0.82
+}

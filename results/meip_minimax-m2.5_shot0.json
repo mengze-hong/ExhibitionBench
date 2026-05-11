@@ -2,12 +2,12 @@
   "task": "meip",
   "model": "minimax-m2.5",
   "shot": 0,
-  "n_samples": 200,
-  "mrr": 0.499,
-  "hit@1": 0.375,
-  "total_latency_sec": 2597.26,
-  "avg_latency_sec": 12.986,
-  "total_prompt_tokens": 118303,
-  "total_completion_tokens": 222150,
-  "total_tokens": 340453
+  "n_samples": 500,
+  "mrr": 0.5897,
+  "hit@1": 0.484,
+  "total_latency_sec": 6940.98,
+  "avg_latency_sec": 13.882,
+  "total_prompt_tokens": 294423,
+  "total_completion_tokens": 526824,
+  "total_tokens": 821247
 }

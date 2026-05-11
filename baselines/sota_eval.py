@@ -61,8 +61,10 @@ CLIENT = openai.OpenAI(
 MODELS = {
     # Family         : model_id
     "gpt-5.2":            "gpt-5.2",            # OpenAI flagship
+    "gpt-5.1":            "gpt-5.1",            # OpenAI strong v1
     "gpt-5":              "gpt-5",              # OpenAI strong
     "claude-opus-4.6":    "claude-opus-4.6",    # Anthropic flagship
+    "claude-opus-4.5":    "claude-opus-4.5",    # Anthropic prev flagship
     "claude-sonnet-4.5":  "claude-sonnet-4.5",  # Anthropic fast
     "gemini-2.5-pro":     "gemini-2.5-pro",     # Google flagship
     "gemini-2.5-flash":   "gemini-2.5-flash",   # Google fast
@@ -70,10 +72,17 @@ MODELS = {
     "gemini-3-flash-preview": "gemini-3-flash-preview",   # Google Gemini-3 fast preview
     "gemini-3.1-pro-preview": "gemini-3.1-pro-preview",   # Google Gemini-3.1 flagship preview
     "deepseek-r1":        "deepseek-r1",         # DeepSeek reasoning
-    "deepseek-v3.2":      "deepseek-v3.2",       # DeepSeek chat latest
+    "deepseek-v3.2":      "deepseek-v3.2",       # DeepSeek chat v3.2
+    # "deepseek-v3.1":      "deepseek-v3.1",       # DeepSeek chat v3.1 -- NOT AVAILABLE on this LiteLLM endpoint
+    "deepseek-v3":        "deepseek-v3",         # DeepSeek chat v3.0
     "kimi-k2.5":          "kimi-k2.5",           # Moonshot
-    "doubao-seed-2.0-pro":"doubao-seed-2.0-pro", # ByteDance flagship
-    "doubao-seed-1.6":    "doubao-seed-1.6",     # ByteDance standard
+    "doubao-seed-2.0-pro":    "doubao-seed-2.0-pro",    # ByteDance flagship
+    "doubao-seed-2.0-lite":   "doubao-seed-2.0-lite",   # ByteDance lite
+    "doubao-seed-1.6":        "doubao-seed-1.6",        # ByteDance v1.6 standard
+    "doubao-seed-1.6-251015": "doubao-seed-1.6-251015", # ByteDance v1.6 Oct2025 update
+    # "doubao-seed-1.6-thinking":"doubao-seed-1.6-thinking", # REMOVED: endpoint currently closed
+    "doubao-seed-1.6-lite":   "doubao-seed-1.6-lite",   # ByteDance v1.6 lite
+    "doubao-seed-1.6-flash":  "doubao-seed-1.6-flash-250715", # ByteDance v1.6 flash
     "glm-5":              "glm-5",               # Zhipu AI (reasoning model)
     "minimax-m2.5":       "minimax-m2.5",        # Minimax
     # "gpt-5-mini":       "gpt-5-mini",          # REMOVED: content often empty (pure reasoning), 已有旧结果 n=0
@@ -95,18 +104,15 @@ DEFAULT_MODELS = [
 ]
 
 # Reasoning models that put answer in reasoning_content, not content
-REASONING_MODELS = {"deepseek-r1", "kimi-k2.5", "minimax-m2.5", "glm-5"}
+REASONING_MODELS = {"deepseek-r1", "kimi-k2.5", "minimax-m2.5", "glm-5",
+                    "doubao-seed-1.6-thinking"}
 # Models that need larger max_tokens because they use thinking tokens
-# gpt-5 also uses internal reasoning tokens (64-200 thinking + small output),
-# so default 1024 gets fully consumed by reasoning → empty content.
-# Gemini-3 family also relies heavily on hidden chain-of-thought; without
-# a larger budget, max_tokens=150 (MEIP) / 300 (TES) gets consumed by the
-# thinking pass and the final answer is truncated.
 LARGE_TOKEN_MODELS = {"deepseek-r1", "kimi-k2.5", "minimax-m2.5",
                       "gemini-2.5-pro", "gemini-2.5-flash",
                       "gemini-3-pro-preview", "gemini-3-flash-preview",
                       "gemini-3.1-pro-preview",
-                      "gpt-5", "gpt-5.1", "gpt-5-codex", "glm-5"}
+                      "gpt-5", "gpt-5.1", "gpt-5-codex", "glm-5",
+                      "doubao-seed-1.6-thinking"}
 # Models that require temperature=1 (OpenAI reasoning/codex models)
 TEMP1_MODELS = {"gpt-5", "gpt-5.1", "gpt-5-codex"}
 
@@ -267,6 +273,28 @@ Candidate objects (choose the best fit):
 Reply with ONLY the ID of the best-fitting candidate object (e.g., "met_123456").
 """
 
+# CoT variant: prompts the model to reason before answering
+MEIP_COT_TEMPLATE = """\
+You are assisting a museum curator. Given an exhibition theme and some context objects already selected, \
+identify which ONE candidate object best fits the exhibition and should be added next.
+
+Exhibition theme: {theme}
+
+Context objects already in exhibition:
+{context}
+
+Candidate objects (choose the best fit):
+{candidates}
+
+Think step by step:
+1. What is the core cultural/period/medium focus of this exhibition theme?
+2. How do the context objects reinforce that focus?
+3. Which candidate best continues that narrative?
+
+After your reasoning, output your final answer on the last line as:
+ANSWER: <object_id>
+"""
+
 # Static few-shot bank: 5 hand-crafted examples covering diverse cultures/periods
 # Each example is a self-contained (theme, context, candidates, answer) block
 MEIP_FEWSHOT_BANK = [
@@ -343,7 +371,8 @@ Reason: Monet's Poppy Field is an Impressionist landscape, directly fitting the 
 ]
 
 
-def build_meip_prompt(sample: dict, objects: dict[str, dict], shot: int = 0) -> str:
+def build_meip_prompt(sample: dict, objects: dict[str, dict], shot: int = 0,
+                      cot: bool = False) -> str:
     theme = sample.get("exhibition_theme", "")
 
     # Context objects — stored as list of dicts OR list of ids
@@ -389,7 +418,8 @@ def build_meip_prompt(sample: dict, objects: dict[str, dict], shot: int = 0) -> 
         prefix = "".join(MEIP_FEWSHOT_BANK[:n_ex])
         prefix = f"Here are {n_ex} example(s) to guide you:\n\n" + prefix + "Now solve the following:\n\n"
 
-    return prefix + MEIP_ZEROSHOT_TEMPLATE.format(
+    template = MEIP_COT_TEMPLATE if cot else MEIP_ZEROSHOT_TEMPLATE
+    return prefix + template.format(
         theme=theme,
         context=context_str,
         candidates=candidates_str,
@@ -409,7 +439,8 @@ def _get_meip_candidate_ids(sample: dict) -> list[str]:
 
 
 def evaluate_meip(model: str, samples: list[dict], objects: dict[str, dict],
-                  max_samples: int = 500, shot: int = 0, workers: int = 100) -> dict:
+                  max_samples: int = 500, shot: int = 0, workers: int = 100,
+                  cot: bool = False) -> dict:
     samples_used = samples[:max_samples]
 
     # Per-sample worker function
@@ -419,10 +450,21 @@ def evaluate_meip(model: str, samples: list[dict], objects: dict[str, dict],
         candidate_ids = _get_meip_candidate_ids(sample)
         if not gold_id or not candidate_ids:
             return None
-        prompt = build_meip_prompt(sample, objects, shot=shot)
-        response, latency, usage = call_llm(model, prompt, max_tokens=150)
+        prompt = build_meip_prompt(sample, objects, shot=shot, cot=cot)
+        max_tok = 400 if cot else 150
+        response, latency, usage = call_llm(model, prompt, max_tokens=max_tok)
         if response is None:
             return None
+        # CoT: extract answer from "ANSWER: <id>" on the last line(s)
+        if cot:
+            lines = [l.strip() for l in response.strip().splitlines() if l.strip()]
+            cot_answer = None
+            for line in reversed(lines):
+                if line.upper().startswith("ANSWER:"):
+                    cot_answer = line.split(":", 1)[1].strip()
+                    break
+            if cot_answer:
+                response = cot_answer
         ranked = parse_selection(response, candidate_ids)
         score = mrr(gold_id, ranked)
         hit1 = 1.0 if ranked and ranked[0] == gold_id else 0.0
@@ -488,8 +530,27 @@ Return ONLY the anonymous IDs of the top 10 most relevant exhibitions, in order 
 Format: EX_001, EX_002, EX_003, ... (comma-separated)
 """
 
+TES_COT_TEMPLATE = """\
+You are a museum curator selecting an exhibition. Given a thematic query, \
+rank the provided exhibition candidates from most to least relevant.
 
-def build_tes_prompt(sample: dict) -> tuple[str, dict[str, str]]:
+Query theme: {theme}
+Query description: {description}
+
+Exhibition candidates (each identified by an anonymous ID; judge solely by the artworks inside):
+{candidates}
+
+Think step by step:
+1. What is the core cultural/period/medium focus implied by the query theme?
+2. Scan each candidate's artworks: which ones closely match the theme in culture, period, or subject?
+3. Rank candidates from best to worst thematic match.
+
+After your reasoning, output your final answer on a new line as:
+ANSWER: EX_001, EX_002, EX_003, ... (top-10 comma-separated anonymous IDs, best first)
+"""
+
+
+def build_tes_prompt(sample: dict, cot: bool = False) -> tuple[str, dict[str, str]]:
     """Build a leak-free TES prompt.
 
     Removes all theme/title/description/real-id from candidates.
@@ -513,7 +574,8 @@ def build_tes_prompt(sample: dict) -> tuple[str, dict[str, str]]:
         else:
             obj_str = "(no sample objects)"
         cand_lines.append(f"  [{anon_id}] {obj_str}")
-    prompt = TES_TEMPLATE.format(
+    template = TES_COT_TEMPLATE if cot else TES_TEMPLATE
+    prompt = template.format(
         theme=theme,
         description=desc[:300],
         candidates="\n".join(cand_lines),
@@ -522,7 +584,8 @@ def build_tes_prompt(sample: dict) -> tuple[str, dict[str, str]]:
 
 
 def evaluate_tes(model: str, samples: list[dict],
-                 max_samples: int = 300, shot: int = 0, workers: int = 100) -> dict:
+                 max_samples: int = 300, shot: int = 0, workers: int = 100,
+                 cot: bool = False) -> dict:
     samples_used = samples[:max_samples]
 
     def _run_one(item):
@@ -532,13 +595,21 @@ def evaluate_tes(model: str, samples: list[dict],
         if not gold_ids or not all_candidate_ids:
             return None
         # build_tes_prompt now returns (prompt, anon_to_real mapping)
-        prompt, anon_to_real = build_tes_prompt(sample)
+        prompt, anon_to_real = build_tes_prompt(sample, cot=cot)
         real_to_anon = {v: k for k, v in anon_to_real.items()}
         anon_gold_ids = {real_to_anon.get(g, g) for g in gold_ids}
         all_anon_ids = [real_to_anon.get(rid, rid) for rid in all_candidate_ids]
-        response, latency, usage = call_llm(model, prompt, max_tokens=300)
+        max_tok = 600 if cot else 300
+        response, latency, usage = call_llm(model, prompt, max_tokens=max_tok)
         if response is None:
             return None
+        # CoT: extract ranked list from "ANSWER: EX_001, ..." line
+        if cot:
+            lines = [l.strip() for l in response.strip().splitlines() if l.strip()]
+            for line in reversed(lines):
+                if line.upper().startswith("ANSWER:"):
+                    response = line.split(":", 1)[1].strip()
+                    break
         # parse from anon space, then map back to real ids
         ranked_anon = parse_selection(response, all_anon_ids)
         ranked_real = [anon_to_real.get(aid, aid) for aid in ranked_anon]
@@ -611,6 +682,32 @@ Which sequence is more coherent and fits the exhibition theme better?
 Reply with ONLY "A" or "B".
 """
 
+ECD_COT_TEMPLATE = """\
+You are a museum curator evaluating exhibition coherence.
+
+Exhibition theme: {theme}
+
+Two exhibition sequences are shown below. One is the ORIGINAL coherent sequence; \
+the other has been DISRUPTED by swapping one item.
+
+Sequence A:
+{seq_a}
+
+Sequence B:
+{seq_b}
+
+Think step by step:
+1. What cultural/period/medium coherence does the exhibition theme demand?
+2. Check Sequence A: do all items fit the theme and flow logically?
+3. Check Sequence B: do all items fit the theme and flow logically?
+4. Which sequence is clearly more coherent?
+
+After your reasoning, output your final answer on the last line as:
+ANSWER: A
+or
+ANSWER: B
+"""
+
 
 def format_seq(obj_list: list[dict]) -> str:
     lines = []
@@ -628,7 +725,8 @@ def format_seq(obj_list: list[dict]) -> str:
 
 
 def evaluate_ecd(model: str, samples: list[dict], objects: dict[str, dict],
-                 max_samples: int = 800, shot: int = 0, workers: int = 100) -> dict:
+                 max_samples: int = 800, shot: int = 0, workers: int = 100,
+                 cot: bool = False) -> dict:
     import random
     rng = random.Random(42)
     samples_used = samples[:max_samples]
@@ -652,14 +750,23 @@ def evaluate_ecd(model: str, samples: list[dict], objects: dict[str, dict],
         else:
             seq_a, seq_b = neg_items, pos_items
             correct_answer = "B"
-        prompt = ECD_TEMPLATE.format(
+        template = ECD_COT_TEMPLATE if cot else ECD_TEMPLATE
+        prompt = template.format(
             theme=theme,
             seq_a=format_seq(seq_a),
             seq_b=format_seq(seq_b),
         )
-        response, latency, usage = call_llm(model, prompt, max_tokens=50)
+        max_tok = 300 if cot else 50
+        response, latency, usage = call_llm(model, prompt, max_tokens=max_tok)
         if response is None:
             return None
+        # CoT: extract answer from "ANSWER: A/B" on last line(s)
+        if cot:
+            lines = [l.strip() for l in response.strip().splitlines() if l.strip()]
+            for line in reversed(lines):
+                if line.upper().startswith("ANSWER:"):
+                    response = line.split(":", 1)[1].strip()
+                    break
         resp_upper = (response or "").strip().upper()
         if resp_upper.startswith("A"):
             predicted = "A"
@@ -745,6 +852,7 @@ def run_evaluation(
     meip_data: Optional[Path] = None,
     tag: str = "",
     workers: int = 100,
+    cot: bool = False,
 ) -> Optional[dict]:
     RESULTS.mkdir(parents=True, exist_ok=True)
     suffix = f"_{tag}" if tag else ""
@@ -772,7 +880,7 @@ def run_evaluation(
             log.error("No MEIP samples found!")
             return None
         samples = load_jsonl(meip_path)
-        result = evaluate_meip(model, samples, objects, max_samples=max_samples, shot=shot, workers=workers)
+        result = evaluate_meip(model, samples, objects, max_samples=max_samples, shot=shot, workers=workers, cot=cot)
 
     elif task == "tes":
         tes_path = find_data_file("tes_samples")
@@ -780,7 +888,7 @@ def run_evaluation(
             log.error("No TES samples found!")
             return None
         samples = load_jsonl(tes_path)
-        result = evaluate_tes(model, samples, max_samples=max_samples, shot=shot, workers=workers)
+        result = evaluate_tes(model, samples, max_samples=max_samples, shot=shot, workers=workers, cot=cot)
 
     elif task == "ecd":
         ecd_path = find_data_file("ecd_samples")
@@ -788,7 +896,7 @@ def run_evaluation(
             log.error("No ECD samples found!")
             return None
         samples = load_jsonl(ecd_path)
-        result = evaluate_ecd(model, samples, objects, max_samples=max_samples, shot=shot, workers=workers)
+        result = evaluate_ecd(model, samples, objects, max_samples=max_samples, shot=shot, workers=workers, cot=cot)
 
     if result:
         with open(out_path, "w") as f:
@@ -870,6 +978,8 @@ def main():
     parser.add_argument("--workers", type=int, default=100,
                         help="Number of concurrent worker threads (default: 100). "
                              "Lower for rate-limited/reasoning models, e.g. --workers 10")
+    parser.add_argument("--cot", action="store_true",
+                        help="Use Chain-of-Thought prompting (adds _cot tag to output file)")
     args = parser.parse_args()
 
     if args.summary:
@@ -918,10 +1028,14 @@ def main():
     log.info(f"Models: {models}")
     log.info(f"Tasks:  {tasks}")
 
+    # Auto-add cot tag if --cot is specified
+    cot_tag = "cot" if args.cot else ""
+
     all_results = []
     for shot in shots:
         for model in models:
             for task in tasks:
+                effective_tag = args.tag or cot_tag
                 result = run_evaluation(
                     task=task,
                     model=model,
@@ -929,8 +1043,9 @@ def main():
                     shot=shot,
                     force=args.force,
                     meip_data=Path(args.meip_data) if args.meip_data else None,
-                    tag=args.tag,
+                    tag=effective_tag,
                     workers=args.workers,
+                    cot=args.cot,
                 )
                 if result:
                     all_results.append(result)

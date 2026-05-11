@@ -1,0 +1,16 @@
+{
+  "task": "ecd",
+  "model": "minimax-m2.5",
+  "shot": 3,
+  "n_samples": 500,
+  "total_latency_sec": 5031.69,
+  "avg_latency_sec": 10.063,
+  "total_prompt_tokens": 236552,
+  "total_completion_tokens": 194283,
+  "total_tokens": 430835,
+  "pairaccc_L1": 0.512,
+  "pairaccc_L2": 0.544,
+  "pairaccc_L3": 0.456,
+  "pairaccc_L4": 0.52,
+  "macro_pairaccc": 0.508
+}

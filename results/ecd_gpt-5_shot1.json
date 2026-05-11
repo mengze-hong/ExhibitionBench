@@ -1,0 +1,16 @@
+{
+  "task": "ecd",
+  "model": "gpt-5",
+  "shot": 1,
+  "n_samples": 500,
+  "total_latency_sec": 3640.53,
+  "avg_latency_sec": 7.281,
+  "total_prompt_tokens": 219568,
+  "total_completion_tokens": 135713,
+  "total_tokens": 355281,
+  "pairaccc_L1": 0.848,
+  "pairaccc_L2": 0.808,
+  "pairaccc_L3": 0.528,
+  "pairaccc_L4": 0.792,
+  "macro_pairaccc": 0.744
+}
