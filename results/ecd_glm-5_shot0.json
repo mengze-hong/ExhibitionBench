@@ -1,0 +1,16 @@
+{
+  "task": "ecd",
+  "model": "glm-5",
+  "shot": 0,
+  "n_samples": 500,
+  "total_latency_sec": 7009.06,
+  "avg_latency_sec": 14.018,
+  "total_prompt_tokens": 225271,
+  "total_completion_tokens": 211858,
+  "total_tokens": 437129,
+  "pairaccc_L1": 0.64,
+  "pairaccc_L2": 0.616,
+  "pairaccc_L3": 0.456,
+  "pairaccc_L4": 0.64,
+  "macro_pairaccc": 0.588
+}

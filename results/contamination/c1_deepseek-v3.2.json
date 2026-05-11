@@ -1,0 +1,11 @@
+{
+  "met": {
+    "n_samples": 196,
+    "mrr": 0.7751
+  },
+  "nonmet": {
+    "n_samples": 187,
+    "mrr": 0.7281
+  },
+  "mrr_gap": 0.047
+}

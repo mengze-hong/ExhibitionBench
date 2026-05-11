@@ -1,0 +1,73 @@
+{
+  "model": "gemini-2.5-pro",
+  "max_samples": 200,
+  "h2_shot_ablation": {
+    "0": {
+      "shot": 0,
+      "mrr": 0.63,
+      "hit@1": 0.63,
+      "n": 200
+    },
+    "1": {
+      "shot": 1,
+      "mrr": 0.615,
+      "hit@1": 0.615,
+      "n": 200
+    },
+    "2": {
+      "shot": 2,
+      "mrr": 0.605,
+      "hit@1": 0.605,
+      "n": 200
+    },
+    "3": {
+      "shot": 3,
+      "mrr": 0.63,
+      "hit@1": 0.63,
+      "n": 200
+    },
+    "5": {
+      "shot": 5,
+      "mrr": 0.625,
+      "hit@1": 0.625,
+      "n": 200
+    }
+  },
+  "h1_cultural_anchoring": {
+    "zero_shot": {
+      "western_mrr": 0.5817,
+      "eastern_mrr": 0.6897,
+      "western_n": 153,
+      "eastern_n": 29
+    },
+    "western_2shot": {
+      "western_mrr": 0.5752,
+      "eastern_mrr": 0.6897,
+      "western_n": 153,
+      "eastern_n": 29
+    },
+    "asian_2shot": {
+      "western_mrr": 0.6078,
+      "eastern_mrr": 0.6897,
+      "western_n": 153,
+      "eastern_n": 29
+    }
+  },
+  "h3_shuffled_label": {
+    "zero_shot": {
+      "mrr": 0.61,
+      "hit@1": 0.61,
+      "n": 200
+    },
+    "2shot_correct": {
+      "mrr": 0.63,
+      "hit@1": 0.63,
+      "n": 200
+    },
+    "2shot_shuffled": {
+      "mrr": 0.53,
+      "hit@1": 0.53,
+      "n": 200
+    }
+  }
+}

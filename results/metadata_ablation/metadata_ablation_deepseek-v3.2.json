@@ -1,0 +1,80 @@
+{
+  "model": "deepseek-v3.2",
+  "results": {
+    "L0": {
+      "level": "L0",
+      "fields": [
+        "title"
+      ],
+      "mrr": 0.5,
+      "hit@1": 0.5,
+      "n": 200,
+      "delta_from_L5": -0.13
+    },
+    "L1": {
+      "level": "L1",
+      "fields": [
+        "title",
+        "date"
+      ],
+      "mrr": 0.52,
+      "hit@1": 0.52,
+      "n": 200,
+      "delta_from_L5": -0.11
+    },
+    "L2": {
+      "level": "L2",
+      "fields": [
+        "title",
+        "date",
+        "culture"
+      ],
+      "mrr": 0.54,
+      "hit@1": 0.54,
+      "n": 200,
+      "delta_from_L5": -0.09
+    },
+    "L3": {
+      "level": "L3",
+      "fields": [
+        "title",
+        "date",
+        "culture",
+        "medium"
+      ],
+      "mrr": 0.57,
+      "hit@1": 0.57,
+      "n": 200,
+      "delta_from_L5": -0.06
+    },
+    "L4": {
+      "level": "L4",
+      "fields": [
+        "title",
+        "date",
+        "culture",
+        "medium",
+        "department"
+      ],
+      "mrr": 0.615,
+      "hit@1": 0.615,
+      "n": 200,
+      "delta_from_L5": -0.015
+    },
+    "L5": {
+      "level": "L5",
+      "fields": [
+        "title",
+        "date",
+        "culture",
+        "medium",
+        "department",
+        "description"
+      ],
+      "mrr": 0.63,
+      "hit@1": 0.63,
+      "n": 200,
+      "delta_from_L5": 0.0
+    }
+  }
+}

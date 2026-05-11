@@ -1,0 +1,74 @@
+{
+  "gpt-5.2": {
+    "full": {
+      "n_samples": 200,
+      "mrr": 0.6694
+    },
+    "masked": {
+      "n_samples": 200,
+      "mrr": 0.4781
+    },
+    "mrr_drop": 0.1913,
+    "mrr_drop_pct": 28.6
+  },
+  "claude-opus-4.6": {
+    "full": {
+      "n_samples": 200,
+      "mrr": 0.7303
+    },
+    "masked": {
+      "n_samples": 200,
+      "mrr": 0.5303
+    },
+    "mrr_drop": 0.2,
+    "mrr_drop_pct": 27.4
+  },
+  "gemini-2.5-pro": {
+    "full": {
+      "n_samples": 200,
+      "mrr": 0.6916
+    },
+    "masked": {
+      "n_samples": 200,
+      "mrr": 0.5051
+    },
+    "mrr_drop": 0.1865,
+    "mrr_drop_pct": 27.0
+  },
+  "doubao-seed-2.0-pro": {
+    "full": {
+      "n_samples": 200,
+      "mrr": 0.6743
+    },
+    "masked": {
+      "n_samples": 200,
+      "mrr": 0.4999
+    },
+    "mrr_drop": 0.1744,
+    "mrr_drop_pct": 25.9
+  },
+  "deepseek-v3.2": {
+    "full": {
+      "n_samples": 200,
+      "mrr": 0.6402
+    },
+    "masked": {
+      "n_samples": 200,
+      "mrr": 0.4489
+    },
+    "mrr_drop": 0.1913,
+    "mrr_drop_pct": 29.9
+  },
+  "gemini-2.5-flash": {
+    "full": {
+      "n_samples": 200,
+      "mrr": 0.5757
+    },
+    "masked": {
+      "n_samples": 200,
+      "mrr": 0.4148
+    },
+    "mrr_drop": 0.1609,
+    "mrr_drop_pct": 27.9
+  }
+}

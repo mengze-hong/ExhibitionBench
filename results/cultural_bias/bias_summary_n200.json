@@ -1,0 +1,209 @@
+{
+  "models": [
+    "gpt-5.2",
+    "gemini-2.5-pro",
+    "gemini-2.5-flash",
+    "deepseek-r1",
+    "kimi-k2.5",
+    "minimax-m2.5",
+    "glm-5"
+  ],
+  "max_samples": 200,
+  "groups": [
+    "Western",
+    "Asian",
+    "Islamic",
+    "Ancient"
+  ],
+  "results": {
+    "gpt-5.2": {
+      "Western": {
+        "hit@1": 0.5048,
+        "n": 105
+      },
+      "Asian": {
+        "hit@1": 0.6,
+        "n": 10
+      },
+      "Unknown": {
+        "hit@1": 0.7595,
+        "n": 79
+      },
+      "Islamic": {
+        "hit@1": 0.6,
+        "n": 5
+      },
+      "Ancient": {
+        "hit@1": 1.0,
+        "n": 1
+      },
+      "_overall": {
+        "hit@1": 0.615,
+        "n": 200
+      },
+      "_western_bias": -0.2285
+    },
+    "gemini-2.5-pro": {
+      "Western": {
+        "hit@1": 0.5143,
+        "n": 105
+      },
+      "Asian": {
+        "hit@1": 0.7,
+        "n": 10
+      },
+      "Unknown": {
+        "hit@1": 0.7468,
+        "n": 79
+      },
+      "Islamic": {
+        "hit@1": 0.8,
+        "n": 5
+      },
+      "Ancient": {
+        "hit@1": 1.0,
+        "n": 1
+      },
+      "_overall": {
+        "hit@1": 0.625,
+        "n": 200
+      },
+      "_western_bias": -0.319
+    },
+    "gemini-2.5-flash": {
+      "Western": {
+        "hit@1": 0.3905,
+        "n": 105
+      },
+      "Asian": {
+        "hit@1": 0.7,
+        "n": 10
+      },
+      "Unknown": {
+        "hit@1": 0.7595,
+        "n": 79
+      },
+      "Islamic": {
+        "hit@1": 0.4,
+        "n": 5
+      },
+      "Ancient": {
+        "hit@1": 1.0,
+        "n": 1
+      },
+      "_overall": {
+        "hit@1": 0.555,
+        "n": 200
+      },
+      "_western_bias": -0.3095
+    },
+    "deepseek-r1": {
+      "Western": {
+        "hit@1": 0.4476,
+        "n": 105
+      },
+      "Asian": {
+        "hit@1": 0.4,
+        "n": 10
+      },
+      "Unknown": {
+        "hit@1": 0.6962,
+        "n": 79
+      },
+      "Islamic": {
+        "hit@1": 0.6,
+        "n": 5
+      },
+      "Ancient": {
+        "hit@1": 1.0,
+        "n": 1
+      },
+      "_overall": {
+        "hit@1": 0.55,
+        "n": 200
+      },
+      "_western_bias": -0.2191
+    },
+    "kimi-k2.5": {
+      "Western": {
+        "hit@1": 0.4571,
+        "n": 105
+      },
+      "Asian": {
+        "hit@1": 0.6,
+        "n": 10
+      },
+      "Unknown": {
+        "hit@1": 0.7342,
+        "n": 79
+      },
+      "Islamic": {
+        "hit@1": 0.6,
+        "n": 5
+      },
+      "Ancient": {
+        "hit@1": 1.0,
+        "n": 1
+      },
+      "_overall": {
+        "hit@1": 0.58,
+        "n": 200
+      },
+      "_western_bias": -0.2762
+    },
+    "minimax-m2.5": {
+      "Western": {
+        "hit@1": 0.4095,
+        "n": 105
+      },
+      "Asian": {
+        "hit@1": 0.7,
+        "n": 10
+      },
+      "Unknown": {
+        "hit@1": 0.6962,
+        "n": 79
+      },
+      "Islamic": {
+        "hit@1": 0.6,
+        "n": 5
+      },
+      "Ancient": {
+        "hit@1": 1.0,
+        "n": 1
+      },
+      "_overall": {
+        "hit@1": 0.545,
+        "n": 200
+      },
+      "_western_bias": -0.3572
+    },
+    "glm-5": {
+      "Western": {
+        "hit@1": 0.2762,
+        "n": 105
+      },
+      "Asian": {
+        "hit@1": 0.3,
+        "n": 10
+      },
+      "Unknown": {
+        "hit@1": 0.3797,
+        "n": 79
+      },
+      "Islamic": {
+        "hit@1": 0.4,
+        "n": 5
+      },
+      "Ancient": {
+        "hit@1": 1.0,
+        "n": 1
+      },
+      "_overall": {
+        "hit@1": 0.325,
+        "n": 200
+      },
+      "_western_bias": -0.2905
+    }
+  }
+}

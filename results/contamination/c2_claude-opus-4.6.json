@@ -1,0 +1,12 @@
+{
+  "full": {
+    "n_samples": 200,
+    "mrr": 0.7303
+  },
+  "masked": {
+    "n_samples": 200,
+    "mrr": 0.5303
+  },
+  "mrr_drop": 0.2,
+  "mrr_drop_pct": 27.4
+}

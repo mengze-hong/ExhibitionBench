@@ -1,0 +1,13 @@
+{
+  "task": "meip",
+  "model": "claude-opus-4.6",
+  "shot": 0,
+  "n_samples": 200,
+  "mrr": 0.7274,
+  "hit@1": 0.665,
+  "total_latency_sec": 5695.53,
+  "avg_latency_sec": 28.478,
+  "total_prompt_tokens": 127775,
+  "total_completion_tokens": 5746,
+  "total_tokens": 133521
+}

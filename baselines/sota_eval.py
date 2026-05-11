@@ -1,0 +1,938 @@
+"""
+baselines/sota_eval.py — ExhibitionBench SOTA Multi-Model Evaluator
+====================================================================
+Evaluates all SOTA LLMs from diverse families on all three benchmark tasks:
+  - MEIP  (Museum Exhibition Item Prediction) — 10-way ranking, MRR metric
+  - TES   (Thematic Exhibition Selection)      — 50-way ranking, NDCG@10 metric
+  - ECD   (Exhibition Coherence Discrimination) — pairwise, PairAcc metric
+
+Models evaluated (one strong representative per family):
+  OpenAI    : gpt-5.2
+  Anthropic : claude-opus-4.6
+  Google    : gemini-2.5-flash
+  DeepSeek  : deepseek-r1
+  Kimi      : kimi-k2.5
+  Doubao    : doubao-seed-1.6
+  GLM       : glm-5
+  Minimax   : minimax-m2.5
+
+Usage:
+  python baselines/sota_eval.py --task meip --model gpt-5.2
+  python baselines/sota_eval.py --task all --model all
+  python baselines/sota_eval.py --task meip --model all --max-samples 200
+  python baselines/sota_eval.py --task all --model all --max-samples 100 --shot 0
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import logging
+import math
+import os
+import sys
+import time
+from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
+from threading import Lock
+from typing import Optional
+
+import openai
+
+log = logging.getLogger(__name__)
+
+BASE = Path(__file__).resolve().parent.parent
+DATA = BASE / "data"
+RESULTS = BASE / "results"
+
+# ── API Config ────────────────────────────────────────────────────────────────
+
+INTERNAL_API_BASE = "http://csig.litellm.prod.sgpolaris"
+INTERNAL_API_KEY = "sk-TpK0g832p8LbMXTdI_pjkQ"
+
+CLIENT = openai.OpenAI(
+    api_key=INTERNAL_API_KEY,
+    base_url=f"{INTERNAL_API_BASE}/v1",
+)
+
+# ── Model Registry ────────────────────────────────────────────────────────────
+
+MODELS = {
+    # Family         : model_id
+    "gpt-5.2":            "gpt-5.2",            # OpenAI flagship
+    "gpt-5":              "gpt-5",              # OpenAI strong
+    "claude-opus-4.6":    "claude-opus-4.6",    # Anthropic flagship
+    "claude-sonnet-4.5":  "claude-sonnet-4.5",  # Anthropic fast
+    "gemini-2.5-pro":     "gemini-2.5-pro",     # Google flagship
+    "gemini-2.5-flash":   "gemini-2.5-flash",   # Google fast
+    "gemini-3-pro-preview":   "gemini-3-pro-preview",   # Google Gemini-3 flagship preview
+    "gemini-3-flash-preview": "gemini-3-flash-preview", # Google Gemini-3 fast preview
+    "deepseek-r1":        "deepseek-r1",         # DeepSeek reasoning
+    "deepseek-v3.2":      "deepseek-v3.2",       # DeepSeek chat latest
+    "kimi-k2.5":          "kimi-k2.5",           # Moonshot
+    "doubao-seed-2.0-pro":"doubao-seed-2.0-pro", # ByteDance flagship
+    "doubao-seed-1.6":    "doubao-seed-1.6",     # ByteDance standard
+    "glm-5":              "glm-5",               # Zhipu AI
+    "minimax-m2.5":       "minimax-m2.5",        # Minimax
+}
+
+ALL_MODELS = list(MODELS.keys())
+
+# Default model selection (strongest one per family for paper main table)
+DEFAULT_MODELS = [
+    "gpt-5.2",            # OpenAI
+    "claude-sonnet-4.5",  # Anthropic (claude-opus-4.6 times out)
+    "gemini-2.5-pro",     # Google
+    "deepseek-r1",        # DeepSeek
+    "kimi-k2.5",          # Moonshot
+    "doubao-seed-2.0-pro",# ByteDance
+    "glm-5",              # Zhipu
+    "minimax-m2.5",       # Minimax
+]
+
+# Reasoning models that put answer in reasoning_content, not content
+REASONING_MODELS = {"deepseek-r1", "kimi-k2.5", "minimax-m2.5"}
+# Models that need larger max_tokens because they use thinking tokens
+# gpt-5 also uses internal reasoning tokens (64-200 thinking + small output),
+# so default 1024 gets fully consumed by reasoning → empty content.
+# Gemini-3 family also relies heavily on hidden chain-of-thought; without
+# a larger budget, max_tokens=150 (MEIP) / 300 (TES) gets consumed by the
+# thinking pass and the final answer is truncated.
+LARGE_TOKEN_MODELS = {"deepseek-r1", "kimi-k2.5", "minimax-m2.5",
+                      "gemini-2.5-pro", "gemini-2.5-flash",
+                      "gemini-3-pro-preview", "gemini-3-flash-preview",
+                      "gpt-5", "gpt-5.1", "gpt-5-codex"}
+# Models that require temperature=1 (OpenAI reasoning/codex models)
+TEMP1_MODELS = {"gpt-5", "gpt-5.1", "gpt-5-codex"}
+
+# ── LLM Call ─────────────────────────────────────────────────────────────────
+
+def call_llm(model: str, prompt: str, max_tokens: int = 1024,
+             retries: int = 3, timeout: int = 120) -> tuple[Optional[str], float, dict]:
+    """
+    Returns: (content, latency_sec, usage_dict)
+      - content: model response string, or None on failure
+      - latency_sec: wall-clock seconds for the API call (0 if failed)
+      - usage_dict: {"prompt_tokens": int, "completion_tokens": int, "total_tokens": int}
+    """
+    # Reasoning models need much more token budget for thinking
+    actual_max = max_tokens * 8 if model in LARGE_TOKEN_MODELS else max_tokens
+    empty_usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
+    for attempt in range(retries):
+        try:
+            t0 = time.perf_counter()
+            # gpt-5 and similar reasoning models require temperature=1
+            temp = 1.0 if model in TEMP1_MODELS else 0.0
+            resp = CLIENT.chat.completions.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=actual_max,
+                temperature=temp,
+                timeout=timeout,
+            )
+            latency = time.perf_counter() - t0
+
+            # Extract token usage
+            usage = empty_usage.copy()
+            if resp.usage:
+                usage["prompt_tokens"]     = resp.usage.prompt_tokens or 0
+                usage["completion_tokens"] = resp.usage.completion_tokens or 0
+                usage["total_tokens"]      = resp.usage.total_tokens or 0
+
+            if not (resp.choices and resp.choices[0].message):
+                continue
+            msg = resp.choices[0].message
+            content = msg.content
+            # Reasoning models: answer may be empty while thinking is in reasoning_content
+            if not content and model in REASONING_MODELS:
+                rc = getattr(msg, "reasoning_content", None)
+                if rc:
+                    # Extract last line or answer from reasoning
+                    lines = [l.strip() for l in rc.strip().split("\n") if l.strip()]
+                    content = lines[-1] if lines else rc
+            return (content or ""), latency, usage
+        except openai.RateLimitError:
+            wait = 2 ** attempt
+            log.warning(f"Rate limit for {model}, waiting {wait}s")
+            time.sleep(wait)
+        except Exception as e:
+            log.warning(f"API error ({model}, attempt {attempt+1}): {e}")
+            time.sleep(1)
+    return None, 0.0, empty_usage
+
+
+# ── Data Loaders ─────────────────────────────────────────────────────────────
+
+def load_jsonl(path: Path) -> list[dict]:
+    records = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                records.append(json.loads(line))
+    return records
+
+
+def load_objects(path: Path) -> dict[str, dict]:
+    return {r["id"]: r for r in load_jsonl(path)}
+
+
+def find_data_file(name: str) -> Optional[Path]:
+    """Find data file, preferring v3 > v2 > base."""
+    for suffix in ["_v3", "_v2", ""]:
+        p = DATA / f"{name}{suffix}.jsonl"
+        if p.exists():
+            return p
+    return None
+
+
+# ── Metrics ──────────────────────────────────────────────────────────────────
+
+def mrr(gold_id: str, ranked_ids: list[str]) -> float:
+    for i, rid in enumerate(ranked_ids, 1):
+        if rid == gold_id:
+            return 1.0 / i
+    return 0.0
+
+
+def ndcg_at_k(gold_ids: set, ranked_ids: list[str], k: int = 10) -> float:
+    dcg = sum(
+        1.0 / math.log2(i + 2)
+        for i, rid in enumerate(ranked_ids[:k])
+        if rid in gold_ids
+    )
+    ideal = sum(1.0 / math.log2(i + 2) for i in range(min(len(gold_ids), k)))
+    return dcg / ideal if ideal > 0 else 0.0
+
+
+def parse_selection(response: str, candidates: list[str]) -> list[str]:
+    """Parse model output into a ranked list of candidate IDs."""
+    resp = response.strip() if response else ""
+
+    # Try to find IDs directly mentioned
+    found = []
+    for cid in candidates:
+        if cid in resp:
+            found.append(cid)
+    if found:
+        return found + [c for c in candidates if c not in found]
+
+    # Try to parse a numbered list (e.g., "1. ..., 2. ...")
+    lines = resp.split("\n")
+    ranked = []
+    for line in lines:
+        line = line.strip()
+        for cid in candidates:
+            if cid in line and cid not in ranked:
+                ranked.append(cid)
+                break
+    if ranked:
+        return ranked + [c for c in candidates if c not in ranked]
+
+    # Try to find first number mentioned
+    import re
+    nums = re.findall(r'\b(\d+)\b', resp)
+    idx_ranked = []
+    for n in nums:
+        idx = int(n) - 1  # 1-indexed to 0-indexed
+        if 0 <= idx < len(candidates) and idx not in idx_ranked:
+            idx_ranked.append(idx)
+    if idx_ranked:
+        result = [candidates[i] for i in idx_ranked]
+        result += [c for c in candidates if c not in result]
+        return result
+
+    return candidates  # fallback: original order
+
+
+# ── MEIP Evaluation ───────────────────────────────────────────────────────────
+
+MEIP_ZEROSHOT_TEMPLATE = """\
+You are assisting a museum curator. Given an exhibition theme and some context objects already selected, \
+identify which ONE candidate object best fits the exhibition and should be added next.
+
+Exhibition theme: {theme}
+
+Context objects already in exhibition:
+{context}
+
+Candidate objects (choose the best fit):
+{candidates}
+
+Reply with ONLY the ID of the best-fitting candidate object (e.g., "met_123456").
+"""
+
+# Static few-shot bank: 5 hand-crafted examples covering diverse cultures/periods
+# Each example is a self-contained (theme, context, candidates, answer) block
+MEIP_FEWSHOT_BANK = [
+    """\
+EXAMPLE:
+Exhibition theme: Japanese Woodblock Prints
+Context objects:
+  - Thirty-Six Views of Mt. Fuji (Japanese, 1830-1833)
+  - The Great Wave off Kanagawa (Japanese, ca. 1831)
+Candidates:
+  [1] ID=ex_001 | Portrait of a Lady | European | 17th century | Oil on canvas
+  [2] ID=ex_002 | Beauty Arranging Her Hair | Japanese | ca. 1795 | Woodblock print
+  [3] ID=ex_003 | Dragon Vase | Chinese | Ming dynasty | Porcelain
+Best fit: ex_002
+Reason: ukiyo-e woodblock print of a Japanese beauty fits the Japanese Woodblock Prints theme.
+
+""",
+    """\
+EXAMPLE:
+Exhibition theme: Ancient Egyptian Funerary Arts
+Context objects:
+  - Canopic Jar of Neskhons (Egyptian, ca. 1069-945 BCE)
+  - Book of the Dead of Hunefer (Egyptian, ca. 1275 BCE)
+Candidates:
+  [1] ID=ex_004 | Marble Statue of Athena | Greek | 5th century BCE | Marble
+  [2] ID=ex_005 | Set of Four Shabtis | Egyptian | ca. 1550-1070 BCE | Faience
+  [3] ID=ex_006 | Roman Mosaic Floor Fragment | Roman | 2nd century CE | Stone mosaic
+Best fit: ex_005
+Reason: shabtis are quintessential Egyptian funerary objects, directly matching the theme.
+
+""",
+    """\
+EXAMPLE:
+Exhibition theme: Renaissance Portraiture
+Context objects:
+  - Portrait of a Young Man (Italian, ca. 1480-1490)
+  - Portrait of Giovanna Tornabuoni (Italian, 1488)
+Candidates:
+  [1] ID=ex_007 | Landscape with Figures | Dutch | 17th century | Oil on panel
+  [2] ID=ex_008 | Portrait of a Noblewoman | Italian | ca. 1515 | Oil on panel
+  [3] ID=ex_009 | Abstract Composition | American | 1950 | Oil on canvas
+Best fit: ex_008
+Reason: Italian Renaissance portrait of a noblewoman directly matches the portraiture theme and period.
+
+""",
+    """\
+EXAMPLE:
+Exhibition theme: Islamic Geometric Decoration
+Context objects:
+  - Mihrab (Prayer Niche) (Iranian, 1354-55)
+  - Star-Shaped Tile Panel (Iranian, 13th century)
+Candidates:
+  [1] ID=ex_010 | Viking Brooch | Norse | 9th century | Silver
+  [2] ID=ex_011 | Mamluk Quran Stand with Geometric Inlay | Egyptian | 14th century | Wood, ivory
+  [3] ID=ex_012 | Tang Dynasty Horse | Chinese | 8th century | Glazed earthenware
+Best fit: ex_011
+Reason: the Mamluk Quran stand features intricate Islamic geometric inlay, perfectly matching the theme.
+
+""",
+    """\
+EXAMPLE:
+Exhibition theme: Impressionist Landscapes
+Context objects:
+  - Water Lilies (French, ca. 1906)
+  - Haystacks at Sunset (French, 1890-1891)
+Candidates:
+  [1] ID=ex_013 | Still Life with Apples | French | 1890s | Oil on canvas
+  [2] ID=ex_014 | The Poppy Field near Argenteuil | French | 1873 | Oil on canvas
+  [3] ID=ex_015 | Self-Portrait with Bandaged Ear | Dutch | 1889 | Oil on canvas
+Best fit: ex_014
+Reason: Monet's Poppy Field is an Impressionist landscape, directly fitting the theme. The self-portrait (L3) is not a landscape.
+
+""",
+]
+
+
+def build_meip_prompt(sample: dict, objects: dict[str, dict], shot: int = 0) -> str:
+    theme = sample.get("exhibition_theme", "")
+
+    # Context objects — stored as list of dicts OR list of ids
+    context_raw = sample.get("context", [])
+    context_objs = []
+    for c in context_raw[:4]:
+        if isinstance(c, dict):
+            obj = c
+        else:
+            obj = objects.get(c, {})
+        if obj:
+            context_objs.append(
+                f"  - {obj.get('title','?')} ({obj.get('culture','?')}, {obj.get('date','?')})"
+            )
+    context_str = "\n".join(context_objs) if context_objs else "  (none)"
+
+    # Candidates — stored as list of dicts OR list of ids
+    candidates_raw = sample.get("candidates", sample.get("candidate_ids", []))
+    candidate_ids = []
+    cand_lines = []
+    for idx, c in enumerate(candidates_raw, 1):
+        if isinstance(c, dict):
+            cid = c["id"]
+            obj = c
+        else:
+            cid = c
+            obj = objects.get(cid, {})
+        candidate_ids.append(cid)
+        if obj:
+            cand_lines.append(
+                f"  [{idx}] ID={cid} | {obj.get('title','?')} | "
+                f"{obj.get('culture','?')} | {obj.get('date','?')} | "
+                f"{(obj.get('medium') or '')[:60]}"
+            )
+        else:
+            cand_lines.append(f"  [{idx}] ID={cid}")
+    candidates_str = "\n".join(cand_lines)
+
+    # True N-shot: use exactly `shot` examples from MEIP_FEWSHOT_BANK (max 5)
+    prefix = ""
+    if shot > 0:
+        n_ex = min(shot, len(MEIP_FEWSHOT_BANK))
+        prefix = "".join(MEIP_FEWSHOT_BANK[:n_ex])
+        prefix = f"Here are {n_ex} example(s) to guide you:\n\n" + prefix + "Now solve the following:\n\n"
+
+    return prefix + MEIP_ZEROSHOT_TEMPLATE.format(
+        theme=theme,
+        context=context_str,
+        candidates=candidates_str,
+    )
+
+
+def _get_meip_candidate_ids(sample: dict) -> list[str]:
+    """Extract candidate IDs from MEIP sample (handles both dict and id formats)."""
+    candidates_raw = sample.get("candidates", sample.get("candidate_ids", []))
+    ids = []
+    for c in candidates_raw:
+        if isinstance(c, dict):
+            ids.append(c["id"])
+        else:
+            ids.append(c)
+    return ids
+
+
+def evaluate_meip(model: str, samples: list[dict], objects: dict[str, dict],
+                  max_samples: int = 500, shot: int = 0, workers: int = 100) -> dict:
+    samples_used = samples[:max_samples]
+
+    # Per-sample worker function
+    def _run_one(item):
+        i, sample = item
+        gold_id = sample.get("gold_id", "")
+        candidate_ids = _get_meip_candidate_ids(sample)
+        if not gold_id or not candidate_ids:
+            return None
+        prompt = build_meip_prompt(sample, objects, shot=shot)
+        response, latency, usage = call_llm(model, prompt, max_tokens=150)
+        if response is None:
+            return None
+        ranked = parse_selection(response, candidate_ids)
+        score = mrr(gold_id, ranked)
+        hit1 = 1.0 if ranked and ranked[0] == gold_id else 0.0
+        return (i, score, hit1, latency, usage)
+
+    mrr_scores = []
+    hit1_scores = []
+    total_latency = 0.0
+    total_prompt_tokens = 0
+    total_completion_tokens = 0
+    total_tokens = 0
+    done = 0
+    lock = Lock()
+
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futs = {ex.submit(_run_one, (i, s)): i for i, s in enumerate(samples_used)}
+        for fut in as_completed(futs):
+            res = fut.result()
+            if res is None:
+                continue
+            _, score, hit1, latency, usage = res
+            with lock:
+                mrr_scores.append(score)
+                hit1_scores.append(hit1)
+                total_latency += latency
+                total_prompt_tokens += usage["prompt_tokens"]
+                total_completion_tokens += usage["completion_tokens"]
+                total_tokens += usage["total_tokens"]
+                done += 1
+                if done % 50 == 0:
+                    log.info(f"  MEIP {model}: {done}/{len(samples_used)}, "
+                             f"MRR={sum(mrr_scores)/len(mrr_scores):.4f}")
+
+    n = len(mrr_scores)
+    return {
+        "task": "meip",
+        "model": model,
+        "shot": shot,
+        "n_samples": n,
+        "mrr": round(sum(mrr_scores) / n, 4) if n else 0,
+        "hit@1": round(sum(hit1_scores) / n, 4) if n else 0,
+        "total_latency_sec": round(total_latency, 2),
+        "avg_latency_sec": round(total_latency / n, 3) if n else 0,
+        "total_prompt_tokens": total_prompt_tokens,
+        "total_completion_tokens": total_completion_tokens,
+        "total_tokens": total_tokens,
+    }
+
+
+# ── TES Evaluation ────────────────────────────────────────────────────────────
+
+TES_TEMPLATE = """\
+You are a museum curator selecting an exhibition. Given a thematic query, \
+rank the provided exhibition candidates from most to least relevant.
+
+Query theme: {theme}
+Query description: {description}
+
+Exhibition candidates (each identified by an anonymous ID; judge solely by the artworks inside):
+{candidates}
+
+Return ONLY the anonymous IDs of the top 10 most relevant exhibitions, in order from best to worst.
+Format: EX_001, EX_002, EX_003, ... (comma-separated)
+"""
+
+
+def build_tes_prompt(sample: dict) -> tuple[str, dict[str, str]]:
+    """Build a leak-free TES prompt.
+
+    Removes all theme/title/description/real-id from candidates.
+    Exposes only the sample artworks.
+    Returns (prompt_str, anon_to_real_id mapping).
+    """
+    theme = sample.get("query_theme", "")
+    desc = sample.get("query_description", "")
+    cands = sample.get("candidates", [])
+    cand_lines = []
+    anon_to_real: dict[str, str] = {}
+    for i, c in enumerate(cands[:50], 1):  # limit to 50 candidates in prompt
+        anon_id = f"EX_{i:03d}"
+        anon_to_real[anon_id] = c["id"]
+        sample_objs = c.get("sample_objects", [])[:5]
+        if sample_objs:
+            obj_str = "; ".join(
+                f"{o.get('title','?')} ({o.get('culture','?')}, {o.get('date','?') or '?'})"
+                for o in sample_objs
+            )
+        else:
+            obj_str = "(no sample objects)"
+        cand_lines.append(f"  [{anon_id}] {obj_str}")
+    prompt = TES_TEMPLATE.format(
+        theme=theme,
+        description=desc[:300],
+        candidates="\n".join(cand_lines),
+    )
+    return prompt, anon_to_real
+
+
+def evaluate_tes(model: str, samples: list[dict],
+                 max_samples: int = 300, shot: int = 0, workers: int = 100) -> dict:
+    samples_used = samples[:max_samples]
+
+    def _run_one(item):
+        i, sample = item
+        gold_ids = set(sample.get("gold_ids", [sample.get("gold_id", "")]))
+        all_candidate_ids = [c["id"] for c in sample.get("candidates", [])]
+        if not gold_ids or not all_candidate_ids:
+            return None
+        # build_tes_prompt now returns (prompt, anon_to_real mapping)
+        prompt, anon_to_real = build_tes_prompt(sample)
+        real_to_anon = {v: k for k, v in anon_to_real.items()}
+        anon_gold_ids = {real_to_anon.get(g, g) for g in gold_ids}
+        all_anon_ids = [real_to_anon.get(rid, rid) for rid in all_candidate_ids]
+        response, latency, usage = call_llm(model, prompt, max_tokens=300)
+        if response is None:
+            return None
+        # parse from anon space, then map back to real ids
+        ranked_anon = parse_selection(response, all_anon_ids)
+        ranked_real = [anon_to_real.get(aid, aid) for aid in ranked_anon]
+        return (i,
+                ndcg_at_k(gold_ids, ranked_real, k=10),
+                mrr(next(iter(gold_ids)), ranked_real),
+                latency, usage)
+
+    ndcg_scores = []
+    mrr_scores = []
+    total_latency = 0.0
+    total_prompt_tokens = 0
+    total_completion_tokens = 0
+    total_tokens = 0
+    done = 0
+    lock = Lock()
+
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futs = {ex.submit(_run_one, (i, s)): i for i, s in enumerate(samples_used)}
+        for fut in as_completed(futs):
+            res = fut.result()
+            if res is None:
+                continue
+            _, nd, mr, latency, usage = res
+            with lock:
+                ndcg_scores.append(nd)
+                mrr_scores.append(mr)
+                total_latency += latency
+                total_prompt_tokens += usage["prompt_tokens"]
+                total_completion_tokens += usage["completion_tokens"]
+                total_tokens += usage["total_tokens"]
+                done += 1
+                if done % 30 == 0:
+                    log.info(f"  TES {model}: {done}/{len(samples_used)}, "
+                             f"NDCG@10={sum(ndcg_scores)/len(ndcg_scores):.4f}")
+
+    n = len(ndcg_scores)
+    return {
+        "task": "tes",
+        "model": model,
+        "shot": shot,
+        "n_samples": n,
+        "ndcg@10": round(sum(ndcg_scores) / n, 4) if n else 0,
+        "mrr": round(sum(mrr_scores) / n, 4) if n else 0,
+        "total_latency_sec": round(total_latency, 2),
+        "avg_latency_sec": round(total_latency / n, 3) if n else 0,
+        "total_prompt_tokens": total_prompt_tokens,
+        "total_completion_tokens": total_completion_tokens,
+        "total_tokens": total_tokens,
+    }
+
+
+# ── ECD Evaluation ────────────────────────────────────────────────────────────
+
+ECD_TEMPLATE = """\
+You are a museum curator evaluating exhibition coherence.
+
+Exhibition theme: {theme}
+
+Two exhibition sequences are shown below. One is the ORIGINAL coherent sequence; \
+the other has been DISRUPTED by swapping one item.
+
+Sequence A:
+{seq_a}
+
+Sequence B:
+{seq_b}
+
+Which sequence is more coherent and fits the exhibition theme better?
+Reply with ONLY "A" or "B".
+"""
+
+
+def format_seq(obj_list: list[dict]) -> str:
+    lines = []
+    for i, obj in enumerate(obj_list, 1):
+        if obj is None or not isinstance(obj, dict):
+            lines.append(f"  {i}. [unknown item]")
+            continue
+        medium = obj.get('medium') or '?'
+        lines.append(
+            f"  {i}. {obj.get('title','?')} | "
+            f"{obj.get('culture','?')} | {obj.get('date','?')} | "
+            f"{str(medium)[:60]}"
+        )
+    return "\n".join(lines)
+
+
+def evaluate_ecd(model: str, samples: list[dict], objects: dict[str, dict],
+                 max_samples: int = 800, shot: int = 0, workers: int = 100) -> dict:
+    import random
+    rng = random.Random(42)
+    samples_used = samples[:max_samples]
+
+    # Pre-assign A/B for each sample deterministically
+    assignments = [rng.random() > 0.5 for _ in samples_used]
+
+    def _run_one(item):
+        i, sample, gold_is_a = item
+        positive_entry = sample.get("positive", {})
+        negative_entry = sample.get("negative", {})
+        level = sample.get("level", 1)
+        pos_items = positive_entry.get("items", [])
+        neg_items = negative_entry.get("items", [])
+        theme = positive_entry.get("theme", sample.get("theme", ""))
+        if not pos_items or not neg_items:
+            return None
+        if gold_is_a:
+            seq_a, seq_b = pos_items, neg_items
+            correct_answer = "A"
+        else:
+            seq_a, seq_b = neg_items, pos_items
+            correct_answer = "B"
+        prompt = ECD_TEMPLATE.format(
+            theme=theme,
+            seq_a=format_seq(seq_a),
+            seq_b=format_seq(seq_b),
+        )
+        response, latency, usage = call_llm(model, prompt, max_tokens=50)
+        if response is None:
+            return None
+        resp_upper = (response or "").strip().upper()
+        if resp_upper.startswith("A"):
+            predicted = "A"
+        elif resp_upper.startswith("B"):
+            predicted = "B"
+        elif "A" in resp_upper[:10]:
+            predicted = "A"
+        elif "B" in resp_upper[:10]:
+            predicted = "B"
+        else:
+            predicted = "A"
+        return (i, level, predicted == correct_answer, latency, usage)
+
+    level_correct = defaultdict(int)
+    level_total   = defaultdict(int)
+    total_latency = 0.0
+    total_prompt_tokens = 0
+    total_completion_tokens = 0
+    total_tokens = 0
+    n_calls = 0
+    done = 0
+    lock = Lock()
+
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futs = {ex.submit(_run_one, (i, s, assignments[i])): i
+                for i, s in enumerate(samples_used)}
+        for fut in as_completed(futs):
+            res = fut.result()
+            if res is None:
+                continue
+            _, level, is_correct, latency, usage = res
+            level_str = f"L{level}"
+            with lock:
+                level_total[level_str] += 1
+                if is_correct:
+                    level_correct[level_str] += 1
+                total_latency += latency
+                total_prompt_tokens += usage["prompt_tokens"]
+                total_completion_tokens += usage["completion_tokens"]
+                total_tokens += usage["total_tokens"]
+                n_calls += 1
+                done += 1
+                if done % 100 == 0:
+                    levels_seen = [l for l in level_total if level_total[l] > 0]
+                    macro = sum(level_correct[l] / level_total[l] for l in levels_seen) / len(levels_seen)
+                    log.info(f"  ECD {model}: {done}/{len(samples_used)}, "
+                             f"Macro PairAcc={macro:.4f}")
+
+    result = {
+        "task": "ecd",
+        "model": model,
+        "shot": shot,
+        "n_samples": sum(level_total.values()),
+        "total_latency_sec": round(total_latency, 2),
+        "avg_latency_sec": round(total_latency / n_calls, 3) if n_calls else 0,
+        "total_prompt_tokens": total_prompt_tokens,
+        "total_completion_tokens": total_completion_tokens,
+        "total_tokens": total_tokens,
+    }
+    levels = ["L1", "L2", "L3", "L4"]
+    pair_accs = []
+    for lv in levels:
+        if level_total[lv] > 0:
+            acc = level_correct[lv] / level_total[lv]
+        else:
+            acc = 0.0
+        result[f"pairaccc_{lv}"] = round(acc, 4)
+        pair_accs.append(acc)
+
+    valid_accs = [a for a in pair_accs if a > 0]
+    result["macro_pairaccc"] = round(sum(valid_accs) / len(valid_accs) if valid_accs else 0, 4)
+    return result
+
+
+# ── Runner ────────────────────────────────────────────────────────────────────
+
+def run_evaluation(
+    task: str,
+    model: str,
+    max_samples: int = 500,
+    shot: int = 0,
+    force: bool = False,
+    meip_data: Optional[Path] = None,
+    tag: str = "",
+) -> Optional[dict]:
+    RESULTS.mkdir(parents=True, exist_ok=True)
+    suffix = f"_{tag}" if tag else ""
+    out_path = RESULTS / f"{task}_{model.replace('/', '-').replace(':', '-')}_shot{shot}{suffix}.json"
+
+    if out_path.exists() and not force:
+        log.info(f"Already exists: {out_path}, skipping (use --force to rerun)")
+        with open(out_path) as f:
+            return json.load(f)
+
+    log.info(f"Running {task} evaluation with {model} (shot={shot}, max={max_samples})")
+
+    # Load objects
+    obj_path = find_data_file("objects")
+    if not obj_path:
+        log.error("No objects file found!")
+        return None
+    objects = load_objects(obj_path)
+
+    result = None
+
+    if task == "meip":
+        meip_path = meip_data if meip_data else find_data_file("meip_samples")
+        if not meip_path:
+            log.error("No MEIP samples found!")
+            return None
+        samples = load_jsonl(meip_path)
+        result = evaluate_meip(model, samples, objects, max_samples=max_samples, shot=shot)
+
+    elif task == "tes":
+        tes_path = find_data_file("tes_samples")
+        if not tes_path:
+            log.error("No TES samples found!")
+            return None
+        samples = load_jsonl(tes_path)
+        result = evaluate_tes(model, samples, max_samples=max_samples, shot=shot)
+
+    elif task == "ecd":
+        ecd_path = find_data_file("ecd_samples")
+        if not ecd_path:
+            log.error("No ECD samples found!")
+            return None
+        samples = load_jsonl(ecd_path)
+        result = evaluate_ecd(model, samples, objects, max_samples=max_samples, shot=shot)
+
+    if result:
+        with open(out_path, "w") as f:
+            json.dump(result, f, indent=2)
+        log.info(f"Saved results to {out_path}")
+        log.info(f"Result: {result}")
+
+    return result
+
+
+# ── Summary Table ─────────────────────────────────────────────────────────────
+
+def print_summary_table(results: list[dict]) -> None:
+    meip_results = {r["model"]: r for r in results if r.get("task") == "meip"}
+    tes_results  = {r["model"]: r for r in results if r.get("task") == "tes"}
+    ecd_results  = {r["model"]: r for r in results if r.get("task") == "ecd"}
+
+    all_models_in_results = sorted(set(
+        list(meip_results.keys()) + list(tes_results.keys()) + list(ecd_results.keys())
+    ))
+
+    header = (
+        f"\n{'Model':<22} | {'MEIP MRR':>9} {'Hit@1':>7} | "
+        f"{'TES NDCG@10':>11} {'MRR':>7} | "
+        f"{'ECD L1':>7} {'L2':>7} {'L3':>7} {'L4':>7} {'Macro':>7}"
+    )
+    sep = "-" * len(header)
+    print(sep)
+    print("ExhibitionBench Results Summary")
+    print(sep)
+    print(header)
+    print(sep)
+
+    for m in all_models_in_results:
+        mr = meip_results.get(m, {})
+        tr = tes_results.get(m, {})
+        er = ecd_results.get(m, {})
+        line = (
+            f"{m:<22} | "
+            f"{mr.get('mrr', '-'):>9} {mr.get('hit@1', '-'):>7} | "
+            f"{tr.get('ndcg@10', '-'):>11} {tr.get('mrr', '-'):>7} | "
+            f"{er.get('pairaccc_L1', '-'):>7} {er.get('pairaccc_L2', '-'):>7} "
+            f"{er.get('pairaccc_L3', '-'):>7} {er.get('pairaccc_L4', '-'):>7} "
+            f"{er.get('macro_pairaccc', '-'):>7}"
+        )
+        print(line)
+
+    print(sep)
+
+
+# ── Main ─────────────────────────────────────────────────────────────────────
+
+def main():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        stream=sys.stdout,
+    )
+
+    parser = argparse.ArgumentParser(description="ExhibitionBench SOTA Evaluation")
+    parser.add_argument("--task", "--tasks", dest="task", default="all",
+                        nargs="+",
+                        help="Task(s) to evaluate: meip tes ecd all (space separated)")
+    parser.add_argument("--model", "--models", dest="model", default="all",
+                        nargs="+",
+                        help=f"Model(s) or 'all'. Available: {', '.join(ALL_MODELS)}")
+    parser.add_argument("--max-samples", type=int, default=500,
+                        help="Max samples per task per model")
+    parser.add_argument("--shot", type=int, default=0,
+                        help="Number of few-shot examples (0=zero-shot)")
+    parser.add_argument("--force", action="store_true",
+                        help="Re-run even if results file exists")
+    parser.add_argument("--summary", action="store_true",
+                        help="Print summary of existing results")
+    parser.add_argument("--meip-data", type=str, default=None,
+                        help="Path to custom MEIP samples file (e.g. data/meip_samples_v4.jsonl)")
+    parser.add_argument("--tag", type=str, default="",
+                        help="Tag appended to result filename (e.g. 'v4clean')")
+    args = parser.parse_args()
+
+    if args.summary:
+        # Load all existing results and print summary
+        all_results = []
+        for p in RESULTS.glob("*.json"):
+            with open(p) as f:
+                try:
+                    data = json.load(f)
+                    if isinstance(data, list):
+                        all_results.extend(data)
+                    elif isinstance(data, dict):
+                        all_results.append(data)
+                except Exception:
+                    pass
+        print_summary_table(all_results)
+        return
+
+    # Determine models  (args.model is now a list thanks to nargs="+")
+    raw_models = args.model if isinstance(args.model, list) else [args.model]
+    flat_models = []
+    for m in raw_models:
+        for part in m.replace(",", " ").split():
+            flat_models.append(part)
+    if flat_models == ["all"] or flat_models == ["default"]:
+        models = DEFAULT_MODELS
+    else:
+        models = flat_models
+
+    # Determine tasks  (args.task is now a list thanks to nargs="+")
+    raw_tasks = args.task if isinstance(args.task, list) else [args.task]
+    all_valid = {"meip", "tes", "ecd", "all"}
+    tasks = []
+    for t in raw_tasks:
+        for part in t.replace(",", " ").split():
+            if part == "all":
+                tasks = ["meip", "tes", "ecd"]
+                break
+            elif part in all_valid:
+                tasks.append(part)
+    if not tasks:
+        tasks = ["meip", "tes", "ecd"]
+
+    log.info(f"Evaluating {len(models)} model(s) on {len(tasks)} task(s)")
+    log.info(f"Models: {models}")
+    log.info(f"Tasks:  {tasks}")
+
+    all_results = []
+    for model in models:
+        for task in tasks:
+            result = run_evaluation(
+                task=task,
+                model=model,
+                max_samples=args.max_samples,
+                shot=args.shot,
+                force=args.force,
+                meip_data=Path(args.meip_data) if args.meip_data else None,
+                tag=args.tag,
+            )
+            if result:
+                all_results.append(result)
+
+    if all_results:
+        print_summary_table(all_results)
+
+        # Save aggregated summary
+        summary_path = RESULTS / f"summary_shot{args.shot}.json"
+        with open(summary_path, "w") as f:
+            json.dump(all_results, f, indent=2)
+        log.info(f"Summary saved to {summary_path}")
+
+
+if __name__ == "__main__":
+    main()

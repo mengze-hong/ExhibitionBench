@@ -1,0 +1,13 @@
+{
+  "task": "meip",
+  "model": "kimi-k2.5",
+  "shot": 0,
+  "n_samples": 200,
+  "mrr": 0.4836,
+  "hit@1": 0.37,
+  "total_latency_sec": 3711.21,
+  "avg_latency_sec": 18.556,
+  "total_prompt_tokens": 115645,
+  "total_completion_tokens": 216697,
+  "total_tokens": 332342
+}

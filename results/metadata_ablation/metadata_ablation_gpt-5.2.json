@@ -1,0 +1,80 @@
+{
+  "model": "gpt-5.2",
+  "results": {
+    "L0": {
+      "level": "L0",
+      "fields": [
+        "title"
+      ],
+      "mrr": 0.6,
+      "hit@1": 0.6,
+      "n": 200,
+      "delta_from_L5": -0.04
+    },
+    "L1": {
+      "level": "L1",
+      "fields": [
+        "title",
+        "date"
+      ],
+      "mrr": 0.585,
+      "hit@1": 0.585,
+      "n": 200,
+      "delta_from_L5": -0.055
+    },
+    "L2": {
+      "level": "L2",
+      "fields": [
+        "title",
+        "date",
+        "culture"
+      ],
+      "mrr": 0.595,
+      "hit@1": 0.595,
+      "n": 200,
+      "delta_from_L5": -0.045
+    },
+    "L3": {
+      "level": "L3",
+      "fields": [
+        "title",
+        "date",
+        "culture",
+        "medium"
+      ],
+      "mrr": 0.615,
+      "hit@1": 0.615,
+      "n": 200,
+      "delta_from_L5": -0.025
+    },
+    "L4": {
+      "level": "L4",
+      "fields": [
+        "title",
+        "date",
+        "culture",
+        "medium",
+        "department"
+      ],
+      "mrr": 0.635,
+      "hit@1": 0.635,
+      "n": 200,
+      "delta_from_L5": -0.005
+    },
+    "L5": {
+      "level": "L5",
+      "fields": [
+        "title",
+        "date",
+        "culture",
+        "medium",
+        "department",
+        "description"
+      ],
+      "mrr": 0.64,
+      "hit@1": 0.64,
+      "n": 200,
+      "delta_from_L5": 0.0
+    }
+  }
+}

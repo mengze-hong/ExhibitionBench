@@ -1,0 +1,80 @@
+{
+  "model": "gemini-2.5-pro",
+  "results": {
+    "L0": {
+      "level": "L0",
+      "fields": [
+        "title"
+      ],
+      "mrr": 0.62,
+      "hit@1": 0.62,
+      "n": 200,
+      "delta_from_L5": -0.05
+    },
+    "L1": {
+      "level": "L1",
+      "fields": [
+        "title",
+        "date"
+      ],
+      "mrr": 0.63,
+      "hit@1": 0.63,
+      "n": 200,
+      "delta_from_L5": -0.04
+    },
+    "L2": {
+      "level": "L2",
+      "fields": [
+        "title",
+        "date",
+        "culture"
+      ],
+      "mrr": 0.635,
+      "hit@1": 0.635,
+      "n": 200,
+      "delta_from_L5": -0.035
+    },
+    "L3": {
+      "level": "L3",
+      "fields": [
+        "title",
+        "date",
+        "culture",
+        "medium"
+      ],
+      "mrr": 0.615,
+      "hit@1": 0.615,
+      "n": 200,
+      "delta_from_L5": -0.055
+    },
+    "L4": {
+      "level": "L4",
+      "fields": [
+        "title",
+        "date",
+        "culture",
+        "medium",
+        "department"
+      ],
+      "mrr": 0.625,
+      "hit@1": 0.625,
+      "n": 200,
+      "delta_from_L5": -0.045
+    },
+    "L5": {
+      "level": "L5",
+      "fields": [
+        "title",
+        "date",
+        "culture",
+        "medium",
+        "department",
+        "description"
+      ],
+      "mrr": 0.67,
+      "hit@1": 0.67,
+      "n": 200,
+      "delta_from_L5": 0.0
+    }
+  }
+}

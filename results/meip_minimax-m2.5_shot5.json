@@ -1,0 +1,13 @@
+{
+  "task": "meip",
+  "model": "minimax-m2.5",
+  "shot": 5,
+  "n_samples": 500,
+  "mrr": 0.526,
+  "hit@1": 0.406,
+  "total_latency_sec": 7085.26,
+  "avg_latency_sec": 14.171,
+  "total_prompt_tokens": 711681,
+  "total_completion_tokens": 538408,
+  "total_tokens": 1250089
+}

@@ -1,0 +1,13 @@
+{
+  "task": "meip",
+  "model": "claude-sonnet-4.5",
+  "shot": 3,
+  "n_samples": 200,
+  "mrr": 0.6436,
+  "hit@1": 0.565,
+  "total_latency_sec": 589.19,
+  "avg_latency_sec": 2.946,
+  "total_prompt_tokens": 242975,
+  "total_completion_tokens": 8430,
+  "total_tokens": 251405
+}

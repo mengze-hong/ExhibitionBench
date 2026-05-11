@@ -1,0 +1,13 @@
+{
+  "task": "meip",
+  "model": "deepseek-r1",
+  "shot": 0,
+  "n_samples": 1409,
+  "mrr": 0.5294,
+  "hit@1": 0.3911,
+  "total_latency_sec": 50232.64,
+  "avg_latency_sec": 35.651,
+  "total_prompt_tokens": 728732,
+  "total_completion_tokens": 1460219,
+  "total_tokens": 2188951
+}

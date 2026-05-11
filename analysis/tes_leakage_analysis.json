@@ -1,0 +1,11 @@
+{
+  "n_samples": 200,
+  "keyword_match_rate": 1.0,
+  "exact_match_rate": 1.0,
+  "avg_confusing_candidates": 11.135,
+  "median_confusing_candidates": 11.0,
+  "max_confusing_candidates": 34,
+  "trivially_easy_samples": 21,
+  "keyword_bm25_ndcg10": 0.9790464876785728,
+  "note": "TES task has query-theme leakage; BM25 achieves ~0.98 NDCG@10"
+}

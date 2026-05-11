@@ -1,0 +1,13 @@
+{
+  "task": "tes",
+  "model": "claude-opus-4.6",
+  "shot": 1,
+  "n_samples": 200,
+  "ndcg@10": 0.4307,
+  "mrr": 0.2615,
+  "total_latency_sec": 3083.62,
+  "avg_latency_sec": 15.418,
+  "total_prompt_tokens": 872703,
+  "total_completion_tokens": 22057,
+  "total_tokens": 894760
+}

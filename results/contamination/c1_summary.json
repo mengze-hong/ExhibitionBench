@@ -1,0 +1,68 @@
+{
+  "gpt-5.2": {
+    "met": {
+      "n_samples": 200,
+      "mrr": 0.7226
+    },
+    "nonmet": {
+      "n_samples": 200,
+      "mrr": 0.8466
+    },
+    "mrr_gap": -0.124
+  },
+  "claude-opus-4.6": {
+    "met": {
+      "n_samples": 200,
+      "mrr": 0.7439
+    },
+    "nonmet": {
+      "n_samples": 200,
+      "mrr": 0.8885
+    },
+    "mrr_gap": -0.1446
+  },
+  "gemini-2.5-pro": {
+    "met": {
+      "n_samples": 200,
+      "mrr": 0.741
+    },
+    "nonmet": {
+      "n_samples": 200,
+      "mrr": 0.8258
+    },
+    "mrr_gap": -0.0848
+  },
+  "doubao-seed-2.0-pro": {
+    "met": {
+      "n_samples": 200,
+      "mrr": 0.7364
+    },
+    "nonmet": {
+      "n_samples": 200,
+      "mrr": 0.8564
+    },
+    "mrr_gap": -0.12
+  },
+  "deepseek-v3.2": {
+    "met": {
+      "n_samples": 196,
+      "mrr": 0.7751
+    },
+    "nonmet": {
+      "n_samples": 187,
+      "mrr": 0.7281
+    },
+    "mrr_gap": 0.047
+  },
+  "gemini-2.5-flash": {
+    "met": {
+      "n_samples": 200,
+      "mrr": 0.6693
+    },
+    "nonmet": {
+      "n_samples": 200,
+      "mrr": 0.6488
+    },
+    "mrr_gap": 0.0205
+  }
+}

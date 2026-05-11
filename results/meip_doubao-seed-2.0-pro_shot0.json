@@ -1,0 +1,13 @@
+{
+  "task": "meip",
+  "model": "doubao-seed-2.0-pro",
+  "shot": 0,
+  "n_samples": 200,
+  "mrr": 0.6821,
+  "hit@1": 0.615,
+  "total_latency_sec": 4075.52,
+  "avg_latency_sec": 20.378,
+  "total_prompt_tokens": 138548,
+  "total_completion_tokens": 159409,
+  "total_tokens": 297957
+}
