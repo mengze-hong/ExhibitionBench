@@ -1,15 +1,28 @@
 [
   {
-    "task": "tes",
-    "model": "kimi-k2.5",
+    "task": "meip",
+    "model": "doubao-seed-1.6-251015",
     "shot": 3,
-    "n_samples": 247,
-    "ndcg@10": 0.104,
-    "mrr": 0.1077,
-    "total_latency_sec": 45689.8,
-    "avg_latency_sec": 184.979,
-    "total_prompt_tokens": 1250200,
-    "total_completion_tokens": 588000,
-    "total_tokens": 1838200
+    "n_samples": 500,
+    "mrr": 0.7255,
+    "hit@1": 0.658,
+    "total_latency_sec": 17336.95,
+    "avg_latency_sec": 34.674,
+    "total_prompt_tokens": 634092,
+    "total_completion_tokens": 322411,
+    "total_tokens": 956503
+  },
+  {
+    "task": "tes",
+    "model": "doubao-seed-1.6-251015",
+    "shot": 3,
+    "n_samples": 283,
+    "ndcg@10": 0.3825,
+    "mrr": 0.2267,
+    "total_latency_sec": 23344.04,
+    "avg_latency_sec": 82.488,
+    "total_prompt_tokens": 1613403,
+    "total_completion_tokens": 591629,
+    "total_tokens": 2205032
   }
 ]

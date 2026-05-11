@@ -70,16 +70,25 @@ def load_results(shot: int) -> dict[str, dict[str, dict]]:
     """
     Returns: {model: {task: result_dict}}
     Scans all files matching {task}_{model}_shot{shot}.json
+    For TES, prefers the _noleak variant when available (eliminates candidate-label leakage).
     """
     data: dict[str, dict[str, dict]] = {}
     for path in RESULTS_DIR.glob(f"*_shot{shot}.json"):
         fname = path.stem  # e.g. "meip_gpt-5.2_shot0"
+        # Skip _noleak files — they are loaded via preference logic below
+        if "_noleak" in fname:
+            continue
         # Remove _shot{n} suffix
         stem = fname.rsplit("_shot", 1)[0]  # "meip_gpt-5.2"
         # Split task prefix
         for task in ("meip", "tes", "ecd"):
             if stem.startswith(task + "_"):
                 model = stem[len(task)+1:]
+                # For TES: prefer _noleak variant if it exists
+                if task == "tes":
+                    noleak_path = path.with_stem(path.stem + "_noleak")
+                    if noleak_path.exists():
+                        path = noleak_path
                 try:
                     result = json.loads(path.read_text(encoding="utf-8"))
                 except Exception as e:
