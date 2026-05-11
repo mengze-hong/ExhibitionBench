@@ -113,7 +113,7 @@ TEMP1_MODELS = {"gpt-5", "gpt-5.1", "gpt-5-codex"}
 # ── LLM Call ─────────────────────────────────────────────────────────────────
 
 def call_llm(model: str, prompt: str, max_tokens: int = 1024,
-             retries: int = 3, timeout: int = 120) -> tuple[Optional[str], float, dict]:
+             retries: int = 8, timeout: int = 180) -> tuple[Optional[str], float, dict]:
     """
     Returns: (content, latency_sec, usage_dict)
       - content: model response string, or None on failure
@@ -157,8 +157,8 @@ def call_llm(model: str, prompt: str, max_tokens: int = 1024,
                     content = lines[-1] if lines else rc
             return (content or ""), latency, usage
         except openai.RateLimitError:
-            wait = 2 ** attempt
-            log.warning(f"Rate limit for {model}, waiting {wait}s")
+            wait = min(2 ** attempt, 60)  # cap at 60s
+            log.warning(f"Rate limit for {model}, waiting {wait}s (attempt {attempt+1}/{retries})")
             time.sleep(wait)
         except Exception as e:
             log.warning(f"API error ({model}, attempt {attempt+1}): {e}")

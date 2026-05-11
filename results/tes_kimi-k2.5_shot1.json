@@ -2,12 +2,12 @@
   "task": "tes",
   "model": "kimi-k2.5",
   "shot": 1,
-  "n_samples": 197,
-  "ndcg@10": 0.1412,
-  "mrr": 0.1485,
-  "total_latency_sec": 33051.81,
-  "avg_latency_sec": 167.776,
-  "total_prompt_tokens": 995481,
-  "total_completion_tokens": 468000,
-  "total_tokens": 1463481
+  "n_samples": 182,
+  "ndcg@10": 0.1331,
+  "mrr": 0.1403,
+  "total_latency_sec": 35891.07,
+  "avg_latency_sec": 197.204,
+  "total_prompt_tokens": 924986,
+  "total_completion_tokens": 434400,
+  "total_tokens": 1359386
 }
