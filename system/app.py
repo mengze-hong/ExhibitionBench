@@ -1,15 +1,17 @@
 """
 system/app.py
 =============
-ExhibitionBench 策展辅助系统 Gradio Demo (Week 5)。
+ExhibitionBench 策展辅助系统 Gradio Demo（兼容旧版，主系统见 nicegui_app.py）。
 
-功能:
-  1. TES 模式：输入主题 → 从候选池检索并展示推荐展品（网格），支持 LLM 排序
-  2. MEIP 模式：输入已有展品 → 预测最佳补充展品
-  3. 人在回路：用户可对推荐结果点赞/踩，反馈记录到 logs/feedback.jsonl
+三个任务 Tab（按难度升序排列）：
+  Tab 1 · MEIP  — 展品补全（10-way ranking，中等）
+  Tab 2 · ECD   — 展览一致性检测（二分类，最简单）
+  Tab 3 · TES   — 主题策展检索（50-way ranking，最难）
+
+⚠️  推荐使用 nicegui_app.py（功能更完整，支持 benchmark 样本浏览）。
 
 使用方法:
-  pip install gradio sentence-transformers openai
+  pip install gradio openai
   python system/app.py [--port 7860]
 """
 
