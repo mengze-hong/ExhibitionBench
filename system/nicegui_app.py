@@ -57,6 +57,8 @@ _bm25_ids: list[str]       = []
 _meip_samples: list[dict]  = []
 _ecd_samples: list[dict]   = []
 _tes_samples: list[dict]   = []
+_he_data: dict[str, list[dict]] = {}    # task → pre-generated human eval entries
+_HE_ANNOTATIONS = LOG_DIR / "human_eval_annotations.jsonl"
 
 
 def _pick_file(stem: str) -> Optional[Path]:
@@ -123,6 +125,18 @@ def load_data():
         with open(tes_f, encoding="utf-8") as f:
             _tes_samples = [json.loads(l) for l in f]
         log.info(f"TES 样本: {len(_tes_samples)} 条 (from {tes_f.name})")
+
+    # Human Eval pre-generated outputs
+    he_dir = BASE / "human_eval"
+    for task in ("meip", "ecd", "tes"):
+        he_f = he_dir / f"human_eval_{task}.jsonl"
+        if he_f.exists():
+            with open(he_f, encoding="utf-8") as f:
+                _he_data[task] = [json.loads(l) for l in f]
+            log.info(f"Human Eval [{task.upper()}]: {len(_he_data[task])} 条 pre-generated outputs")
+        else:
+            _he_data[task] = []
+    log.info(f"Human Eval 总计: {sum(len(v) for v in _he_data.values())} 条")
 
 
 # ─────────────────────────────────────────────────────────────
@@ -332,6 +346,7 @@ body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; }
 .badge-meip { background:#dbeafe; color:#1d4ed8; }
 .badge-ecd  { background:#dcfce7; color:#15803d; }
 .badge-tes  { background:#fef3c7; color:#b45309; }
+.badge-he   { background:#f3e8ff; color:#7c3aed; }
 """
 
 
@@ -352,6 +367,7 @@ def build_ui():
         tab_meip = ui.tab("🔮 MEIP — 展品补全")
         tab_ecd  = ui.tab("🔍 ECD — 一致性检测")
         tab_tes  = ui.tab("🎨 TES — 主题策展")
+        tab_he   = ui.tab("👁️ Human Eval")
 
     with ui.tab_panels(tabs, value=tab_meip).classes("w-full"):
 
@@ -807,6 +823,482 @@ def build_ui():
 
             # 初始预览
             _refresh_tes_preview()
+
+        # ════════════════════════════════════════════════════════
+        # Tab 4 · Human Eval  — A/B 盲评
+        # ════════════════════════════════════════════════════════
+        with ui.tab_panel(tab_he):
+            ui.html(
+                '<span class="task-badge badge-he">Human Eval</span>'
+                '<b>人工盲评</b> — 对三个任务的模型输出进行 A/B 盲比较，发现新 insight'
+            ).classes("text-sm text-gray-600 mb-3 mt-1")
+
+            # ── 顶部工具栏：任务切换 + 进度 ──
+            with ui.row().classes("w-full items-center gap-4 flex-wrap mb-2"):
+                he_task_select = ui.select(
+                    label="评测任务",
+                    options=["MEIP", "ECD", "TES"],
+                    value="MEIP",
+                ).classes("w-32")
+                he_progress_label = ui.label("进度: 0/0 完成").classes("text-sm text-gray-500")
+                he_prev_btn = ui.button("◀ 上一条", color="grey").props("flat dense")
+                he_next_btn = ui.button("▶ 下一条", color="grey").props("flat dense")
+                he_jump_num = ui.number(label="跳转到第 N 条", value=1, min=1, step=1).classes("w-32")
+                he_jump_btn = ui.button("Go", color="grey").props("flat dense")
+                with ui.element("div").classes("flex-grow"):
+                    pass
+                he_export_btn = ui.button("📥 导出注释", color="purple").props("flat dense")
+
+            # ── 提示：如果 human_eval/ 目录为空 ──
+            he_no_data_msg = ui.html(
+                "<div style='padding:20px;background:#fef3c7;border-radius:8px;color:#92400e;text-align:center'>"
+                "⚠️ 未找到预生成的模型输出。请先运行：<br>"
+                "<code style='background:#fde68a;padding:2px 8px;border-radius:4px'>"
+                "python scripts/generate_human_eval_outputs.py</code>"
+                "</div>"
+            ).classes("w-full")
+
+            # ── 样本展示区 ──
+            he_sample_card = ui.card().classes("w-full hidden")
+            with he_sample_card:
+                he_sample_meta = ui.html("").classes("w-full mb-3")
+
+                # 上下文区（MEIP/ECD/TES 不同布局）
+                he_context_html = ui.html("").classes("w-full mb-3")
+
+                # A/B 两列输出
+                with ui.row().classes("w-full gap-4"):
+                    with ui.card().classes("flex-1 bg-blue-50"):
+                        ui.label("模型 A").classes("text-lg font-bold text-blue-700 mb-2")
+                        he_out_a = ui.html("").classes("w-full")
+                    with ui.card().classes("flex-1 bg-orange-50"):
+                        ui.label("模型 B").classes("text-lg font-bold text-orange-700 mb-2")
+                        he_out_b = ui.html("").classes("w-full")
+
+                ui.separator().classes("my-3")
+
+                # 评分区
+                with ui.row().classes("w-full items-center gap-4 flex-wrap"):
+                    ui.label("你的评判:").classes("font-semibold")
+                    he_pref = ui.radio(
+                        options=["A 更好", "B 更好", "差不多 / 平局", "两者都很差"],
+                        value=None,
+                    ).props("inline")
+
+                with ui.row().classes("w-full items-start gap-3 mt-2"):
+                    he_comment = ui.textarea(
+                        label="💬 评语（为什么？发现了什么 pattern / insight？）",
+                        placeholder="例：A 的理由更准确地抓住了主题；B 选了错误的文化背景；"
+                                    "两个模型都忽视了时代线索……",
+                    ).classes("flex-grow").props("rows=3 outlined")
+                    he_save_btn = ui.button("💾 保存评注", color="purple").classes("self-end")
+
+                he_save_status = ui.label("").classes("text-sm text-gray-400 mt-1")
+
+            # ── 汇总统计面板（折叠） ──
+            with ui.expansion("📊 已有评注汇总", icon="bar_chart").classes("w-full mt-4"):
+                he_stats_html = ui.html("").classes("w-full")
+                he_refresh_stats_btn = ui.button("🔄 刷新统计", color="grey").props("flat dense")
+
+            # ──────────────────────────────────────────────────
+            # Human Eval 逻辑
+            # ──────────────────────────────────────────────────
+            _he_state: dict = {
+                "task":       "meip",
+                "idx":        0,       # 当前第几条
+                "entries":    [],      # 当前任务的所有 entries
+                "model_a":    "",      # 匿名化前的真实模型名
+                "model_b":    "",
+                "rng_seed":   42,      # 每个 entry 固定 AB 顺序，用 seed 重现
+            }
+
+            def _he_load_annotations() -> list[dict]:
+                if not _HE_ANNOTATIONS.exists():
+                    return []
+                rows = []
+                with open(_HE_ANNOTATIONS, encoding="utf-8") as f:
+                    for line in f:
+                        try:
+                            rows.append(json.loads(line))
+                        except Exception:
+                            pass
+                return rows
+
+            def _he_annotation_key(task: str, sample_id: str, model_a: str, model_b: str) -> str:
+                return f"{task}|{sample_id}|{model_a}|{model_b}"
+
+            def _he_load_annotation_map() -> dict[str, dict]:
+                """sample_key → annotation dict"""
+                ann_map: dict[str, dict] = {}
+                for row in _he_load_annotations():
+                    k = _he_annotation_key(
+                        row.get("task",""), row.get("sample_id",""),
+                        row.get("model_a",""), row.get("model_b","")
+                    )
+                    ann_map[k] = row
+                return ann_map
+
+            def _he_models_for_entry(entry: dict) -> list[str]:
+                """从 entry 中找出所有非元数据 key（即模型输出 key）。"""
+                skip = {"sample_id", "task", "sample"}
+                return [k for k in entry.keys() if k not in skip]
+
+            def _he_ab_pair(entry: dict, rng_seed: int) -> tuple[str, str]:
+                """给定一个 entry，随机（但可重现）分配 A/B。"""
+                models = _he_models_for_entry(entry)
+                if len(models) < 2:
+                    return models[0] if models else "", ""
+                rng = random.Random(rng_seed)
+                pair = rng.sample(models, 2)
+                return pair[0], pair[1]
+
+            def _fmt_he_output(entry: dict, model_key: str, task: str) -> str:
+                """将某个模型的输出格式化为 HTML。"""
+                out = entry.get(model_key, {})
+                if not out:
+                    return "<i style='color:#aaa'>无输出</i>"
+                if "error" in out:
+                    return f"<span style='color:#dc2626'>错误: {out['error']}</span>"
+
+                raw = out.get("raw_response", "")
+                lines = []
+
+                if task == "meip":
+                    choice_num = out.get("choice_num", "?")
+                    pred_title = out.get("predicted_title", "—")
+                    correct    = out.get("correct")
+                    icon       = "✅" if correct else ("❌" if correct is not None else "")
+                    lines.append(
+                        f"<div style='margin-bottom:8px'>"
+                        f"<b>选择:</b> #{choice_num} — <em>{pred_title}</em> {icon}"
+                        f"</div>"
+                    )
+                elif task == "ecd":
+                    choice_str = "A" if out.get("choice") == 0 else ("B" if out.get("choice") == 1 else "?")
+                    correct    = out.get("correct")
+                    icon       = "✅" if correct else ("❌" if correct is not None else "")
+                    perturb    = out.get("perturbation", "")
+                    lines.append(
+                        f"<div style='margin-bottom:8px'>"
+                        f"<b>判断:</b> 序列 {choice_str} 更连贯 {icon}"
+                        + (f" <span style='color:#888;font-size:0.85em'>扰动: {perturb}</span>" if perturb else "")
+                        + "</div>"
+                    )
+                elif task == "tes":
+                    ranked_titles = out.get("ranked_titles", [])
+                    hit        = out.get("hit")
+                    hit_rank   = out.get("hit_rank")
+                    icon       = "✅" if hit else ("❌" if hit is not None else "")
+                    lines.append(
+                        f"<div style='margin-bottom:8px'>"
+                        f"<b>Gold 命中:</b> {icon}"
+                        + (f" 排名 #{hit_rank}" if hit_rank else "")
+                        + "</div>"
+                    )
+                    if ranked_titles:
+                        items_html = "".join(
+                            f"<li style='margin:2px 0'><b>#{i+1}</b> {t}</li>"
+                            for i, t in enumerate(ranked_titles[:5])
+                        )
+                        lines.append(f"<ol style='margin:0;padding-left:18px;font-size:0.88em'>{items_html}</ol>")
+
+                lines.append(
+                    f"<details style='margin-top:8px'>"
+                    f"<summary style='cursor:pointer;color:#6b7280;font-size:0.85em'>🔍 原始响应</summary>"
+                    f"<div style='background:#f9fafb;border-radius:4px;padding:8px;margin-top:4px;"
+                    f"font-size:0.82em;white-space:pre-wrap;max-height:200px;overflow-y:auto'>{raw}</div>"
+                    f"</details>"
+                )
+                return "\n".join(lines)
+
+            def _fmt_he_context(entry: dict, task: str) -> str:
+                """将样本 context 格式化为 HTML。"""
+                sample = entry.get("sample", {})
+                if task == "meip":
+                    ctx     = sample.get("context", [])
+                    cands   = sample.get("candidates", [])
+                    theme   = sample.get("exhibition_theme", "")
+                    gold_id = sample.get("gold_id", "")
+                    # context table
+                    ctx_rows = "".join(
+                        f"<tr><td style='padding:2px 8px'><b>{i+1}</b></td>"
+                        f"<td style='padding:2px 8px'>{it.get('title','')}</td>"
+                        f"<td style='padding:2px 8px;color:#888'>{it.get('culture','')}</td>"
+                        f"<td style='padding:2px 8px;color:#888'>{it.get('date','')}</td></tr>"
+                        for i, it in enumerate(ctx)
+                    )
+                    # candidates table (highlight gold)
+                    cand_rows = "".join(
+                        f"<tr style='background:{'#f0fdf4' if c.get('id','') == gold_id else ''}'>"
+                        f"<td style='padding:2px 8px'><b>[{i+1}]</b></td>"
+                        f"<td style='padding:2px 8px'>{c.get('title','')} "
+                        + (" <b style='color:#16a34a'>✓ GOLD</b>" if c.get('id','') == gold_id else "") +
+                        f"</td>"
+                        f"<td style='padding:2px 8px;color:#888'>{c.get('culture','')}</td>"
+                        f"<td style='padding:2px 8px;color:#888'>{c.get('date','')}</td></tr>"
+                        for i, c in enumerate(cands)
+                    )
+                    return (
+                        f"<div style='font-size:0.85em'>"
+                        f"<b>🎨 主题:</b> {theme}<br><br>"
+                        f"<b>已有展品 ({len(ctx)} 件):</b>"
+                        f"<table style='border-collapse:collapse;width:100%;margin:4px 0 10px'>"
+                        f"<tbody>{ctx_rows}</tbody></table>"
+                        f"<b>候选 ({len(cands)} 件):</b>"
+                        f"<table style='border-collapse:collapse;width:100%;margin:4px 0'>"
+                        f"<tbody>{cand_rows}</tbody></table></div>"
+                    )
+
+                elif task == "ecd":
+                    pos   = sample.get("positive", {})
+                    neg   = sample.get("negative", {})
+                    theme = pos.get("theme", "")
+                    level = sample.get("level", "?")
+                    perturb = sample.get("perturbation_type", "")
+                    gold  = sample.get("label", 0)
+
+                    def _fmt_seq(items, label):
+                        rows = "".join(
+                            f"<tr><td style='padding:2px 6px'><b>{i+1}</b></td>"
+                            f"<td style='padding:2px 6px'>{it.get('title','')}</td>"
+                            f"<td style='padding:2px 6px;color:#888;font-size:0.88em'>{it.get('culture','')}</td>"
+                            f"<td style='padding:2px 6px;color:#888;font-size:0.88em'>{it.get('date','')}</td></tr>"
+                            for i, it in enumerate(items)
+                        )
+                        return (
+                            f"<div style='background:#f9fafb;border-radius:6px;padding:8px;margin-bottom:6px'>"
+                            f"<b>{label}</b>"
+                            f"<table style='border-collapse:collapse;width:100%;margin-top:4px'>"
+                            f"<tbody>{rows}</tbody></table></div>"
+                        )
+                    gold_label = "序列 A 正确" if gold == 0 else "序列 B 正确"
+                    return (
+                        f"<div style='font-size:0.85em'>"
+                        f"<b>🎨 主题:</b> {theme} &nbsp;|&nbsp; "
+                        f"<b>L{level}</b> · {perturb} &nbsp;|&nbsp; "
+                        f"<b style='color:#16a34a'>答案: {gold_label}</b><br><br>"
+                        + _fmt_seq(pos.get("items",[]), "序列 A（Positive / 真实）")
+                        + _fmt_seq(neg.get("items",[]), "序列 B（Negative / 扰动）")
+                        + "</div>"
+                    )
+
+                elif task == "tes":
+                    qt    = sample.get("query_theme", "")
+                    qdesc = sample.get("query_description", "")
+                    gids  = sample.get("gold_ids", [sample.get("gold_id","")])
+                    cands = sample.get("candidates", [])
+                    top5  = "".join(
+                        f"<li style='font-size:0.85em'><b>#{i+1}</b> {c.get('title', c.get('theme',''))}</li>"
+                        for i, c in enumerate(cands[:5])
+                    )
+                    return (
+                        f"<div style='font-size:0.85em'>"
+                        f"<b>🎨 查询主题:</b> {qt}<br>"
+                        f"<b>描述:</b> {str(qdesc)[:200]}<br>"
+                        f"<b>候选池:</b> {len(cands)} 个主题 &nbsp;|&nbsp; "
+                        f"<b style='color:#16a34a'>Gold ID(s): {', '.join(str(g) for g in gids)}</b><br>"
+                        f"<b>前 5 候选（示例）:</b><ol style='margin:4px 0;padding-left:18px'>{top5}</ol></div>"
+                    )
+                return ""
+
+            def _he_compute_stats() -> str:
+                """计算已有评注的统计汇总 HTML。"""
+                rows = _he_load_annotations()
+                if not rows:
+                    return "<i style='color:#aaa'>暂无评注数据</i>"
+                from collections import Counter
+                total        = len(rows)
+                by_task: Counter = Counter(r.get("task","?") for r in rows)
+                by_pref: Counter = Counter(r.get("preference","?") for r in rows)
+                # 统计各模型"被选为更好"的次数（去匿名化）
+                win_counter: Counter = Counter()
+                for r in rows:
+                    pref  = r.get("preference","")
+                    ma, mb = r.get("model_a",""), r.get("model_b","")
+                    if pref == "A 更好" and ma:
+                        win_counter[ma] += 1
+                    elif pref == "B 更好" and mb:
+                        win_counter[mb] += 1
+                task_rows = "".join(
+                    f"<tr><td style='padding:3px 8px'>{t}</td><td style='padding:3px 8px'>{n}</td></tr>"
+                    for t, n in sorted(by_task.items())
+                )
+                pref_rows = "".join(
+                    f"<tr><td style='padding:3px 8px'>{p}</td><td style='padding:3px 8px'>{n}</td></tr>"
+                    for p, n in by_pref.most_common()
+                )
+                win_rows = "".join(
+                    f"<tr><td style='padding:3px 8px'>{m}</td><td style='padding:3px 8px'>{n}</td></tr>"
+                    for m, n in win_counter.most_common()
+                )
+                has_comment = sum(1 for r in rows if r.get("comment","").strip())
+                return (
+                    f"<div style='font-size:0.88em'>"
+                    f"<b>总评注数:</b> {total} &nbsp;|&nbsp; <b>有评语:</b> {has_comment}<br><br>"
+                    f"<div style='display:flex;gap:24px;flex-wrap:wrap'>"
+                    f"<div><b>按任务:</b><table style='border-collapse:collapse'><tbody>{task_rows}</tbody></table></div>"
+                    f"<div><b>偏好分布:</b><table style='border-collapse:collapse'><tbody>{pref_rows}</tbody></table></div>"
+                    f"<div><b>模型获胜次数:</b><table style='border-collapse:collapse'><tbody>{win_rows}</tbody></table></div>"
+                    f"</div></div>"
+                )
+
+            def _he_render_current():
+                """根据 _he_state 渲染当前样本。"""
+                task    = _he_state["task"]
+                entries = _he_state["entries"]
+                idx     = _he_state["idx"]
+
+                # 进度标签
+                total   = len(entries)
+                ann_map = _he_load_annotation_map()
+                done    = sum(
+                    1 for i, e in enumerate(entries)
+                    for ma, mb in [_he_ab_pair(e, _he_state["rng_seed"] + i)]
+                    if _he_annotation_key(task, e.get("sample_id",""), ma, mb) in ann_map
+                )
+                he_progress_label.set_text(f"进度: {done}/{total} 完成")
+
+                if not entries:
+                    he_sample_card.classes(add="hidden")
+                    he_no_data_msg.classes(remove="hidden")
+                    return
+
+                he_no_data_msg.classes(add="hidden")
+                he_sample_card.classes(remove="hidden")
+
+                entry   = entries[idx]
+                sid     = entry.get("sample_id", f"{task}_{idx}")
+                ma, mb  = _he_ab_pair(entry, _he_state["rng_seed"] + idx)
+                _he_state["model_a"] = ma
+                _he_state["model_b"] = mb
+
+                # 检查是否已有评注
+                key = _he_annotation_key(task, sid, ma, mb)
+                existing = ann_map.get(key, {})
+
+                # 元信息
+                he_sample_meta.set_content(
+                    f"<div style='background:#f5f3ff;border-radius:8px;padding:8px 14px;"
+                    f"font-size:0.85em;display:flex;gap:16px;flex-wrap:wrap'>"
+                    f"<span><b>任务:</b> {task.upper()}</span>"
+                    f"<span><b>样本:</b> {sid}</span>"
+                    f"<span><b>条数:</b> {idx+1}/{total}</span>"
+                    + (f"<span style='color:#16a34a'><b>✓ 已评注</b></span>" if existing else "")
+                    + "</div>"
+                )
+
+                # 上下文
+                he_context_html.set_content(_fmt_he_context(entry, task))
+
+                # A/B 输出
+                he_out_a.set_content(_fmt_he_output(entry, ma, task))
+                he_out_b.set_content(_fmt_he_output(entry, mb, task))
+
+                # 恢复已有评注
+                if existing:
+                    he_pref.set_value(existing.get("preference"))
+                    he_comment.set_value(existing.get("comment", ""))
+                    he_save_status.set_text(f"✅ 已于 {existing.get('ts','?')} 保存")
+                else:
+                    he_pref.set_value(None)
+                    he_comment.set_value("")
+                    he_save_status.set_text("")
+
+            def _he_reload_task(task_upper: str):
+                task = task_upper.lower()
+                entries = _he_data.get(task, [])
+                _he_state["task"]    = task
+                _he_state["entries"] = entries
+                _he_state["idx"]     = 0
+                he_jump_num.set_value(1)
+                he_jump_num.props(f"max={max(1, len(entries))}")
+                _he_render_current()
+
+            he_task_select.on("update:model-value", lambda: _he_reload_task(he_task_select.value))
+
+            def he_go_prev():
+                if _he_state["idx"] > 0:
+                    _he_state["idx"] -= 1
+                    he_jump_num.set_value(_he_state["idx"] + 1)
+                    _he_render_current()
+                else:
+                    ui.notify("已是第一条", type="info")
+            he_prev_btn.on_click(he_go_prev)
+
+            def he_go_next():
+                if _he_state["idx"] < len(_he_state["entries"]) - 1:
+                    _he_state["idx"] += 1
+                    he_jump_num.set_value(_he_state["idx"] + 1)
+                    _he_render_current()
+                else:
+                    ui.notify("已是最后一条", type="info")
+            he_next_btn.on_click(he_go_next)
+
+            def he_go_jump():
+                n = int(he_jump_num.value or 1)
+                total = len(_he_state["entries"])
+                idx   = max(0, min(n - 1, total - 1))
+                _he_state["idx"] = idx
+                he_jump_num.set_value(idx + 1)
+                _he_render_current()
+            he_jump_btn.on_click(he_go_jump)
+
+            def he_save_annotation():
+                task   = _he_state["task"]
+                idx    = _he_state["idx"]
+                entries = _he_state["entries"]
+                if not entries or idx >= len(entries):
+                    ui.notify("无样本", type="warning"); return
+                entry  = entries[idx]
+                sid    = entry.get("sample_id", f"{task}_{idx}")
+                ma     = _he_state["model_a"]
+                mb     = _he_state["model_b"]
+                pref   = he_pref.value
+                comment = he_comment.value.strip()
+
+                if not pref:
+                    ui.notify("请先选择偏好 (A/B/平局)", type="warning"); return
+
+                record = {
+                    "ts":         datetime.now().isoformat(),
+                    "task":       task,
+                    "sample_id":  sid,
+                    "model_a":    ma,
+                    "model_b":    mb,
+                    "preference": pref,
+                    "comment":    comment,
+                    "idx":        idx,
+                }
+                # 追加到日志（允许重复，后处理时取最新）
+                with open(_HE_ANNOTATIONS, "a", encoding="utf-8") as f:
+                    f.write(json.dumps(record, ensure_ascii=False) + "\n")
+                he_save_status.set_text(f"✅ 已于 {record['ts'][:19]} 保存")
+                ui.notify("✅ 评注已保存", type="positive")
+                # 自动跳到下一条
+                if idx < len(entries) - 1:
+                    _he_state["idx"] += 1
+                    he_jump_num.set_value(_he_state["idx"] + 1)
+                    _he_render_current()
+            he_save_btn.on_click(he_save_annotation)
+
+            def he_refresh_stats():
+                he_stats_html.set_content(_he_compute_stats())
+            he_refresh_stats_btn.on_click(he_refresh_stats)
+
+            def he_export():
+                rows = _he_load_annotations()
+                if not rows:
+                    ui.notify("暂无评注", type="warning"); return
+                # 导出为 TSV 到剪贴板（通过 ui.notify 显示文件路径）
+                out_path = LOG_DIR / f"human_eval_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jsonl"
+                with open(out_path, "w", encoding="utf-8") as f:
+                    for r in rows:
+                        f.write(json.dumps(r, ensure_ascii=False) + "\n")
+                ui.notify(f"✅ 已导出 {len(rows)} 条 → {out_path}", type="positive", timeout=6000)
+            he_export_btn.on_click(he_export)
+
+            # 初始化
+            _he_reload_task("MEIP")
 
 
 # ─────────────────────────────────────────────────────────────
