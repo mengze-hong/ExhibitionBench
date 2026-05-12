@@ -1,28 +1,15 @@
 [
   {
-    "task": "meip",
-    "model": "claude-opus-4.6",
+    "task": "tes",
+    "model": "gpt-5.2",
     "shot": 1,
-    "n_samples": 500,
-    "mrr": 0.7832,
-    "hit@1": 0.728,
-    "total_latency_sec": 6373.84,
-    "avg_latency_sec": 12.748,
-    "total_prompt_tokens": 425509,
-    "total_completion_tokens": 10417,
-    "total_tokens": 435926
-  },
-  {
-    "task": "meip",
-    "model": "claude-sonnet-4.5",
-    "shot": 1,
-    "n_samples": 500,
-    "mrr": 0.7759,
-    "hit@1": 0.72,
-    "total_latency_sec": 1705.32,
-    "avg_latency_sec": 3.411,
-    "total_prompt_tokens": 425509,
-    "total_completion_tokens": 9332,
-    "total_tokens": 434841
+    "n_samples": 283,
+    "ndcg@10": 0.388,
+    "mrr": 0.2318,
+    "total_latency_sec": 3074.68,
+    "avg_latency_sec": 10.865,
+    "total_prompt_tokens": 1390721,
+    "total_completion_tokens": 12169,
+    "total_tokens": 1402890
   }
 ]

@@ -1,0 +1,13 @@
+{
+  "task": "tes",
+  "model": "deepseek-r1",
+  "shot": 1,
+  "n_samples": 282,
+  "ndcg@10": 0.3939,
+  "mrr": 0.2489,
+  "total_latency_sec": 20795.47,
+  "avg_latency_sec": 73.743,
+  "total_prompt_tokens": 1409280,
+  "total_completion_tokens": 535768,
+  "total_tokens": 1945048
+}
