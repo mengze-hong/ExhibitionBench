@@ -3,11 +3,11 @@
   "model": "doubao-seed-1.6-251015",
   "shot": 3,
   "n_samples": 500,
-  "mrr": 0.7255,
-  "hit@1": 0.658,
-  "total_latency_sec": 17336.95,
-  "avg_latency_sec": 34.674,
+  "mrr": 0.718,
+  "hit@1": 0.65,
+  "total_latency_sec": 13448.54,
+  "avg_latency_sec": 26.897,
   "total_prompt_tokens": 634092,
-  "total_completion_tokens": 322411,
-  "total_tokens": 956503
+  "total_completion_tokens": 324065,
+  "total_tokens": 958157
 }

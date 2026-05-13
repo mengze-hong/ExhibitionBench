@@ -973,6 +973,22 @@ def build_ui():
                         f"<b>选择:</b> #{choice_num} — <em>{pred_title}</em> {icon}"
                         f"</div>"
                     )
+                    # 直接展示 justification（去掉选号部分，截取正文）
+                    justification = raw.strip() if raw else ""
+                    # 跳过首行如果只是数字/选号
+                    import re as _re
+                    just_lines = justification.splitlines()
+                    if just_lines and _re.match(r'^\s*\d+\.?\s*$', just_lines[0]):
+                        justification = "\n".join(just_lines[1:]).strip()
+                    if justification:
+                        lines.append(
+                            f"<div style='color:#374151;font-size:0.85em;"
+                            f"background:#f9fafb;border-radius:4px;padding:6px 10px;margin:4px 0;"
+                            f"border-left:3px solid #d1d5db;white-space:pre-wrap'>"
+                            f"{justification[:400]}"
+                            + ("..." if len(justification) > 400 else "")
+                            + f"</div>"
+                        )
                 elif task == "ecd":
                     choice_str = "A" if out.get("choice") == 0 else ("B" if out.get("choice") == 1 else "?")
                     correct    = out.get("correct")
@@ -1019,23 +1035,55 @@ def build_ui():
                     cands   = sample.get("candidates", [])
                     theme   = sample.get("exhibition_theme", "")
                     gold_id = sample.get("gold_id", "")
-                    # context table
-                    ctx_rows = "".join(
-                        f"<tr><td style='padding:2px 8px'><b>{i+1}</b></td>"
-                        f"<td style='padding:2px 8px'>{it.get('title','')}</td>"
-                        f"<td style='padding:2px 8px;color:#888'>{it.get('culture','')}</td>"
-                        f"<td style='padding:2px 8px;color:#888'>{it.get('date','')}</td></tr>"
-                        for i, it in enumerate(ctx)
+
+                    def _meip_obj_row(it, label, is_gold=False):
+                        img_url = it.get("image_url", "")
+                        img_td = (
+                            f"<td style='padding:2px 4px'>"
+                            f"<img src='{img_url}' "
+                            f"style='height:52px;width:52px;object-fit:cover;border-radius:4px' "
+                            f"loading='lazy' onerror='this.style.display=\"none\"'>"
+                            f"</td>"
+                            if img_url else "<td style='width:56px'></td>"
+                        )
+                        desc = it.get("description", "") or ""
+                        desc_html = (
+                            f"<details style='display:inline'>"
+                            f"<summary style='color:#9ca3af;font-size:0.78em;cursor:pointer'>描述</summary>"
+                            f"<div style='font-size:0.8em;color:#4b5563;margin-top:2px'>{desc[:300]}</div>"
+                            f"</details>"
+                            if desc else ""
+                        )
+                        gold_badge = " <b style='color:#16a34a;font-size:0.85em'>✓ GOLD</b>" if is_gold else ""
+                        medium = str(it.get("medium", "") or "")[:45]
+                        row_bg = "background:#f0fdf4;" if is_gold else ""
+                        return (
+                            f"<tr style='{row_bg}'>"
+                            f"{img_td}"
+                            f"<td style='padding:2px 8px'><b>{label}</b></td>"
+                            f"<td style='padding:2px 8px'>{it.get('title','')}{gold_badge} {desc_html}</td>"
+                            f"<td style='padding:2px 8px;color:#555;font-size:0.85em'>{it.get('culture','')}</td>"
+                            f"<td style='padding:2px 8px;color:#555;font-size:0.85em'>{it.get('date','')}</td>"
+                            f"<td style='padding:2px 8px;color:#888;font-size:0.82em'>{medium}</td>"
+                            f"</tr>"
+                        )
+
+                    hdr = (
+                        "<tr style='border-bottom:1px solid #e5e7eb'>"
+                        "<th style='padding:2px 4px;width:56px'>图</th>"
+                        "<th style='padding:2px 8px'>#</th>"
+                        "<th style='padding:2px 8px;text-align:left'>作品</th>"
+                        "<th style='padding:2px 8px;text-align:left'>文化</th>"
+                        "<th style='padding:2px 8px;text-align:left'>年代</th>"
+                        "<th style='padding:2px 8px;text-align:left'>材质/类型</th>"
+                        "</tr>"
                     )
-                    # candidates table (highlight gold)
+
+                    ctx_rows = "".join(
+                        _meip_obj_row(it, str(i+1)) for i, it in enumerate(ctx)
+                    )
                     cand_rows = "".join(
-                        f"<tr style='background:{'#f0fdf4' if c.get('id','') == gold_id else ''}'>"
-                        f"<td style='padding:2px 8px'><b>[{i+1}]</b></td>"
-                        f"<td style='padding:2px 8px'>{c.get('title','')} "
-                        + (" <b style='color:#16a34a'>✓ GOLD</b>" if c.get('id','') == gold_id else "") +
-                        f"</td>"
-                        f"<td style='padding:2px 8px;color:#888'>{c.get('culture','')}</td>"
-                        f"<td style='padding:2px 8px;color:#888'>{c.get('date','')}</td></tr>"
+                        _meip_obj_row(c, f"[{i+1}]", is_gold=(c.get("id","") == gold_id))
                         for i, c in enumerate(cands)
                     )
                     return (
@@ -1043,10 +1091,10 @@ def build_ui():
                         f"<b>🎨 主题:</b> {theme}<br><br>"
                         f"<b>已有展品 ({len(ctx)} 件):</b>"
                         f"<table style='border-collapse:collapse;width:100%;margin:4px 0 10px'>"
-                        f"<tbody>{ctx_rows}</tbody></table>"
+                        f"<thead>{hdr}</thead><tbody>{ctx_rows}</tbody></table>"
                         f"<b>候选 ({len(cands)} 件):</b>"
                         f"<table style='border-collapse:collapse;width:100%;margin:4px 0'>"
-                        f"<tbody>{cand_rows}</tbody></table></div>"
+                        f"<thead>{hdr}</thead><tbody>{cand_rows}</tbody></table></div>"
                     )
 
                 elif task == "ecd":
@@ -1259,15 +1307,28 @@ def build_ui():
                 if not pref:
                     ui.notify("请先选择偏好 (A/B/平局)", type="warning"); return
 
+                # 从 entry 提取各模型的 gold 准确率字段
+                out_a = entry.get(ma, {})
+                out_b = entry.get(mb, {})
+                # MEIP/ECD: "correct" bool; TES: "hit" bool
+                def _gold_correct(out_dict):
+                    if "correct" in out_dict:
+                        return out_dict["correct"]
+                    if "hit" in out_dict:
+                        return out_dict["hit"]
+                    return None
+
                 record = {
-                    "ts":         datetime.now().isoformat(),
-                    "task":       task,
-                    "sample_id":  sid,
-                    "model_a":    ma,
-                    "model_b":    mb,
-                    "preference": pref,
-                    "comment":    comment,
-                    "idx":        idx,
+                    "ts":             datetime.now().isoformat(),
+                    "task":           task,
+                    "sample_id":      sid,
+                    "model_a":        ma,
+                    "model_b":        mb,
+                    "preference":     pref,
+                    "comment":        comment,
+                    "idx":            idx,
+                    "gold_correct_a": _gold_correct(out_a),
+                    "gold_correct_b": _gold_correct(out_b),
                 }
                 # 追加到日志（允许重复，后处理时取最新）
                 with open(_HE_ANNOTATIONS, "a", encoding="utf-8") as f:

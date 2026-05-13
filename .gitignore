@@ -90,3 +90,24 @@ benchmark/annotation_ui.html
 *.7z
 SURVEY_REPORT.txt
 2026-*-this-session-is-being-continued-from-a-previous-c.txt
+
+# ---------- Claude / AI assistant internal files ----------
+.claude/
+.playwright-mcp/
+00_READ_ME_FIRST.md
+ANALYSIS_SUMMARY.txt
+CODEBASE_EXPLORATION_REPORT.md
+DETAILED_CODEBASE_ANALYSIS.md
+EXECUTIVE_SUMMARY_CN.md
+QUICK_REFERENCE_TABLES.md
+SESSION_LOG.md
+FRONTEND_REPORT.md
+# Misplaced plan file (Windows path encoded as filename)
+"C\357\200\272*"
+C\:*
+
+# ---------- Screenshots / temp images ----------
+demo_screenshot.png
+ecd_human_eval.png
+human_eval_*.png
+task_select_open.png

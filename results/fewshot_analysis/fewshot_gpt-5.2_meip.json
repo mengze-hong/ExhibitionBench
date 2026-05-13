@@ -1,73 +1,73 @@
 {
   "model": "gpt-5.2",
-  "max_samples": 200,
+  "max_samples": 100,
   "h2_shot_ablation": {
     "0": {
       "shot": 0,
-      "mrr": 0.6,
-      "hit@1": 0.6,
-      "n": 200
+      "mrr": 0.73,
+      "hit@1": 0.73,
+      "n": 100
     },
     "1": {
       "shot": 1,
-      "mrr": 0.57,
-      "hit@1": 0.57,
-      "n": 200
+      "mrr": 0.7,
+      "hit@1": 0.7,
+      "n": 100
     },
     "2": {
       "shot": 2,
-      "mrr": 0.6,
-      "hit@1": 0.6,
-      "n": 200
+      "mrr": 0.72,
+      "hit@1": 0.72,
+      "n": 100
     },
     "3": {
       "shot": 3,
-      "mrr": 0.6,
-      "hit@1": 0.6,
-      "n": 200
+      "mrr": 0.7,
+      "hit@1": 0.7,
+      "n": 100
     },
     "5": {
       "shot": 5,
-      "mrr": 0.595,
-      "hit@1": 0.595,
-      "n": 200
+      "mrr": 0.71,
+      "hit@1": 0.71,
+      "n": 100
     }
   },
   "h1_cultural_anchoring": {
     "zero_shot": {
-      "western_mrr": 0.5621,
-      "eastern_mrr": 0.6552,
-      "western_n": 153,
-      "eastern_n": 29
+      "western_mrr": 0.7297,
+      "eastern_mrr": 0.7857,
+      "western_n": 74,
+      "eastern_n": 14
     },
     "western_2shot": {
-      "western_mrr": 0.5817,
-      "eastern_mrr": 0.6552,
-      "western_n": 153,
-      "eastern_n": 29
+      "western_mrr": 0.6892,
+      "eastern_mrr": 0.7857,
+      "western_n": 74,
+      "eastern_n": 14
     },
     "asian_2shot": {
-      "western_mrr": 0.5817,
-      "eastern_mrr": 0.6552,
-      "western_n": 153,
-      "eastern_n": 29
+      "western_mrr": 0.7297,
+      "eastern_mrr": 0.7857,
+      "western_n": 74,
+      "eastern_n": 14
     }
   },
   "h3_shuffled_label": {
     "zero_shot": {
-      "mrr": 0.595,
-      "hit@1": 0.595,
-      "n": 200
+      "mrr": 0.72,
+      "hit@1": 0.72,
+      "n": 100
     },
     "2shot_correct": {
-      "mrr": 0.58,
-      "hit@1": 0.58,
-      "n": 200
+      "mrr": 0.69,
+      "hit@1": 0.69,
+      "n": 100
     },
     "2shot_shuffled": {
-      "mrr": 0.58,
-      "hit@1": 0.58,
-      "n": 200
+      "mrr": 0.71,
+      "hit@1": 0.71,
+      "n": 100
     }
   }
 }

@@ -42,11 +42,14 @@ MODEL_DISPLAY = {
     # "doubao-seed-1.6-flash-250715": "Doubao Seed 1.6 Flash",  # endpoint closed
     "glm-5":                "GLM-5",
     "minimax-m2.5":         "MiniMax M2.5",
-    # Open-weight models (deferred — internal API lacks access)
-    # "llama-3.1-8b":         "Llama-3.1-8B",
-    # "llama-3.3-70b":        "Llama-3.3-70B",
-    # "qwen2.5-72b":          "Qwen2.5-72B",
-    # "qwen3-8b":             "Qwen3-8B",
+    # Open-weight models via xty.app
+    "llama-3.3-70b":          "Llama-3.3-70B",
+    "llama-3.1-70b-instruct": "Llama-3.1-70B",
+    "llama-3.1-8b-instruct":  "Llama-3.1-8B",
+    "qwen2.5-72b-instruct":   "Qwen2.5-72B",
+    "qwen2.5-7b-instruct":    "Qwen2.5-7B",
+    "qwen3-8b":               "Qwen3-8B",
+    "qwen3-14b":              "Qwen3-14B",
 }
 
 # Preferred display order
@@ -61,9 +64,10 @@ MODEL_ORDER = [
     # "doubao-seed-1.6-thinking",  # no results, removed 2026-05-13
     # "doubao-seed-1.6-lite", "doubao-seed-1.6-flash-250715",  # endpoints closed
     "kimi-k2.5", "glm-5", "minimax-m2.5",
-    # Open-weight models (deferred — internal API lacks access)
-    # "llama-3.3-70b", "qwen2.5-72b",
-    # "llama-3.1-8b", "qwen3-8b",
+    # Open-weight models via xty.app
+    "llama-3.3-70b", "llama-3.1-70b-instruct", "llama-3.1-8b-instruct",
+    "qwen2.5-72b-instruct", "qwen2.5-7b-instruct",
+    "qwen3-8b", "qwen3-14b",
 ]
 
 

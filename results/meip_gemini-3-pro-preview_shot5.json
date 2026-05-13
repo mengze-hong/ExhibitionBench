@@ -1,0 +1,13 @@
+{
+  "task": "meip",
+  "model": "gemini-3-pro-preview",
+  "shot": 5,
+  "n_samples": 500,
+  "mrr": 0.8147,
+  "hit@1": 0.768,
+  "total_latency_sec": 5016.91,
+  "avg_latency_sec": 10.034,
+  "total_prompt_tokens": 785824,
+  "total_completion_tokens": 354228,
+  "total_tokens": 1140052
+}

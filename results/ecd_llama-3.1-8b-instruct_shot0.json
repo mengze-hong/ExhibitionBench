@@ -1,0 +1,16 @@
+{
+  "task": "ecd",
+  "model": "llama-3.1-8b-instruct",
+  "shot": 0,
+  "n_samples": 500,
+  "total_latency_sec": 6896.39,
+  "avg_latency_sec": 13.793,
+  "total_prompt_tokens": 239348,
+  "total_completion_tokens": 1000,
+  "total_tokens": 240348,
+  "pairaccc_L1": 0.496,
+  "pairaccc_L2": 0.52,
+  "pairaccc_L3": 0.464,
+  "pairaccc_L4": 0.536,
+  "macro_pairaccc": 0.504
+}

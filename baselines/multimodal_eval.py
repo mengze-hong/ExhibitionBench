@@ -63,13 +63,16 @@ VISION_MODELS = {
     "gemini-2.5-pro":                 "gemini-2.5-pro",
     "gemini-2.5-flash":               "gemini-2.5-flash",
     "doubao-seed-1.6-vision-250815":  "doubao-seed-1.6-vision-250815",
+    "claude-sonnet-4.5":              "claude-sonnet-4.5",
+    "deepseek-v3.2":                  "deepseek-v3.2",
+    "kimi-k2.5":                      "kimi-k2.5",
 }
 
 ALL_VISION_MODELS = list(VISION_MODELS.keys())
 
 # Models that need larger token budgets (internal thinking)
-LARGE_TOKEN_MODELS = {"gemini-2.5-pro", "gemini-2.5-flash"}
-TEMP1_MODELS: set[str] = set()  # None of the vision models require temp=1
+LARGE_TOKEN_MODELS = {"gemini-2.5-pro", "gemini-2.5-flash", "kimi-k2.5"}
+TEMP1_MODELS: set[str] = {"kimi-k2.5"}  # kimi requires temperature=1
 
 # Domains known to be reliably accessible by the LiteLLM proxy.
 # artic.edu (Art Institute of Chicago IIIF) times out from the proxy — skip those.
@@ -340,15 +343,35 @@ def evaluate_meip_vision(
     objects: dict[str, dict],
     max_samples: int = 1409,
     workers: int = 150,
+    checkpoint_path: Optional[Path] = None,
 ) -> dict:
     """
     Evaluate a vision-language model on the MEIP task with image inputs.
     Uses ThreadPoolExecutor with `workers` parallel threads.
+    Supports checkpoint resume: pass checkpoint_path to save/resume progress.
     """
     samples_used = samples[:max_samples]
 
+    # ── Load checkpoint ────────────────────────────────────────────────────────
+    ckpt_results: dict[int, tuple] = {}  # idx -> (score, hit1, latency, usage)
+    if checkpoint_path and checkpoint_path.exists():
+        with open(checkpoint_path, encoding="utf-8") as f:
+            for line in f:
+                try:
+                    r = json.loads(line)
+                    ckpt_results[r["idx"]] = (r["score"], r["hit1"], r["latency"], r["usage"])
+                except Exception:
+                    pass
+        log.info(f"[{model}] Resuming from checkpoint: {len(ckpt_results)} samples already done")
+
+    ckpt_lock = Lock()
+    ckpt_f = open(checkpoint_path, "a", encoding="utf-8") if checkpoint_path else None
+
     def _run_one(item):
         i, sample = item
+        # Skip already done
+        if i in ckpt_results:
+            return (i, *ckpt_results[i])
         gold_id = sample.get("gold_id", "")
         if not gold_id:
             return None
@@ -366,6 +389,14 @@ def evaluate_meip_vision(
         ranked = parse_selection(response, candidate_ids)
         score = mrr(gold_id, ranked)
         hit1 = 1.0 if ranked and ranked[0] == gold_id else 0.0
+
+        # Save to checkpoint
+        if ckpt_f:
+            with ckpt_lock:
+                ckpt_f.write(json.dumps({"idx": i, "score": score, "hit1": hit1,
+                                         "latency": latency, "usage": usage}) + "\n")
+                ckpt_f.flush()
+
         return (i, score, hit1, latency, usage)
 
     mrr_scores = []
@@ -399,6 +430,9 @@ def evaluate_meip_vision(
                     log.info(f"  [{model}] {done}/{len(samples_used)} done | "
                              f"MRR={sum(mrr_scores)/len(mrr_scores):.4f} "
                              f"Hit@1={sum(hit1_scores)/len(hit1_scores):.4f}")
+
+    if ckpt_f:
+        ckpt_f.close()
 
     n = len(mrr_scores)
     result = {
@@ -442,6 +476,8 @@ def main():
                         help="ThreadPool workers for parallel API calls (default: 150)")
     parser.add_argument("--overwrite", action="store_true",
                         help="Overwrite existing result files")
+    parser.add_argument("--resume", action="store_true",
+                        help="Resume from checkpoint (auto-detected per model)")
     args = parser.parse_args()
 
     # Resolve model list
@@ -486,12 +522,14 @@ def main():
         log.info(f"Evaluating: {model}  (max_samples={args.max_samples}, workers={args.workers})")
         log.info(f"{'='*60}")
 
+        ckpt_path = RESULTS / f"meip_{model}_vision_ckpt.jsonl" if args.resume else None
         result = evaluate_meip_vision(
             model=model,
             samples=samples,
             objects=objects,
             max_samples=args.max_samples,
             workers=args.workers,
+            checkpoint_path=ckpt_path,
         )
 
         with open(out_path, "w", encoding="utf-8") as f:

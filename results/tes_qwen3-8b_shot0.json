@@ -1,0 +1,13 @@
+{
+  "task": "tes",
+  "model": "qwen3-8b",
+  "shot": 0,
+  "n_samples": 283,
+  "ndcg@10": 0.3823,
+  "mrr": 0.2718,
+  "total_latency_sec": 5281.88,
+  "avg_latency_sec": 18.664,
+  "total_prompt_tokens": 1609093,
+  "total_completion_tokens": 17829,
+  "total_tokens": 1626922
+}

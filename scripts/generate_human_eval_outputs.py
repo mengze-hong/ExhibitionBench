@@ -25,8 +25,8 @@ OUT_DIR.mkdir(exist_ok=True)
 API_KEY  = "sk-TpK0g832p8LbMXTdI_pjkQ"
 API_BASE = "http://csig.litellm.prod.sgpolaris/v1"
 
-# 三个强模型：MEIP 最优、TES 最优、综合强
-DEFAULT_MODELS = ["gpt-5.2", "claude-opus-4.6", "gemini-2.5-pro"]
+# 三个强模型（已验证可用）
+DEFAULT_MODELS = ["gpt-5.2", "deepseek-v3.2", "kimi-k2.5"]
 N_PER_TASK     = 20
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -46,9 +46,10 @@ def call_llm(model: str, prompt: str, max_tokens: int = 400, retries: int = 3) -
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.0,
                 max_tokens=max_tokens,
-                timeout=90,
+                timeout=30,
             )
-            return resp.choices[0].message.content.strip()
+            content = resp.choices[0].message.content
+            return content.strip() if content else ""
         except Exception as e:
             log.warning(f"[{model}] attempt {attempt+1}/{retries} failed: {e}")
             if attempt < retries - 1:
@@ -68,13 +69,61 @@ def _pick_file(stem: str) -> Path:
 
 
 # ──────────────────────────────────────────────
+# Artwork 字典（用于 join candidate_ids → 完整对象）
+# ──────────────────────────────────────────────
+def _load_objects() -> dict:
+    """加载 data/objects.jsonl，返回 {id: artwork_dict}"""
+    obj_path = DATA_DIR / "objects.jsonl"
+    if not obj_path.exists():
+        log.warning("objects.jsonl 未找到，context/candidates 可能只有 id")
+        return {}
+    objs = {}
+    with open(obj_path, encoding="utf-8") as f:
+        for line in f:
+            r = json.loads(line)
+            objs[r["id"]] = r
+    log.info(f"加载 {len(objs):,} 件展品（用于 join）")
+    return objs
+
+
+def _enrich_meip_sample(sample: dict, objects: dict) -> dict:
+    """把 meip sample 的 context id-only 和 candidate_ids 展开成完整对象列表。"""
+    import copy
+    s = copy.deepcopy(sample)
+    # context: 可能是 [{id:...}, ...] 或已完整
+    ctx = s.get("context", [])
+    enriched_ctx = []
+    for item in ctx:
+        if isinstance(item, dict) and len(item) <= 2 and "id" in item:
+            enriched_ctx.append(objects.get(item["id"], item))
+        else:
+            enriched_ctx.append(item)
+    s["context"] = enriched_ctx
+    # candidates: 可能是 candidate_ids 列表 或 已有 candidates key
+    if not s.get("candidates") and s.get("candidate_ids"):
+        s["candidates"] = [objects.get(cid, {"id": cid, "title": cid}) for cid in s["candidate_ids"]]
+    return s
+
+
+# ──────────────────────────────────────────────
 # 样本选取（代表性采样）
 # ──────────────────────────────────────────────
 def select_samples(n: int = N_PER_TASK) -> dict[str, list[dict]]:
     rng = random.Random(42)
+    objects = _load_objects()  # 用于 enrich meip context/candidates
 
-    # MEIP：按展览主题分层，覆盖多元主题
-    meip_all = [json.loads(l) for l in open(_pick_file("meip_samples"), encoding="utf-8")]
+    # MEIP：只选 context 和 candidates 已有完整信息的样本，按展览主题分层
+    meip_all_raw = [json.loads(l) for l in open(_pick_file("meip_samples"), encoding="utf-8")]
+    # 过滤出 context 有 title（完整对象）且 candidates 非空的样本
+    def _is_full_meip(s: dict) -> bool:
+        ctx = s.get("context", [])
+        cands = s.get("candidates", [])
+        if not ctx or not cands:
+            return False
+        return isinstance(ctx[0], dict) and "title" in ctx[0] and \
+               isinstance(cands[0], dict) and "title" in cands[0]
+    meip_all = [s for s in meip_all_raw if _is_full_meip(s)]
+    log.info(f"MEIP 完整样本: {len(meip_all)}/{len(meip_all_raw)}")
     by_theme: dict[str, list] = {}
     for s in meip_all:
         t = s.get("exhibition_theme", "other")

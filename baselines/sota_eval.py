@@ -56,6 +56,15 @@ CLIENT = openai.OpenAI(
     base_url=f"{INTERNAL_API_BASE}/v1",
 )
 
+# Open-weight models via xty.app gateway (Llama / Qwen / Mistral)
+XTY_API_BASE = "https://api.xty.app/v1"
+XTY_API_KEY  = "sk-PE13DPzlOhQXpfcqXtDiskSYgevKpldYiWQx2Nw84BhiT0na"
+
+XTY_CLIENT = openai.OpenAI(
+    api_key=XTY_API_KEY,
+    base_url=XTY_API_BASE,
+)
+
 # ── Model Registry ────────────────────────────────────────────────────────────
 
 MODELS = {
@@ -87,6 +96,14 @@ MODELS = {
     "minimax-m2.5":       "minimax-m2.5",        # Minimax
     # "gpt-5-mini":       "gpt-5-mini",          # REMOVED: content often empty (pure reasoning), 已有旧结果 n=0
     # "qwen-plus-latest": "qwen-plus-latest",    # REMOVED: 401 team无权限访问
+    # ── Open-weight models via xty.app ──────────────────────────────────────
+    "llama-3.3-70b":          "llama-3.3-70b",          # Meta Llama-3.3 70B
+    "llama-3.1-70b-instruct": "llama-3.1-70b-instruct", # Meta Llama-3.1 70B
+    "llama-3.1-8b-instruct":  "llama-3.1-8b-instruct",  # Meta Llama-3.1 8B
+    "qwen2.5-72b-instruct":   "qwen2.5-72b-instruct",   # Qwen2.5 72B
+    "qwen2.5-7b-instruct":    "qwen2.5-7b-instruct",    # Qwen2.5 7B
+    "qwen3-8b":               "qwen3-8b",               # Qwen3 8B
+    "qwen3-14b":              "qwen3-14b",              # Qwen3 14B
 }
 
 ALL_MODELS = list(MODELS.keys())
@@ -102,6 +119,13 @@ DEFAULT_MODELS = [
     "glm-5",              # Zhipu
     "minimax-m2.5",       # Minimax
 ]
+
+# Models routed via xty.app (open-weight)
+XTY_MODELS = {
+    "llama-3.3-70b", "llama-3.1-70b-instruct", "llama-3.1-8b-instruct",
+    "qwen2.5-72b-instruct", "qwen2.5-7b-instruct",
+    "qwen3-8b", "qwen3-14b",
+}
 
 # Reasoning models that put answer in reasoning_content, not content
 REASONING_MODELS = {"deepseek-r1", "kimi-k2.5", "minimax-m2.5", "glm-5",
@@ -129,14 +153,23 @@ def call_llm(model: str, prompt: str, max_tokens: int = 1024,
     # Reasoning models need much more token budget for thinking
     actual_max = max_tokens * 8 if model in LARGE_TOKEN_MODELS else max_tokens
     empty_usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
+    # Route open-weight models to xty.app, others to internal LiteLLM
+    client = XTY_CLIENT if model in XTY_MODELS else CLIENT
     for attempt in range(retries):
         try:
             t0 = time.perf_counter()
             # gpt-5 and similar reasoning models require temperature=1
             temp = 1.0 if model in TEMP1_MODELS else 0.0
-            resp = CLIENT.chat.completions.create(
+            # Qwen3 defaults to thinking mode on xty.app → triggers Cloudflare 524 timeout.
+            # Inject /no_think system message to disable thinking and keep responses short.
+            QWEN3_MODELS = {"qwen3-8b", "qwen3-14b", "qwen3-32b", "qwen3-72b"}
+            messages: list[dict] = []
+            if model in QWEN3_MODELS:
+                messages.append({"role": "system", "content": "/no_think"})
+            messages.append({"role": "user", "content": prompt})
+            resp = client.chat.completions.create(
                 model=model,
-                messages=[{"role": "user", "content": prompt}],
+                messages=messages,
                 max_tokens=actual_max,
                 temperature=temp,
                 timeout=timeout,
