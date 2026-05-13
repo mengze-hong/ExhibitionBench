@@ -37,16 +37,16 @@ MODEL_DISPLAY = {
     "doubao-seed-2.0-lite": "Doubao Seed 2.0 Lite",
     "doubao-seed-1.6":      "Doubao Seed 1.6",
     "doubao-seed-1.6-251015": "Doubao Seed 1.6 (251015)",
-    "doubao-seed-1.6-thinking": "Doubao Seed 1.6 Thinking",
+    # "doubao-seed-1.6-thinking": endpoint never ran, removed 2026-05-13
     # "doubao-seed-1.6-lite": "Doubao Seed 1.6 Lite",        # endpoint closed
     # "doubao-seed-1.6-flash-250715": "Doubao Seed 1.6 Flash",  # endpoint closed
     "glm-5":                "GLM-5",
     "minimax-m2.5":         "MiniMax M2.5",
-    # Open-weight models
-    "llama-3.1-8b":         "Llama-3.1-8B",
-    "llama-3.3-70b":        "Llama-3.3-70B",
-    "qwen2.5-72b":          "Qwen2.5-72B",
-    "qwen3-8b":             "Qwen3-8B",
+    # Open-weight models (deferred — internal API lacks access)
+    # "llama-3.1-8b":         "Llama-3.1-8B",
+    # "llama-3.3-70b":        "Llama-3.3-70B",
+    # "qwen2.5-72b":          "Qwen2.5-72B",
+    # "qwen3-8b":             "Qwen3-8B",
 }
 
 # Preferred display order
@@ -57,12 +57,13 @@ MODEL_ORDER = [
     "gemini-3-pro-preview", "gemini-3-flash-preview", "gemini-3.1-pro-preview",
     "deepseek-r1", "deepseek-v3.2", "deepseek-v3.1", "deepseek-v3",
     "doubao-seed-2.0-pro", "doubao-seed-2.0-lite",
-    "doubao-seed-1.6", "doubao-seed-1.6-251015", "doubao-seed-1.6-thinking",
+    "doubao-seed-1.6", "doubao-seed-1.6-251015",
+    # "doubao-seed-1.6-thinking",  # no results, removed 2026-05-13
     # "doubao-seed-1.6-lite", "doubao-seed-1.6-flash-250715",  # endpoints closed
     "kimi-k2.5", "glm-5", "minimax-m2.5",
-    # Open-weight models
-    "llama-3.3-70b", "qwen2.5-72b",
-    "llama-3.1-8b", "qwen3-8b",
+    # Open-weight models (deferred — internal API lacks access)
+    # "llama-3.3-70b", "qwen2.5-72b",
+    # "llama-3.1-8b", "qwen3-8b",
 ]
 
 
