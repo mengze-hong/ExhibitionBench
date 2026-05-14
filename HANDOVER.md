@@ -19,16 +19,41 @@
 ```
 C:\Users\mengzehong\Desktop\展览馆llm\
 ├── data\
-│   ├── objects_v3.jsonl          ← 主展品库（23,658件，5数据源）
-│   ├── exhibitions_v3.jsonl      ← 展览数据（300个）
-│   ├── meip_samples_v3.jsonl     ← MEIP评测集（1,409样本，10-way）
-│   ├── ecd_samples_v3.jsonl      ← ECD评测集（500样本，4级扰动）
-│   └── [older: v2, bare]
+│   ├── objects_v3.jsonl              ← 主展品库（23,658件，5数据源）
+│   ├── exhibitions_v3.jsonl          ← 展览数据（300个）
+│   ├── meip_samples_v3_fixed.jsonl   ← MEIP评测集（1,409样本，10-way）
+│   ├── ecd_samples_v3.jsonl          ← ECD评测集（500样本，4级扰动）
+│   ├── tes_samples_v3.jsonl          ← TES评测集（283样本，50-way）
+│   ├── kg.json                       ← 知识图谱
+│   ├── raw/                          ← 原始API抓取（.gitignored）
+│   └── archive/                      ← 旧版v1/v2数据（.gitignored）
 ├── baselines\
 │   └── sota_eval.py              ← 主评测脚本（唯一入口）
-├── results\                      ← 所有模型评测结果（JSON + CSV）
+├── results\                      ← 所有模型评测结果
 │   ├── compile_sota_results.py   ← 汇总脚本（生成主表/LaTeX/CSV）
-│   └── *.json                    ← 21模型 × 3任务 × 3shot 结果
+│   ├── *.json                    ← 21模型 × 3任务 × 3shot 结果
+│   ├── tables/                   ← 生成的CSV/LaTeX表格（.gitignored，可重新生成）
+│   ├── baselines_pred/           ← 早期baseline预测JSONL（.gitignored）
+│   ├── contamination/            ← 污染分析结果
+│   ├── cultural_bias/            ← 文化偏见分析结果
+│   ├── fewshot_analysis/         ← few-shot消融结果
+│   └── metadata_ablation/        ← 元数据消融结果
+├── scripts\
+│   ├── data_collection/          ← 数据采集脚本（collect_*.py）
+│   ├── utils/                    ← 工具脚本（run_until_done.py等）
+│   ├── compute_human_eval_metrics.py
+│   └── generate_human_eval_outputs.py
+├── analysis\                     ← 分析脚本（文化偏见、误差分析等）
+├── benchmark\                    ← 评测集构建脚本
+├── docs\                         ← 项目文档（进度、计划、review）
+├── human_eval\                   ← 人工评测数据
+├── system\                       ← Demo系统（nicegui_app.py）
+├── paper\                        ← 本地论文备份
+├── logs\                         ← 运行日志（.gitignored）
+├── gpu_server_needed\            ← GPU服务器开源LLM相关
+├── README.md
+├── HANDOVER.md
+└── requirements.txt
 C:\Users\mengzehong\Desktop\ExhibBench-repo\
 ├── paper\
 │   ├── exhibitionbench.tex       ← 论文正文（唯一来源）

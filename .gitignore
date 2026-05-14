@@ -55,33 +55,19 @@ models/**/*.onnx
 # ---------- Large raw / intermediate data ----------
 # Raw scraped API responses (very large, regenerable)
 data/raw/
-
-# Large intermediate / superseded benchmark dumps (>1 MB each).
-# Keep curated final-version files: meip_samples_v3_fixed.jsonl, tes_samples_v3.jsonl,
-# ecd_samples_v3.jsonl, exhibitions_v3.jsonl, objects_v3.jsonl, kg.json
-data/aic_objects.jsonl
-data/cleveland_objects.jsonl
-data/vam_objects.jsonl
-data/objects.jsonl
-data/objects_v2.jsonl
-data/ecd_samples_v2.jsonl
-data/meip_samples.jsonl
-data/meip_samples_v2.jsonl
-data/meip_samples_v3.jsonl
-data/meip_samples_v4.jsonl
-data/meip_hard_samples.jsonl
-data/meip_open_samples.jsonl
-data/tes_samples.jsonl
-data/tes_samples_v2.jsonl
-data/exhibitions_v2.jsonl
+# Superseded versions (archived to data/archive/)
+data/archive/
 
 # ---------- Large per-prediction JSONL dumps in results/ ----------
 # (keep the small per-model summary *.json scoreboards committed)
 results/**/*.jsonl
+results/baselines_pred/
 
-# ---------- Benchmark intermediate ----------
-benchmark/annotation_tasks.jsonl
-benchmark/annotation_ui.html
+# ---------- Generated tables (re-created by compile_sota_results.py) ----------
+results/tables/
+
+# ---------- Benchmark intermediate (archived to benchmark/archive/) ----------
+benchmark/archive/
 
 # ---------- Misc ----------
 *.zip
@@ -111,3 +97,6 @@ demo_screenshot.png
 ecd_human_eval.png
 human_eval_*.png
 task_select_open.png
+
+# ---------- Moved to docs/ (project notes, not source) ----------
+# (tracked at new paths, no need to ignore)

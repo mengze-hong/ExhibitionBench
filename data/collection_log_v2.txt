@@ -1,50 +1,0 @@
-2026-04-29 12:58:38,059 [INFO] === Collecting AIC data ===
-AIC exhibitions: 0page [00:00, ?page/s]AIC exhibitions: 1page [00:02,  2.73s/page]AIC exhibitions: 1page [00:02,  2.73s/page, found=29, page=1]AIC exhibitions: 2page [00:04,  2.42s/page, found=29, page=1]AIC exhibitions: 2page [00:04,  2.42s/page, found=37, page=2]AIC exhibitions: 3page [00:09,  3.46s/page, found=37, page=2]AIC exhibitions: 3page [00:09,  3.46s/page, found=58, page=3]AIC exhibitions: 4page [00:15,  4.49s/page, found=58, page=3]AIC exhibitions: 4page [00:15,  4.49s/page, found=89, page=4]AIC exhibitions: 5page [00:20,  4.69s/page, found=89, page=4]AIC exhibitions: 5page [00:20,  4.69s/page, found=100, page=5]AIC exhibitions: 5page [00:21,  4.21s/page, found=100, page=5]
-2026-04-29 12:58:59,128 [INFO] AIC: found 100 valid exhibitions
-2026-04-29 12:58:59,129 [INFO] AIC: fetching 2000 unique artworks
-2026-04-29 12:59:29,277 [INFO] AIC: 44 exhibitions, 2000 objects
-2026-04-29 12:59:29,279 [INFO] Wrote 44 records -> C:\Users\mengzehong\Desktop\’π¿¿π›llm\data\aic_exhibitions.jsonl
-2026-04-29 12:59:29,290 [INFO] Wrote 2000 records -> C:\Users\mengzehong\Desktop\’π¿¿π›llm\data\aic_objects.jsonl
-2026-04-29 12:59:29,291 [INFO] === Collecting Cleveland Museum data ===
-CMA departments:   0%|          | 0/13 [00:00<?, ?it/s]CMA departments:   8%|®Ç         | 1/13 [00:01<00:16,  1.33s/it]CMA departments:  15%|®Ä®Ñ        | 2/13 [00:04<00:28,  2.61s/it]CMA departments:  23%|®Ä®Ä®Ü       | 3/13 [00:07<00:24,  2.43s/it]CMA departments:  31%|®Ä®Ä®Ä       | 4/13 [00:07<00:13,  1.55s/it]CMA departments:  38%|®Ä®Ä®Ä®Ç      | 5/13 [00:10<00:18,  2.27s/it]CMA departments:  46%|®Ä®Ä®Ä®Ä®Ñ     | 6/13 [00:13<00:17,  2.50s/it]CMA departments:  54%|®Ä®Ä®Ä®Ä®Ä®Ö    | 7/13 [00:14<00:11,  1.95s/it]CMA departments:  62%|®Ä®Ä®Ä®Ä®Ä®Ä®á   | 8/13 [00:14<00:06,  1.39s/it]CMA departments:  69%|®Ä®Ä®Ä®Ä®Ä®Ä®Å   | 9/13 [00:18<00:08,  2.24s/it]CMA departments:  77%|®Ä®Ä®Ä®Ä®Ä®Ä®Ä®É  | 10/13 [00:19<00:05,  1.71s/it]CMA departments:  85%|®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ö | 11/13 [00:19<00:02,  1.25s/it]CMA departments:  92%|®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®á| 12/13 [00:22<00:01,  1.86s/it]CMA departments: 100%|®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä| 13/13 [00:27<00:00,  2.78s/it]CMA departments: 100%|®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä| 13/13 [00:27<00:00,  2.13s/it]
-2026-04-29 12:59:57,036 [INFO] Cleveland: 7 exhibitions, 1400 objects
-2026-04-29 12:59:57,038 [INFO] Wrote 7 records -> C:\Users\mengzehong\Desktop\’π¿¿π›llm\data\cleveland_exhibitions.jsonl
-2026-04-29 12:59:57,048 [INFO] Wrote 1400 records -> C:\Users\mengzehong\Desktop\’π¿¿π›llm\data\cleveland_objects.jsonl
-2026-04-29 12:59:57,048 [INFO] === Collecting V&A data ===
-V&A themes:   0%|          | 0/10 [00:00<?, ?it/s]V&A themes:  10%|®Ä         | 1/10 [00:04<00:37,  4.14s/it]V&A themes:  20%|®Ä®Ä        | 2/10 [00:06<00:26,  3.35s/it]V&A themes:  30%|®Ä®Ä®Ä       | 3/10 [00:09<00:21,  3.12s/it]V&A themes:  40%|®Ä®Ä®Ä®Ä      | 4/10 [00:14<00:21,  3.58s/it]V&A themes:  50%|®Ä®Ä®Ä®Ä®Ä     | 5/10 [00:18<00:18,  3.76s/it]V&A themes:  60%|®Ä®Ä®Ä®Ä®Ä®Ä    | 6/10 [00:21<00:14,  3.56s/it]V&A themes:  70%|®Ä®Ä®Ä®Ä®Ä®Ä®Ä   | 7/10 [00:25<00:11,  3.78s/it]V&A themes:  80%|®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä  | 8/10 [00:29<00:07,  3.74s/it]V&A themes:  90%|®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä | 9/10 [00:31<00:03,  3.44s/it]V&A themes: 100%|®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä| 10/10 [00:33<00:00,  2.86s/it]V&A themes: 100%|®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä®Ä| 10/10 [00:33<00:00,  3.35s/it]
-2026-04-29 13:00:30,596 [INFO] V&A: 10 exhibitions, 809 objects
-2026-04-29 13:00:30,597 [INFO] Wrote 10 records -> C:\Users\mengzehong\Desktop\’π¿¿π›llm\data\vam_exhibitions.jsonl
-2026-04-29 13:00:30,600 [INFO] Wrote 809 records -> C:\Users\mengzehong\Desktop\’π¿¿π›llm\data\vam_objects.jsonl
-2026-04-29 13:00:30,611 [INFO] Existing: 79 exhibitions, 1862 objects
-2026-04-29 13:00:30,614 [INFO] Wrote 132 records -> C:\Users\mengzehong\Desktop\’π¿¿π›llm\data\exhibitions_v2.jsonl
-2026-04-29 13:00:30,641 [INFO] Wrote 6021 records -> C:\Users\mengzehong\Desktop\’π¿¿π›llm\data\objects_v2.jsonl
-
-============================================================
-ExhibitionBench Dataset Statistics (v2)
-============================================================
-Total exhibitions : 132
-  aic                 : 44
-  met                 : 41
-  europeana           : 30
-  vam                 : 10
-  cleveland           : 7
-
-Total objects     : 6021
-  aic                 : 2000
-  cleveland           : 1400
-  met                 : 1143
-  vam                 : 809
-  europeana           : 669
-
-Cultural coverage (inferred):
-  Other                    : 2376 (39.5%)
-  Western European         : 1206 (20.0%)
-  American                 :  915 (15.2%)
-  East Asian               :  627 (10.4%)
-  African                  :  509 (8.5%)
-  Islamic                  :  177 (2.9%)
-  Ancient                  :  166 (2.8%)
-  South Asian              :   45 (0.7%)
-
-TES-eligible exhibitions (>=5 objects): 115
-============================================================
