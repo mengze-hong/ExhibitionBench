@@ -1,0 +1,8 @@
+{
+  "task": "tes",
+  "model": "bm25",
+  "protocol": "noleak",
+  "n_samples": 283,
+  "ndcg@10": 0.3467,
+  "mrr": 0.3278
+}

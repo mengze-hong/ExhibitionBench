@@ -1,0 +1,13 @@
+{
+  "task": "meip",
+  "model": "gemini-2.5-flash",
+  "shot": 5,
+  "n_samples": 500,
+  "mrr": 0.6618,
+  "hit@1": 0.578,
+  "total_latency_sec": 2812.8,
+  "avg_latency_sec": 5.626,
+  "total_prompt_tokens": 785824,
+  "total_completion_tokens": 539609,
+  "total_tokens": 1325433
+}

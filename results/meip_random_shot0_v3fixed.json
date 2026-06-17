@@ -1,0 +1,7 @@
+{
+  "task": "meip",
+  "model": "random",
+  "n_samples": 1409,
+  "hit@1": 0.0979,
+  "mrr": 0.2865
+}

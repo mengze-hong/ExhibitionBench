@@ -1,0 +1,16 @@
+{
+  "task": "ecd",
+  "model": "qwen3-8b",
+  "shot": 0,
+  "n_samples": 500,
+  "total_latency_sec": 4846.7,
+  "avg_latency_sec": 9.693,
+  "total_prompt_tokens": 246323,
+  "total_completion_tokens": 2500,
+  "total_tokens": 248823,
+  "pairaccc_L1": 0.552,
+  "pairaccc_L2": 0.584,
+  "pairaccc_L3": 0.456,
+  "pairaccc_L4": 0.608,
+  "macro_pairaccc": 0.55
+}

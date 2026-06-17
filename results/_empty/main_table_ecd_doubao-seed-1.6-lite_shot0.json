@@ -1,0 +1,16 @@
+{
+  "task": "ecd",
+  "model": "doubao-seed-1.6-lite",
+  "shot": 0,
+  "n_samples": 0,
+  "total_latency_sec": 0.0,
+  "avg_latency_sec": 0,
+  "total_prompt_tokens": 0,
+  "total_completion_tokens": 0,
+  "total_tokens": 0,
+  "pairaccc_L1": 0.0,
+  "pairaccc_L2": 0.0,
+  "pairaccc_L3": 0.0,
+  "pairaccc_L4": 0.0,
+  "macro_pairaccc": 0
+}

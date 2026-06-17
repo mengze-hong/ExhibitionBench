@@ -1,0 +1,16 @@
+{
+  "task": "ecd",
+  "model": "gemini-2.5-flash",
+  "shot": 3,
+  "n_samples": 500,
+  "total_latency_sec": 4037.26,
+  "avg_latency_sec": 8.075,
+  "total_prompt_tokens": 226899,
+  "total_completion_tokens": 192353,
+  "total_tokens": 419252,
+  "pairaccc_L1": 0.768,
+  "pairaccc_L2": 0.848,
+  "pairaccc_L3": 0.592,
+  "pairaccc_L4": 0.792,
+  "macro_pairaccc": 0.75
+}

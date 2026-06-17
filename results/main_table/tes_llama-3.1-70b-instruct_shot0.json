@@ -1,0 +1,13 @@
+{
+  "task": "tes",
+  "model": "llama-3.1-70b-instruct",
+  "shot": 0,
+  "n_samples": 283,
+  "ndcg@10": 0.4366,
+  "mrr": 0.3059,
+  "total_latency_sec": 8301.9,
+  "avg_latency_sec": 29.335,
+  "total_prompt_tokens": 1422452,
+  "total_completion_tokens": 11029,
+  "total_tokens": 1433481
+}

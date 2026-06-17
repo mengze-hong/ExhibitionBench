@@ -1,0 +1,13 @@
+{
+  "task": "meip",
+  "model": "llama-3.3-70b",
+  "shot": 0,
+  "n_samples": 500,
+  "mrr": 0.6572,
+  "hit@1": 0.574,
+  "total_latency_sec": 3174.16,
+  "avg_latency_sec": 6.348,
+  "total_prompt_tokens": 281104,
+  "total_completion_tokens": 7818,
+  "total_tokens": 288922
+}

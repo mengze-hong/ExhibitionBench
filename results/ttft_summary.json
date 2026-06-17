@@ -1,0 +1,497 @@
+{
+  "gemini-2.5-flash": {
+    "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:29:57.876383+00:00', 'type': 'expired_key', 'param': 'sk-...e4a4', 'code': '400'}}",
+    "raw": [
+      {
+        "ttft": null,
+        "total": 0.7717370000027586,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:29:57.876383+00:00', 'type': 'expired_key', 'param': 'sk-...e4a4', 'code': '400'}}",
+        "theme": "Tang dynasty ceramics"
+      },
+      {
+        "ttft": null,
+        "total": 0.19617250000010245,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:29:58.167364+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Impressionist landscapes"
+      },
+      {
+        "ttft": null,
+        "total": 0.19512350001605228,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:29:58.363339+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Islamic calligraphy"
+      },
+      {
+        "ttft": null,
+        "total": 0.1931930000137072,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:29:58.558831+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Pre-Columbian gold"
+      },
+      {
+        "ttft": null,
+        "total": 0.2066769000084605,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:29:58.754787+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Ukiyo-e prints"
+      }
+    ]
+  },
+  "gemini-3-flash-preview": {
+    "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:29:58.958251+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+    "raw": [
+      {
+        "ttft": null,
+        "total": 0.21133700001519173,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:29:58.958251+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Tang dynasty ceramics"
+      },
+      {
+        "ttft": null,
+        "total": 0.3801210999954492,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:29:59.229915+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Impressionist landscapes"
+      },
+      {
+        "ttft": null,
+        "total": 0.30134109998471104,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:29:59.635520+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Islamic calligraphy"
+      },
+      {
+        "ttft": null,
+        "total": 0.20022500000777654,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:29:59.851452+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Pre-Columbian gold"
+      },
+      {
+        "ttft": null,
+        "total": 0.1914478999970015,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:00.049811+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Ukiyo-e prints"
+      }
+    ]
+  },
+  "gpt-5.2": {
+    "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:00.242518+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+    "raw": [
+      {
+        "ttft": null,
+        "total": 0.19929039999260567,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:00.242518+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Tang dynasty ceramics"
+      },
+      {
+        "ttft": null,
+        "total": 0.19878340000286698,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:00.442319+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Impressionist landscapes"
+      },
+      {
+        "ttft": null,
+        "total": 0.19642920000478625,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:00.639735+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Islamic calligraphy"
+      },
+      {
+        "ttft": null,
+        "total": 0.19775469999876805,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:00.836821+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Pre-Columbian gold"
+      },
+      {
+        "ttft": null,
+        "total": 0.1932336000027135,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:01.034467+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Ukiyo-e prints"
+      }
+    ]
+  },
+  "claude-sonnet-4.5": {
+    "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:01.227893+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+    "raw": [
+      {
+        "ttft": null,
+        "total": 0.1994682000076864,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:01.227893+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Tang dynasty ceramics"
+      },
+      {
+        "ttft": null,
+        "total": 0.1925152000039816,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:01.426298+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Impressionist landscapes"
+      },
+      {
+        "ttft": null,
+        "total": 0.19268610002472997,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:01.619805+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Islamic calligraphy"
+      },
+      {
+        "ttft": null,
+        "total": 0.4872576000052504,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:01.999984+00:00', 'type': 'expired_key', 'param': 'sk-...e4a4', 'code': '400'}}",
+        "theme": "Pre-Columbian gold"
+      },
+      {
+        "ttft": null,
+        "total": 0.2689161000016611,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:02.303116+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Ukiyo-e prints"
+      }
+    ]
+  },
+  "doubao-seed-2.0-lite": {
+    "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:02.574429+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+    "raw": [
+      {
+        "ttft": null,
+        "total": 0.2078068999981042,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:02.574429+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Tang dynasty ceramics"
+      },
+      {
+        "ttft": null,
+        "total": 0.2047356000111904,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:02.780378+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Impressionist landscapes"
+      },
+      {
+        "ttft": null,
+        "total": 0.20394549999036826,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:02.985113+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Islamic calligraphy"
+      },
+      {
+        "ttft": null,
+        "total": 0.2978880000009667,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:03.188844+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Pre-Columbian gold"
+      },
+      {
+        "ttft": null,
+        "total": 0.2056297000090126,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:03.487284+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Ukiyo-e prints"
+      }
+    ]
+  },
+  "doubao-seed-2.0-pro": {
+    "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:03.693206+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+    "raw": [
+      {
+        "ttft": null,
+        "total": 0.20449209999060258,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:03.693206+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Tang dynasty ceramics"
+      },
+      {
+        "ttft": null,
+        "total": 0.722661000007065,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:04.413795+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Impressionist landscapes"
+      },
+      {
+        "ttft": null,
+        "total": 0.20226760001969524,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:04.619606+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Islamic calligraphy"
+      },
+      {
+        "ttft": null,
+        "total": 0.2044441000034567,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:04.823294+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Pre-Columbian gold"
+      },
+      {
+        "ttft": null,
+        "total": 0.20811539998976514,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:05.028099+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Ukiyo-e prints"
+      }
+    ]
+  },
+  "deepseek-v3": {
+    "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:05.235034+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+    "raw": [
+      {
+        "ttft": null,
+        "total": 0.20591140000033192,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:05.235034+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Tang dynasty ceramics"
+      },
+      {
+        "ttft": null,
+        "total": 0.2422530000039842,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:05.479704+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Impressionist landscapes"
+      },
+      {
+        "ttft": null,
+        "total": 0.2529799999902025,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:05.680981+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Islamic calligraphy"
+      },
+      {
+        "ttft": null,
+        "total": 0.25249949999852106,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:05.952986+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Pre-Columbian gold"
+      },
+      {
+        "ttft": null,
+        "total": 0.20165450000786223,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:06.186150+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Ukiyo-e prints"
+      }
+    ]
+  },
+  "deepseek-r1": {
+    "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:06.388896+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+    "raw": [
+      {
+        "ttft": null,
+        "total": 0.20035169998300262,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:06.388896+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Tang dynasty ceramics"
+      },
+      {
+        "ttft": null,
+        "total": 0.20023460002266802,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:06.587560+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Impressionist landscapes"
+      },
+      {
+        "ttft": null,
+        "total": 0.21531619998859242,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:06.788396+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Islamic calligraphy"
+      },
+      {
+        "ttft": null,
+        "total": 0.20165339999948628,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:07.004866+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Pre-Columbian gold"
+      },
+      {
+        "ttft": null,
+        "total": 0.20217900001443923,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 400 - {'error': {'message': 'Authentication Error - Expired Key. Key Expiry time 2026-05-19 06:33:58.351000+00:00 and current time 2026-05-31 10:30:07.206178+00:00', 'type': 'expired_key', 'param': 'sk-...pjkQ', 'code': '400'}}",
+        "theme": "Ukiyo-e prints"
+      }
+    ]
+  },
+  "qwen3-8b": {
+    "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183008537327244VQcOFhNm)', 'type': 'new_api_error'}}",
+    "raw": [
+      {
+        "ttft": null,
+        "total": 1.2953907999908552,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183008537327244VQcOFhNm)', 'type': 'new_api_error'}}",
+        "theme": "Tang dynasty ceramics"
+      },
+      {
+        "ttft": null,
+        "total": 1.538958699995419,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 202605311830087249877281ZxYuP9R)', 'type': 'new_api_error'}}",
+        "theme": "Impressionist landscapes"
+      },
+      {
+        "ttft": null,
+        "total": 0.2006814999913331,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183010263174062Uu2YYoKi)', 'type': 'new_api_error'}}",
+        "theme": "Islamic calligraphy"
+      },
+      {
+        "ttft": null,
+        "total": 0.1903726999880746,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183010466979372mj78xrlc)', 'type': 'new_api_error'}}",
+        "theme": "Pre-Columbian gold"
+      },
+      {
+        "ttft": null,
+        "total": 0.18702429998666048,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183010655081536Ws2QvFCz)', 'type': 'new_api_error'}}",
+        "theme": "Ukiyo-e prints"
+      }
+    ]
+  },
+  "llama-3.3-70b": {
+    "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183010843079792sj9LArOV)', 'type': 'new_api_error'}}",
+    "raw": [
+      {
+        "ttft": null,
+        "total": 0.2008122999977786,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183010843079792sj9LArOV)', 'type': 'new_api_error'}}",
+        "theme": "Tang dynasty ceramics"
+      },
+      {
+        "ttft": null,
+        "total": 0.18604190001497045,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 2026053118301143101400DXZN0q1L)', 'type': 'new_api_error'}}",
+        "theme": "Impressionist landscapes"
+      },
+      {
+        "ttft": null,
+        "total": 0.18830650000018068,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183011229804010X4pFyjr2)', 'type': 'new_api_error'}}",
+        "theme": "Islamic calligraphy"
+      },
+      {
+        "ttft": null,
+        "total": 0.20271179999690503,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183011418325502YhtuuaIB)', 'type': 'new_api_error'}}",
+        "theme": "Pre-Columbian gold"
+      },
+      {
+        "ttft": null,
+        "total": 0.18746159999864176,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 202605311830116209398616S9Dl9Ae)', 'type': 'new_api_error'}}",
+        "theme": "Ukiyo-e prints"
+      }
+    ]
+  },
+  "qwen2.5-72b-instruct": {
+    "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183011808322981M8Nnu4Ms)', 'type': 'new_api_error'}}",
+    "raw": [
+      {
+        "ttft": null,
+        "total": 0.1871411000029184,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183011808322981M8Nnu4Ms)', 'type': 'new_api_error'}}",
+        "theme": "Tang dynasty ceramics"
+      },
+      {
+        "ttft": null,
+        "total": 0.20017140000709333,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183011994563581KAIERql6)', 'type': 'new_api_error'}}",
+        "theme": "Impressionist landscapes"
+      },
+      {
+        "ttft": null,
+        "total": 0.18819710001116619,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 2026053118301219624204434VQ0mUk)', 'type': 'new_api_error'}}",
+        "theme": "Islamic calligraphy"
+      },
+      {
+        "ttft": null,
+        "total": 0.18873809999786317,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 202605311830123857530635J6C8cOr)', 'type': 'new_api_error'}}",
+        "theme": "Pre-Columbian gold"
+      },
+      {
+        "ttft": null,
+        "total": 0.19958260000566952,
+        "chunks": 0,
+        "chars": 0,
+        "err": "Error code: 401 - {'error': {'message': '[sk-PE1***0na] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = -339019 (request id: 20260531183012572422227iJKiRHPU)', 'type': 'new_api_error'}}",
+        "theme": "Ukiyo-e prints"
+      }
+    ]
+  }
+}

@@ -2,12 +2,26 @@
   "task": "meip",
   "model": "claude-opus-4.6",
   "shot": 1,
-  "n_samples": 500,
-  "mrr": 0.7832,
-  "hit@1": 0.728,
-  "total_latency_sec": 6373.84,
-  "avg_latency_sec": 12.748,
-  "total_prompt_tokens": 425509,
-  "total_completion_tokens": 10417,
-  "total_tokens": 435926
+  "n_samples": 1404,
+  "mrr": 0.6295,
+  "hit@1": 0.5235,
+  "total_latency_sec": 4768.47,
+  "avg_latency_sec": 3.396,
+  "total_prompt_tokens": 1121983,
+  "total_completion_tokens": 20080,
+  "total_tokens": 1142063,
+  "run_meta": {
+    "workers": 100,
+    "cot": false,
+    "save_raw": true,
+    "tes_noleak": false,
+    "tag": "",
+    "data_fingerprint": {
+      "objects_path": "data\\objects_v3.jsonl",
+      "objects_sha256": "f5bb0aa8879e1e597eda242892d4b44ba3c03cf86d123e461ac58b268e6ae194",
+      "task_data_path": "data\\meip_samples_v3_fixed.jsonl",
+      "task_data_sha256": "f6e0bd1c0d8bb8db110ad07a8cd5ab31e972d01355e6751d57b7b79adb1bf297"
+    },
+    "timestamp": 1779280953.427905
+  }
 }

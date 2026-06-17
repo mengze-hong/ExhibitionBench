@@ -1,0 +1,27 @@
+{
+  "task": "meip",
+  "model": "gpt-5",
+  "shot": 3,
+  "n_samples": 1227,
+  "mrr": 0.6408,
+  "hit@1": 0.5355,
+  "total_latency_sec": 21382.64,
+  "avg_latency_sec": 17.427,
+  "total_prompt_tokens": 1227885,
+  "total_completion_tokens": 700925,
+  "total_tokens": 1928810,
+  "run_meta": {
+    "workers": 20,
+    "cot": false,
+    "save_raw": true,
+    "tes_noleak": false,
+    "tag": "",
+    "data_fingerprint": {
+      "objects_path": "data\\objects_v3.jsonl",
+      "objects_sha256": "f5bb0aa8879e1e597eda242892d4b44ba3c03cf86d123e461ac58b268e6ae194",
+      "task_data_path": "data\\meip_samples_v3_fixed.jsonl",
+      "task_data_sha256": "f6e0bd1c0d8bb8db110ad07a8cd5ab31e972d01355e6751d57b7b79adb1bf297"
+    },
+    "timestamp": 1779359131.5217001
+  }
+}

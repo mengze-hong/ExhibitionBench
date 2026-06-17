@@ -1,0 +1,14 @@
+{
+  "task": "meip_vision",
+  "model": "claude-opus-4.6",
+  "modality": "text+image",
+  "n_samples": 135,
+  "mrr": 0.5685,
+  "hit@1": 0.4296,
+  "total_latency_sec": 1017.82,
+  "avg_latency_sec": 7.539,
+  "total_prompt_tokens": 81138,
+  "total_completion_tokens": 4606,
+  "total_tokens": 85744,
+  "_note": "PARTIAL_RUN: only 135/1409 samples completed"
+}

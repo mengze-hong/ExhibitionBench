@@ -1,0 +1,16 @@
+{
+  "task": "ecd",
+  "model": "claude-opus-4.5",
+  "shot": 1,
+  "n_samples": 500,
+  "total_latency_sec": 4203.32,
+  "avg_latency_sec": 8.407,
+  "total_prompt_tokens": 249942,
+  "total_completion_tokens": 2000,
+  "total_tokens": 251942,
+  "pairaccc_L1": 0.912,
+  "pairaccc_L2": 0.872,
+  "pairaccc_L3": 0.56,
+  "pairaccc_L4": 0.84,
+  "macro_pairaccc": 0.796
+}

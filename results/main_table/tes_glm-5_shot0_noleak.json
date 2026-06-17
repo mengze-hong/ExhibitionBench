@@ -1,0 +1,13 @@
+{
+  "task": "tes",
+  "model": "glm-5",
+  "shot": 0,
+  "n_samples": 283,
+  "ndcg@10": 0.0761,
+  "mrr": 0.0806,
+  "total_latency_sec": 13598.23,
+  "avg_latency_sec": 48.05,
+  "total_prompt_tokens": 1438080,
+  "total_completion_tokens": 97026,
+  "total_tokens": 1535106
+}

@@ -2,12 +2,26 @@
   "task": "meip",
   "model": "kimi-k2.5",
   "shot": 3,
-  "n_samples": 500,
-  "mrr": 0.5985,
-  "hit@1": 0.5,
-  "total_latency_sec": 6761.95,
-  "avg_latency_sec": 13.524,
-  "total_prompt_tokens": 546049,
-  "total_completion_tokens": 534049,
-  "total_tokens": 1080098
+  "n_samples": 892,
+  "mrr": 0.6139,
+  "hit@1": 0.5045,
+  "total_latency_sec": 63327.02,
+  "avg_latency_sec": 70.994,
+  "total_prompt_tokens": 935970,
+  "total_completion_tokens": 923461,
+  "total_tokens": 1859431,
+  "run_meta": {
+    "workers": 3,
+    "cot": false,
+    "save_raw": true,
+    "tes_noleak": false,
+    "tag": "",
+    "data_fingerprint": {
+      "objects_path": "data\\objects_v3.jsonl",
+      "objects_sha256": "f5bb0aa8879e1e597eda242892d4b44ba3c03cf86d123e461ac58b268e6ae194",
+      "task_data_path": "data\\meip_samples_v3_fixed.jsonl",
+      "task_data_sha256": "f6e0bd1c0d8bb8db110ad07a8cd5ab31e972d01355e6751d57b7b79adb1bf297"
+    },
+    "timestamp": 1779325560.9532857
+  }
 }

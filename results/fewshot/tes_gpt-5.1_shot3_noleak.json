@@ -1,0 +1,13 @@
+{
+  "task": "tes",
+  "model": "gpt-5.1",
+  "shot": 3,
+  "n_samples": 283,
+  "ndcg@10": 0.4061,
+  "mrr": 0.2572,
+  "total_latency_sec": 1175.48,
+  "avg_latency_sec": 4.154,
+  "total_prompt_tokens": 1390721,
+  "total_completion_tokens": 13867,
+  "total_tokens": 1404588
+}

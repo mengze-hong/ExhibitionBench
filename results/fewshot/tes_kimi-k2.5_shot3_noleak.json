@@ -1,0 +1,13 @@
+{
+  "task": "tes",
+  "model": "kimi-k2.5",
+  "shot": 3,
+  "n_samples": 283,
+  "ndcg@10": 0.1117,
+  "mrr": 0.1183,
+  "total_latency_sec": 75120.91,
+  "avg_latency_sec": 265.445,
+  "total_prompt_tokens": 1435661,
+  "total_completion_tokens": 674400,
+  "total_tokens": 2110061
+}

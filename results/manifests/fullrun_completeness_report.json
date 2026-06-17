@@ -1,0 +1,1818 @@
+{
+  "total_entries": 180,
+  "complete_entries": 0,
+  "incomplete_entries": 180,
+  "missing_results": [
+    {
+      "task": "tes",
+      "model": "gpt-5.2",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gpt-5.2_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gpt-5.2_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.2 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gpt-5.2",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gpt-5.2_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gpt-5.2_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.2 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gpt-5",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gpt-5_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gpt-5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gpt-5",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gpt-5_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gpt-5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gpt-5",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gpt-5_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gpt-5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gpt-5.1",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gpt-5.1_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gpt-5.1_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.1 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gpt-5.1",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gpt-5.1_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gpt-5.1_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.1 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gpt-5.1",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gpt-5.1_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gpt-5.1_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.1 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "claude-opus-4.6",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_claude-opus-4.6_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_claude-opus-4.6_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.6 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "claude-opus-4.6",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_claude-opus-4.6_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_claude-opus-4.6_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.6 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "claude-opus-4.6",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_claude-opus-4.6_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_claude-opus-4.6_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.6 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "claude-opus-4.5",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_claude-opus-4.5_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_claude-opus-4.5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.5 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "claude-opus-4.5",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_claude-opus-4.5_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_claude-opus-4.5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.5 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "claude-opus-4.5",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_claude-opus-4.5_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_claude-opus-4.5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.5 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "claude-sonnet-4.5",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_claude-sonnet-4.5_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_claude-sonnet-4.5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "claude-sonnet-4.5",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_claude-sonnet-4.5_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_claude-sonnet-4.5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "claude-sonnet-4.5",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_claude-sonnet-4.5_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_claude-sonnet-4.5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-2.5-pro",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-2.5-pro_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-2.5-pro_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-pro --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-2.5-pro",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-2.5-pro_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-2.5-pro_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-pro --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-2.5-pro",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-2.5-pro_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-2.5-pro_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-pro --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-2.5-flash",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-2.5-flash_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-2.5-flash_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-flash --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-2.5-flash",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-2.5-flash_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-2.5-flash_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-flash --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-2.5-flash",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-2.5-flash_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-2.5-flash_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-flash --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-3-pro-preview",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-3-pro-preview_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-3-pro-preview_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-3-pro-preview",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-3-pro-preview_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-3-pro-preview_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-3-pro-preview",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-3-pro-preview_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-3-pro-preview_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-3-flash-preview",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-3-flash-preview_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-3-flash-preview_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-3-flash-preview",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-3-flash-preview_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-3-flash-preview_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-3-flash-preview",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-3-flash-preview_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-3-flash-preview_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-3.1-pro-preview",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-3.1-pro-preview_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-3.1-pro-preview_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-3.1-pro-preview",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-3.1-pro-preview_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-3.1-pro-preview_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-3.1-pro-preview",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-3.1-pro-preview_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-3.1-pro-preview_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "deepseek-r1",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_deepseek-r1_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_deepseek-r1_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-r1 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "deepseek-r1",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_deepseek-r1_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_deepseek-r1_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-r1 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "deepseek-r1",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_deepseek-r1_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_deepseek-r1_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-r1 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "deepseek-v3.2",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_deepseek-v3.2_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_deepseek-v3.2_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3.2 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "deepseek-v3.2",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_deepseek-v3.2_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_deepseek-v3.2_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3.2 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "deepseek-v3.2",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_deepseek-v3.2_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_deepseek-v3.2_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3.2 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "deepseek-v3",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_deepseek-v3_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_deepseek-v3_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "deepseek-v3",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_deepseek-v3_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_deepseek-v3_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "deepseek-v3",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_deepseek-v3_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_deepseek-v3_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "doubao-seed-2.0-pro",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_doubao-seed-2.0-pro_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_doubao-seed-2.0-pro_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "doubao-seed-2.0-pro",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_doubao-seed-2.0-pro_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_doubao-seed-2.0-pro_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "doubao-seed-2.0-pro",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_doubao-seed-2.0-pro_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_doubao-seed-2.0-pro_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "doubao-seed-2.0-lite",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_doubao-seed-2.0-lite_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_doubao-seed-2.0-lite_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "doubao-seed-2.0-lite",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_doubao-seed-2.0-lite_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_doubao-seed-2.0-lite_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "doubao-seed-2.0-lite",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_doubao-seed-2.0-lite_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_doubao-seed-2.0-lite_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "doubao-seed-1.6",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_doubao-seed-1.6_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_doubao-seed-1.6_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "doubao-seed-1.6",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_doubao-seed-1.6_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_doubao-seed-1.6_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "doubao-seed-1.6",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_doubao-seed-1.6_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_doubao-seed-1.6_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "kimi-k2.5",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_kimi-k2.5_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_kimi-k2.5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models kimi-k2.5 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "kimi-k2.5",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_kimi-k2.5_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_kimi-k2.5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models kimi-k2.5 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "kimi-k2.5",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_kimi-k2.5_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_kimi-k2.5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models kimi-k2.5 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "glm-5",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_glm-5_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_glm-5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models glm-5 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "glm-5",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_glm-5_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_glm-5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models glm-5 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "glm-5",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_glm-5_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_glm-5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models glm-5 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "minimax-m2.5",
+      "shot": 0,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_minimax-m2.5_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_minimax-m2.5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models minimax-m2.5 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "minimax-m2.5",
+      "shot": 0,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_minimax-m2.5_shot0_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_minimax-m2.5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models minimax-m2.5 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "minimax-m2.5",
+      "shot": 0,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_minimax-m2.5_shot0_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_minimax-m2.5_shot0_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models minimax-m2.5 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gpt-5.2",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gpt-5.2_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gpt-5.2_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.2 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gpt-5.2",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gpt-5.2_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gpt-5.2_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.2 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gpt-5.2",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gpt-5.2_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gpt-5.2_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.2 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gpt-5",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gpt-5_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gpt-5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gpt-5",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gpt-5_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gpt-5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gpt-5",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gpt-5_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gpt-5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gpt-5.1",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gpt-5.1_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gpt-5.1_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.1 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gpt-5.1",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gpt-5.1_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gpt-5.1_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.1 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gpt-5.1",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gpt-5.1_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gpt-5.1_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.1 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "claude-opus-4.6",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_claude-opus-4.6_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_claude-opus-4.6_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.6 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "claude-opus-4.6",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_claude-opus-4.6_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_claude-opus-4.6_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.6 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "claude-opus-4.6",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_claude-opus-4.6_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_claude-opus-4.6_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.6 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "claude-opus-4.5",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_claude-opus-4.5_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_claude-opus-4.5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.5 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "claude-opus-4.5",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_claude-opus-4.5_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_claude-opus-4.5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.5 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "claude-opus-4.5",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_claude-opus-4.5_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_claude-opus-4.5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.5 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "claude-sonnet-4.5",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_claude-sonnet-4.5_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_claude-sonnet-4.5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "claude-sonnet-4.5",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_claude-sonnet-4.5_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_claude-sonnet-4.5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "claude-sonnet-4.5",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_claude-sonnet-4.5_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_claude-sonnet-4.5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-2.5-pro",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-2.5-pro_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-2.5-pro_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-pro --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-2.5-pro",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-2.5-pro_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-2.5-pro_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-pro --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-2.5-pro",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-2.5-pro_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-2.5-pro_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-pro --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-2.5-flash",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-2.5-flash_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-2.5-flash_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-flash --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-2.5-flash",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-2.5-flash_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-2.5-flash_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-flash --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-2.5-flash",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-2.5-flash_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-2.5-flash_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-flash --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-3-pro-preview",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-3-pro-preview_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-3-pro-preview_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-3-pro-preview",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-3-pro-preview_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-3-pro-preview_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-3-pro-preview",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-3-pro-preview_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-3-pro-preview_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-3-flash-preview",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-3-flash-preview_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-3-flash-preview_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-3-flash-preview",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-3-flash-preview_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-3-flash-preview_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-3-flash-preview",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-3-flash-preview_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-3-flash-preview_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-3.1-pro-preview",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-3.1-pro-preview_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-3.1-pro-preview_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-3.1-pro-preview",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-3.1-pro-preview_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-3.1-pro-preview_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-3.1-pro-preview",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-3.1-pro-preview_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-3.1-pro-preview_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "deepseek-r1",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_deepseek-r1_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_deepseek-r1_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-r1 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "deepseek-r1",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_deepseek-r1_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_deepseek-r1_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-r1 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "deepseek-r1",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_deepseek-r1_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_deepseek-r1_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-r1 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "deepseek-v3.2",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_deepseek-v3.2_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_deepseek-v3.2_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3.2 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "deepseek-v3.2",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_deepseek-v3.2_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_deepseek-v3.2_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3.2 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "deepseek-v3.2",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_deepseek-v3.2_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_deepseek-v3.2_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3.2 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "deepseek-v3",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_deepseek-v3_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_deepseek-v3_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "deepseek-v3",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_deepseek-v3_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_deepseek-v3_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "deepseek-v3",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_deepseek-v3_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_deepseek-v3_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "doubao-seed-2.0-pro",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_doubao-seed-2.0-pro_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_doubao-seed-2.0-pro_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "doubao-seed-2.0-pro",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_doubao-seed-2.0-pro_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_doubao-seed-2.0-pro_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "doubao-seed-2.0-pro",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_doubao-seed-2.0-pro_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_doubao-seed-2.0-pro_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "doubao-seed-2.0-lite",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_doubao-seed-2.0-lite_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_doubao-seed-2.0-lite_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "doubao-seed-2.0-lite",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_doubao-seed-2.0-lite_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_doubao-seed-2.0-lite_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "doubao-seed-2.0-lite",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_doubao-seed-2.0-lite_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_doubao-seed-2.0-lite_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "doubao-seed-1.6",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_doubao-seed-1.6_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_doubao-seed-1.6_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "doubao-seed-1.6",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_doubao-seed-1.6_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_doubao-seed-1.6_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "doubao-seed-1.6",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_doubao-seed-1.6_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_doubao-seed-1.6_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "kimi-k2.5",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_kimi-k2.5_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_kimi-k2.5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models kimi-k2.5 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "kimi-k2.5",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_kimi-k2.5_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_kimi-k2.5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models kimi-k2.5 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "kimi-k2.5",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_kimi-k2.5_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_kimi-k2.5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models kimi-k2.5 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "glm-5",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_glm-5_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_glm-5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models glm-5 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "glm-5",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_glm-5_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_glm-5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models glm-5 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "glm-5",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_glm-5_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_glm-5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models glm-5 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "minimax-m2.5",
+      "shot": 1,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_minimax-m2.5_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_minimax-m2.5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models minimax-m2.5 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "minimax-m2.5",
+      "shot": 1,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_minimax-m2.5_shot1_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_minimax-m2.5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models minimax-m2.5 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "minimax-m2.5",
+      "shot": 1,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_minimax-m2.5_shot1_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_minimax-m2.5_shot1_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models minimax-m2.5 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gpt-5.2",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gpt-5.2_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gpt-5.2_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.2 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gpt-5.2",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gpt-5.2_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gpt-5.2_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.2 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gpt-5.2",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gpt-5.2_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gpt-5.2_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.2 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gpt-5",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gpt-5_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gpt-5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gpt-5",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gpt-5_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gpt-5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gpt-5",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gpt-5_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gpt-5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gpt-5.1",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gpt-5.1_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gpt-5.1_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.1 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gpt-5.1",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gpt-5.1_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gpt-5.1_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.1 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gpt-5.1",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gpt-5.1_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gpt-5.1_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gpt-5.1 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "claude-opus-4.6",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_claude-opus-4.6_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_claude-opus-4.6_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.6 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "claude-opus-4.6",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_claude-opus-4.6_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_claude-opus-4.6_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.6 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "claude-opus-4.6",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_claude-opus-4.6_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_claude-opus-4.6_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.6 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "claude-opus-4.5",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_claude-opus-4.5_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_claude-opus-4.5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.5 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "claude-opus-4.5",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_claude-opus-4.5_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_claude-opus-4.5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.5 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "claude-opus-4.5",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_claude-opus-4.5_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_claude-opus-4.5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-opus-4.5 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "claude-sonnet-4.5",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_claude-sonnet-4.5_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_claude-sonnet-4.5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "claude-sonnet-4.5",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_claude-sonnet-4.5_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_claude-sonnet-4.5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "claude-sonnet-4.5",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_claude-sonnet-4.5_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_claude-sonnet-4.5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-2.5-pro",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-2.5-pro_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-2.5-pro_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-pro --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-2.5-pro",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-2.5-pro_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-2.5-pro_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-pro --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-2.5-pro",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-2.5-pro_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-2.5-pro_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-pro --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-2.5-flash",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-2.5-flash_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-2.5-flash_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-flash --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-2.5-flash",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-2.5-flash_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-2.5-flash_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-flash --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-2.5-flash",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-2.5-flash_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-2.5-flash_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-2.5-flash --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-3-pro-preview",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-3-pro-preview_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-3-pro-preview_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-3-pro-preview",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-3-pro-preview_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-3-pro-preview_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-3-pro-preview",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-3-pro-preview_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-3-pro-preview_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-3-flash-preview",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-3-flash-preview_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-3-flash-preview_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-3-flash-preview",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-3-flash-preview_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-3-flash-preview_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-3-flash-preview",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-3-flash-preview_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-3-flash-preview_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "gemini-3.1-pro-preview",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_gemini-3.1-pro-preview_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_gemini-3.1-pro-preview_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "gemini-3.1-pro-preview",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_gemini-3.1-pro-preview_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_gemini-3.1-pro-preview_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "gemini-3.1-pro-preview",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_gemini-3.1-pro-preview_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_gemini-3.1-pro-preview_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "deepseek-r1",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_deepseek-r1_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_deepseek-r1_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-r1 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "deepseek-r1",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_deepseek-r1_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_deepseek-r1_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-r1 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "deepseek-r1",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_deepseek-r1_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_deepseek-r1_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-r1 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "deepseek-v3.2",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_deepseek-v3.2_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_deepseek-v3.2_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3.2 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "deepseek-v3.2",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_deepseek-v3.2_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_deepseek-v3.2_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3.2 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "deepseek-v3.2",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_deepseek-v3.2_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_deepseek-v3.2_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3.2 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "deepseek-v3",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_deepseek-v3_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_deepseek-v3_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "deepseek-v3",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_deepseek-v3_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_deepseek-v3_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "deepseek-v3",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_deepseek-v3_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_deepseek-v3_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models deepseek-v3 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "doubao-seed-2.0-pro",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_doubao-seed-2.0-pro_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_doubao-seed-2.0-pro_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "doubao-seed-2.0-pro",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_doubao-seed-2.0-pro_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_doubao-seed-2.0-pro_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "doubao-seed-2.0-pro",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_doubao-seed-2.0-pro_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_doubao-seed-2.0-pro_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "doubao-seed-2.0-lite",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_doubao-seed-2.0-lite_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_doubao-seed-2.0-lite_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "doubao-seed-2.0-lite",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_doubao-seed-2.0-lite_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_doubao-seed-2.0-lite_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "doubao-seed-2.0-lite",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_doubao-seed-2.0-lite_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_doubao-seed-2.0-lite_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "doubao-seed-1.6",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_doubao-seed-1.6_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_doubao-seed-1.6_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "doubao-seed-1.6",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_doubao-seed-1.6_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_doubao-seed-1.6_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "doubao-seed-1.6",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_doubao-seed-1.6_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_doubao-seed-1.6_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "kimi-k2.5",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_kimi-k2.5_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_kimi-k2.5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models kimi-k2.5 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "kimi-k2.5",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_kimi-k2.5_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_kimi-k2.5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models kimi-k2.5 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "kimi-k2.5",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_kimi-k2.5_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_kimi-k2.5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models kimi-k2.5 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "glm-5",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_glm-5_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_glm-5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models glm-5 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "glm-5",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_glm-5_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_glm-5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models glm-5 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "glm-5",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_glm-5_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_glm-5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models glm-5 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "meip",
+      "model": "minimax-m2.5",
+      "shot": 3,
+      "target_n_samples": 1409,
+      "output_result_file": "results/meip_minimax-m2.5_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/meip_minimax-m2.5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models minimax-m2.5 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "tes",
+      "model": "minimax-m2.5",
+      "shot": 3,
+      "target_n_samples": 283,
+      "output_result_file": "results/tes_minimax-m2.5_shot3_noleak_fullrun.json",
+      "output_raw_file": "results/raw_responses/tes_minimax-m2.5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models minimax-m2.5 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force"
+    },
+    {
+      "task": "ecd",
+      "model": "minimax-m2.5",
+      "shot": 3,
+      "target_n_samples": 800,
+      "output_result_file": "results/ecd_minimax-m2.5_shot3_fullrun.json",
+      "output_raw_file": "results/raw_responses/ecd_minimax-m2.5_shot3_fullrun.jsonl",
+      "command": "python baselines/sota_eval.py --models minimax-m2.5 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force"
+    }
+  ],
+  "bad_result_counts": [
+    {
+      "entry": {
+        "task": "meip",
+        "model": "gpt-5.2",
+        "shot": 0,
+        "target_n_samples": 1409,
+        "output_result_file": "results/meip_gpt-5.2_shot0_fullrun.json",
+        "output_raw_file": "results/raw_responses/meip_gpt-5.2_shot0_fullrun.jsonl",
+        "command": "python baselines/sota_eval.py --models gpt-5.2 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+      },
+      "reason": "n_samples_mismatch",
+      "observed_n": 0
+    }
+  ],
+  "bad_result_schema": [],
+  "missing_raw": [],
+  "bad_raw_counts": [],
+  "recommended_rerun_commands": [
+    "python baselines/sota_eval.py --models gpt-5.2 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.2 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.1 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.1 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.1 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.6 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.6 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.6 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.5 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.5 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.5 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-pro --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-pro --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-pro --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-flash --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-flash --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-flash --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-r1 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-r1 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-r1 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3.2 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3.2 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3.2 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models kimi-k2.5 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models kimi-k2.5 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models kimi-k2.5 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models glm-5 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models glm-5 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models glm-5 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models minimax-m2.5 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models minimax-m2.5 --tasks tes --shot 0 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models minimax-m2.5 --tasks ecd --shot 0 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.2 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.2 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.2 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.1 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.1 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.1 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.6 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.6 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.6 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.5 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.5 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.5 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-pro --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-pro --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-pro --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-flash --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-flash --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-flash --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-r1 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-r1 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-r1 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3.2 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3.2 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3.2 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models kimi-k2.5 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models kimi-k2.5 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models kimi-k2.5 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models glm-5 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models glm-5 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models glm-5 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models minimax-m2.5 --tasks meip --shot 1 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models minimax-m2.5 --tasks tes --shot 1 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models minimax-m2.5 --tasks ecd --shot 1 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.2 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.2 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.2 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.1 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.1 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.1 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.6 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.6 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.6 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.5 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.5 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-opus-4.5 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models claude-sonnet-4.5 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-pro --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-pro --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-pro --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-flash --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-flash --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-2.5-flash --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-pro-preview --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3-flash-preview --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gemini-3.1-pro-preview --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-r1 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-r1 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-r1 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3.2 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3.2 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3.2 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models deepseek-v3 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-pro --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-2.0-lite --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models doubao-seed-1.6 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models kimi-k2.5 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models kimi-k2.5 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models kimi-k2.5 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models glm-5 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models glm-5 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models glm-5 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models minimax-m2.5 --tasks meip --shot 3 --max-samples 1409 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models minimax-m2.5 --tasks tes --shot 3 --tes-noleak --max-samples 283 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models minimax-m2.5 --tasks ecd --shot 3 --max-samples 800 --tag fullrun --save-raw --force",
+    "python baselines/sota_eval.py --models gpt-5.2 --tasks meip --shot 0 --max-samples 1409 --tag fullrun --save-raw --force"
+  ]
+}

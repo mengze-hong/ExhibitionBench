@@ -1,0 +1,13 @@
+{
+  "task": "meip",
+  "model": "gpt-5.2",
+  "shot": 5,
+  "n_samples": 500,
+  "mrr": 0.7382,
+  "hit@1": 0.674,
+  "total_latency_sec": 5715.3,
+  "avg_latency_sec": 11.431,
+  "total_prompt_tokens": 689696,
+  "total_completion_tokens": 7270,
+  "total_tokens": 696966
+}

@@ -1,0 +1,13 @@
+{
+  "task": "meip",
+  "model": "qwen2.5-72b-instruct",
+  "shot": 0,
+  "n_samples": 500,
+  "mrr": 0.7332,
+  "hit@1": 0.668,
+  "total_latency_sec": 2138.78,
+  "avg_latency_sec": 4.278,
+  "total_prompt_tokens": 329842,
+  "total_completion_tokens": 8575,
+  "total_tokens": 338417
+}

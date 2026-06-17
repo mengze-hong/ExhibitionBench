@@ -1,102 +1,33 @@
-# =========================================================
-# ExhibitionBench — .gitignore
-# =========================================================
+# Secrets
+.env
+*.key
+secrets/
 
-# ---------- Python ----------
+# Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
+*.pyo
+*.egg-info/
+dist/
+build/
 .venv/
 venv/
 env/
-ENV/
-*.egg-info/
-.eggs/
-build/
-dist/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.coverage
-htmlcov/
 
-# ---------- Jupyter ----------
-.ipynb_checkpoints/
-*.ipynb_checkpoints
+# Results (large raw files)
+results/raw_responses/
+results/*.jsonl
+logs/
 
-# ---------- OS / IDE ----------
+# Data — large files tracked via Git LFS or separate download
+# data/*.jsonl   (uncomment if hosting data separately)
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
 .DS_Store
 Thumbs.db
-.idea/
-.vscode/
-.codebuddy/
-*.swp
-*.swo
-
-# ---------- Logs ----------
-logs/
-*.log
-app_log.txt
-**/error_stderr.txt
-
-# ---------- Local model weights (huge — DO NOT push to GitHub) ----------
-models/Qwen2.5-7B-Instruct/
-models/Qwen3-8B-vllm/
-models/**/*.safetensors
-models/**/*.bin
-models/**/*.pt
-models/**/*.pth
-models/**/*.ckpt
-models/**/*.gguf
-models/**/*.onnx
-
-# ---------- Large raw / intermediate data ----------
-# Raw scraped API responses (very large, regenerable)
-data/raw/
-# Superseded versions (archived to data/archive/)
-data/archive/
-
-# ---------- Large per-prediction JSONL dumps in results/ ----------
-# (keep the small per-model summary *.json scoreboards committed)
-results/**/*.jsonl
-results/baselines_pred/
-
-# ---------- Generated tables (re-created by compile_sota_results.py) ----------
-results/tables/
-
-# ---------- Benchmark intermediate (archived to benchmark/archive/) ----------
-benchmark/archive/
-
-# ---------- Misc ----------
-*.zip
-*.tar
-*.tar.gz
-*.7z
-SURVEY_REPORT.txt
-2026-*-this-session-is-being-continued-from-a-previous-c.txt
-
-# ---------- Claude / AI assistant internal files ----------
-.claude/
-.playwright-mcp/
-00_READ_ME_FIRST.md
-ANALYSIS_SUMMARY.txt
-CODEBASE_EXPLORATION_REPORT.md
-DETAILED_CODEBASE_ANALYSIS.md
-EXECUTIVE_SUMMARY_CN.md
-QUICK_REFERENCE_TABLES.md
-SESSION_LOG.md
-FRONTEND_REPORT.md
-# Misplaced plan file (Windows path encoded as filename)
-"C\357\200\272*"
-C\:*
-
-# ---------- Screenshots / temp images ----------
-demo_screenshot.png
-ecd_human_eval.png
-human_eval_*.png
-task_select_open.png
-
-# ---------- Moved to docs/ (project notes, not source) ----------
-# (tracked at new paths, no need to ignore)
+desktop.ini

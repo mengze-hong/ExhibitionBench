@@ -1,0 +1,13 @@
+{
+  "task": "tes",
+  "model": "gemini-2.5-flash",
+  "shot": 3,
+  "n_samples": 283,
+  "ndcg@10": 0.3925,
+  "mrr": 0.3407,
+  "total_latency_sec": 4004.29,
+  "avg_latency_sec": 14.149,
+  "total_prompt_tokens": 1538882,
+  "total_completion_tokens": 673384,
+  "total_tokens": 2212266
+}

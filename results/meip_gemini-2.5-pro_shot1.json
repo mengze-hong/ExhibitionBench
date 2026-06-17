@@ -2,12 +2,26 @@
   "task": "meip",
   "model": "gemini-2.5-pro",
   "shot": 1,
-  "n_samples": 500,
-  "mrr": 0.7516,
-  "hit@1": 0.69,
-  "total_latency_sec": 5688.21,
-  "avg_latency_sec": 11.376,
-  "total_prompt_tokens": 420824,
-  "total_completion_tokens": 581457,
-  "total_tokens": 1002281
+  "n_samples": 1377,
+  "mrr": 0.6349,
+  "hit@1": 0.5265,
+  "total_latency_sec": 20244.22,
+  "avg_latency_sec": 14.702,
+  "total_prompt_tokens": 1079580,
+  "total_completion_tokens": 1589025,
+  "total_tokens": 2668605,
+  "run_meta": {
+    "workers": 50,
+    "cot": false,
+    "save_raw": true,
+    "tes_noleak": false,
+    "tag": "",
+    "data_fingerprint": {
+      "objects_path": "data\\objects_v3.jsonl",
+      "objects_sha256": "f5bb0aa8879e1e597eda242892d4b44ba3c03cf86d123e461ac58b268e6ae194",
+      "task_data_path": "data\\meip_samples_v3_fixed.jsonl",
+      "task_data_sha256": "f6e0bd1c0d8bb8db110ad07a8cd5ab31e972d01355e6751d57b7b79adb1bf297"
+    },
+    "timestamp": 1779346758.490435
+  }
 }

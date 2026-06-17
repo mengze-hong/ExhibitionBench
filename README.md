@@ -1,206 +1,164 @@
 # ExhibitionBench
 
-A benchmark for evaluating the cultural-heritage understanding of Large Language Models in the museum-exhibition domain. ExhibitionBench probes whether LLMs (and their multimodal variants) can reason about real museum collections — recognising exhibits, recovering thematic exhibition structure, and ordering artefacts along a curatorial timeline.
-
-The benchmark is built from public collection APIs of the **Art Institute of Chicago (AIC)**, the **Cleveland Museum of Art (CMA)**, and the **Victoria and Albert Museum (V&A)**, and supports zero-shot, few-shot, and multimodal evaluation across 20+ frontier closed- and open-source LLMs.
+A multi-task LLM benchmark for museum exhibition curation, built from 23,658 real objects across 5 open-access museum collections.
 
 ---
 
 ## Tasks
 
-| ID | Task | Description | Metric |
-|----|------|-------------|--------|
-| **MEIP** | Museum Exhibit Identification & Placement | Given an exhibition theme + metadata, identify the correct exhibit from a candidate set and place it in the right gallery | MRR, Hit@1 |
-| **TES** | Thematic Exhibition Structuring | Cluster a pool of exhibits into coherent thematic exhibitions | nDCG@10 |
-| **ECD** | Exhibition Chronological Decision | Pairwise comparison of exhibit creation order under a given theme | macro pair-accuracy |
+| Task | Description | Metric | Size |
+|---|---|---|---|
+| **MEIP** — Museum Exhibition Item Prediction | Given a theme + context objects, pick the best-fitting candidate from 10 options | MRR, Hit@1 | 1,409 queries |
+| **TES** — Thematic Exhibition Selection | Rank 50 candidate exhibitions by thematic relevance | NDCG@10, MRR | 283 queries |
+| **ECD** — Exhibition Coherence Discrimination | Identify the coherent sequence from a pair (4 difficulty levels) | PairAcc, Macro | 500 pairs |
 
 ---
 
-## Repository layout
+## Key Results
+
+| Model | MEIP MRR | TES NDCG@10 | ECD Macro | Latency (s) | Cost ($/1k) |
+|---|---|---|---|---|---|
+| Gemini 3.1 Pro | **0.685** | 0.408 | **0.876** | 13.3 | 12.55 |
+| Claude Opus 4.6 | 0.621 | **0.437** | 0.836 | 7.1 | 28.75 |
+| GPT-5.2 | 0.619 | 0.387 | 0.774 | 7.0 | 2.01 |
+| Doubao-Seed-2.0-Pro | 0.642 | 0.410 | 0.852 | 27.2 | 3.93 |
+| DeepSeek-V3 | 0.598 | 0.390 | 0.800 | **5.5** | **0.33** |
+| Qwen2.5-72B (open-weight) | 0.733 | 0.391 | 0.674 | 8.4 | 0.69 |
+| BM25 | 0.449 | 0.347 | 0.864 | <0.1 | ~0 |
+
+Full results: [`results_summary/deployment_summary.json`](results_summary/deployment_summary.json)
+
+---
+
+## Repository Structure
 
 ```
 ExhibitionBench/
-├── baselines/        # All evaluation scripts (closed-source, open-source, multimodal, retrieval)
-├── benchmark/        # Dataset construction & task-specific evaluators
-├── analysis/         # Error analysis, cultural-bias study, ablations, contamination check
-├── data/             # Curated benchmark JSONL files (large raw dumps are git-ignored)
-├── results/          # Per-model score JSONs and aggregated tables
-├── system/           # Gradio demo
-├── paper/            # LaTeX sources and bibliography
-├── scripts/          # Convenience runners
-├── collect_*.py      # Multi-museum data-collection pipelines
-├── requirements.txt
-└── README.md
+├── data/
+│   ├── meip_samples.jsonl        # 1,409 MEIP queries
+│   ├── tes_samples.jsonl         # 283 TES queries
+│   ├── ecd_samples.jsonl         # 500 ECD pairs (800 samples, 4 levels)
+│   ├── objects.jsonl             # 23,658 museum objects
+│   ├── exhibitions.jsonl         # 300 exhibition records
+│   └── kg.json                   # CIDOC-CRM knowledge-graph triples
+│
+├── evaluation/
+│   ├── sota_eval.py              # Evaluate any model via OpenAI-compatible API
+│   ├── openllm_baseline.py       # Lightweight evaluator for open-weight models
+│   ├── meip_eval.py              # MEIP metric computation
+│   ├── tes_eval.py               # TES metric computation
+│   └── ecd_generator.py          # ECD sample generation utilities
+│
+├── baselines/
+│   ├── bm25_baseline.py          # BM25 term-overlap ranking
+│   ├── embedding_baseline.py     # SBERT cosine-similarity ranking
+│   └── rag_kg_baseline.py        # RAG + CIDOC-CRM KG triples
+│
+├── analysis/
+│   ├── contamination_ablation.py # Dataset contamination check
+│   ├── cultural_bias.py          # Per-region accuracy breakdown
+│   ├── cultural_bias_multi_model.py
+│   ├── error_analysis.py         # Error taxonomy
+│   ├── fewshot_mechanism.py      # 0/1/3-shot mechanism analysis
+│   └── metadata_ablation.py      # Object metadata sensitivity (L0-L5)
+│
+├── system/
+│   └── nicegui_app.py            # Interactive demo (NiceGUI, port 7861)
+│
+├── scripts/
+│   ├── run_pipeline.py           # End-to-end pipeline orchestration
+│   ├── build_samples.py          # Rebuild benchmark from raw data
+│   └── compile_results.py        # Aggregate results to tables / LaTeX
+│
+├── results/
+│   ├── main_table/               # Zero-shot results, all 30 models × 3 tasks
+│   ├── fewshot/                  # Shot 1/3 results, all models × 3 tasks
+│   ├── fewshot_analysis/         # Few-shot mechanism analysis outputs
+│   ├── ablation_cot/             # CoT prompting ablation
+│   ├── ablation_vision/          # Multimodal (text+image) ablation
+│   ├── metadata_ablation/        # Metadata sensitivity outputs
+│   ├── contamination/            # Contamination check outputs
+│   ├── cultural_bias/            # Cultural bias per-region outputs
+│   ├── baselines_pred/           # BM25 / SBERT / RAG prediction files
+│   ├── manifests/                # Experiment completeness reports
+│   └── tables/                   # LaTeX / CSV summary tables
+│
+├── results_summary/
+│   └── deployment_summary.json   # Per-model latency, cost, accuracy summary
+│
+├── .env.example                  # API credential template
+└── requirements.txt
 ```
-
-A more detailed walkthrough of every file lives in [`PROJECT_OVERVIEW.md`](PROJECT_OVERVIEW.md), and a project hand-over note is in [`HANDOVER.md`](HANDOVER.md).
 
 ---
 
-## Installation
+## Setup
 
 ```bash
-git clone https://github.com/mengze-hong/ExhibitionBench.git
+git clone https://github.com/YOUR_USERNAME/ExhibitionBench
 cd ExhibitionBench
-
-python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-
-# Optional, for JS-rendered scrapes
-playwright install chromium
+cp .env.example .env   # fill in your API base + key
 ```
 
-Tested with Python ≥ 3.10, PyTorch ≥ 2.2, transformers ≥ 4.40.
+Supports any OpenAI-compatible endpoint: OpenAI, Anthropic (via proxy), Groq, Together AI, local Ollama, local vLLM.
 
 ---
 
-## Data
+## Evaluation
 
-The curated benchmark splits are JSONL files under `data/`:
-
-| File | #samples | Purpose |
-|------|---------|---------|
-| `meip_samples_v3_fixed.jsonl` | 1,409 | MEIP (canonical version — use this) |
-| `tes_samples_v3.jsonl`        |   283 | TES |
-| `ecd_samples_v3.jsonl`        |   800 | ECD |
-| `exhibitions_v3.jsonl`        |     – | Exhibition metadata |
-| `objects_v3.jsonl`            | 23,658 | Exhibit metadata pool |
-| `kg.json`                     |     – | Cultural knowledge graph |
-
-> Large raw API dumps (`data/raw/`, per-museum `*_objects.jsonl`, superseded `_v1`/`_v2` files) are **excluded from the repo** via [`.gitignore`](.gitignore) — regenerate them with the `collect_*.py` scripts if needed. Local model checkpoints in `models/` are also excluded; download from the official release page of each model.
-
-To rebuild the dataset from scratch:
+### Proprietary models
 
 ```bash
-# 1. Scrape multi-museum collections
-python collect_multi_source.py
-python collect_expand_v3.py        # expand to v3 schema
-
-# 2. Build task samples
-python benchmark/build_samples.py
-python benchmark/rebuild_samples.py
-python benchmark/ecd_generator.py
-python benchmark/fix_met_meip.py   # produces *_v3_fixed.jsonl
+source .env
+python evaluation/sota_eval.py --task all --model gpt-4o --workers 50 --save-raw
 ```
 
----
-
-## Running evaluations
-
-### Closed-source frontier models (LiteLLM proxy)
+### Open-weight models (Ollama / vLLM / Groq / Together)
 
 ```bash
-# All three tasks, two models
-python baselines/sota_eval.py \
-    --models gpt-5.2 claude-opus-4.6 \
-    --tasks  meip tes ecd
-
-# Single task with high concurrency
-python baselines/sota_eval.py --models gpt-5.2 --tasks meip --workers 150
-
-# Sweep every configured model
-python baselines/sota_eval.py --models all --tasks meip
+python evaluation/openllm_baseline.py \
+    --api-base https://api.groq.com/openai/v1 \
+    --api-key $GROQ_API_KEY \
+    --model llama-3.3-70b-versatile \
+    --tasks meip tes ecd
 ```
 
-Supported models include: GPT-5 / 5.1 / 5.2 / 5-mini, Claude Opus 4.5–4.6 + Sonnet 4.5, Gemini 2.5 Pro/Flash + 3 Pro/Flash preview, Doubao Seed 1.6 / 2.0-Pro, DeepSeek V3.2 / R1, Kimi K2.5, MiniMax M2.5, GLM-5, Qwen-Plus.
-
-Output: `results/{task}_{model}_shot{N}.json` — keys: `mrr`, `hit@1` (MEIP); `ndcg@10` (TES); `macro_pairaccc` (ECD).
-
-### Multimodal evaluation (image-grounded MEIP)
+### Non-LLM baselines
 
 ```bash
-python baselines/multimodal_eval.py --models all --workers 150
+python baselines/bm25_baseline.py meip --input data/meip_samples.jsonl
+python baselines/embedding_baseline.py --task meip
 ```
 
-Supported vision models: `gpt-5.2`, `claude-opus-4.6`, `gemini-2.5-pro`, `gemini-2.5-flash`, `doubao-seed-1.6-vision-250815`. Output suffix: `_vision_shot0.json`.
-
-### Open-source models (vLLM / Groq / Ollama)
+### Compile results table
 
 ```bash
-python baselines/openllm_baseline.py --models Qwen2.5-7B-Instruct Llama-3.1-8B-Instruct
-```
-
-### Few-shot ablation
-
-```bash
-python baselines/gpt_fewshot.py --shots 0 1 3 5 --models gemini-2.5-flash
-```
-
-### Retrieval baselines
-
-```bash
-python baselines/bm25_baseline.py
-python baselines/embedding_baseline.py
-python baselines/rag_kg_baseline.py
+python scripts/compile_results.py --shot 0 --latex
 ```
 
 ---
 
-## Analysis
+## Interactive Demo
 
 ```bash
-python analysis/error_analysis.py
-python analysis/cultural_bias_multi_model.py
-python analysis/metadata_ablation.py
-python analysis/contamination_ablation.py
-python analysis/tes_leakage_analysis.py
-python analysis/fewshot_mechanism.py
-python analysis/summarize_analysis.py
+source .env
+python system/nicegui_app.py --port 7861
+# Open http://localhost:7861
 ```
 
----
-
-## Headline results (zero-shot, MEIP / `_v3_fixed`)
-
-| Model | MRR | Hit@1 |
-|-------|----:|------:|
-| doubao-seed-2.0-pro | 0.642 | 0.539 |
-| claude-opus-4.6     | 0.621 | 0.510 |
-| gpt-5.2             | 0.619 | 0.510 |
-| gemini-2.5-pro      | 0.615 | 0.503 |
-| gpt-5               | 0.599 | 0.483 |
-| deepseek-v3.2       | 0.594 | 0.476 |
-| claude-sonnet-4.5   | 0.571 | 0.453 |
-| gemini-2.5-flash    | 0.552 | 0.429 |
-| deepseek-r1         | 0.529 | 0.391 |
-| kimi-k2.5           | 0.506 | 0.369 |
-| minimax-m2.5        | 0.469 | 0.319 |
-| glm-5               | 0.392 | 0.227 |
-
-Full main tables in `results/sota_main_table_shot0.csv` and `results/latex_main_table_shot0.tex`.
+Three task tabs (MEIP / ECD / TES), real benchmark samples, live inference, feedback logging.
 
 ---
 
-## Demo
+## Data Sources
 
-```bash
-python system/app.py    # Gradio UI
-```
+| Source | License | Objects |
+|---|---|---|
+| Metropolitan Museum of Art | CC0 1.0 | ~8,200 |
+| Art Institute of Chicago | CC0 1.0 | ~5,400 |
+| Victoria and Albert Museum | CC BY 4.0 | ~3,900 |
+| Cleveland Museum of Art | CC0 1.0 | ~3,800 |
+| Smithsonian Institution | CC0 / CC BY | ~2,358 |
 
----
-
-## Citation
-
-If you use ExhibitionBench in your research, please cite:
-
-```bibtex
-@misc{exhibitionbench2026,
-  title  = {ExhibitionBench: Probing Cultural-Heritage Understanding in Large Language Models},
-  author = {Hong, Mengze and others},
-  year   = {2026},
-  url    = {https://github.com/mengze-hong/ExhibitionBench}
-}
-```
-
----
-
-## License
-
-Code is released under the MIT License (see `LICENSE`).
-Museum metadata and images are subject to the licensing terms of the respective institutions (AIC, CMA, V&A) — please consult each museum's API terms before redistribution.
-
----
-
-## Acknowledgements
-
-We thank the open data programmes of the Art Institute of Chicago, the Cleveland Museum of Art, and the Victoria and Albert Museum, whose public collection APIs make this benchmark possible.
+Benchmark data: **CC BY 4.0**. Code: **MIT**.

@@ -1,0 +1,10 @@
+{
+  "task": "ecd",
+  "model": "bm25",
+  "pairaccc_L1": 0.935,
+  "pairaccc_L2": 0.98,
+  "pairaccc_L3": 0.585,
+  "pairaccc_L4": 0.955,
+  "macro_pairaccc": 0.8638,
+  "n_samples": 800
+}

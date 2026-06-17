@@ -1,0 +1,16 @@
+{
+  "task": "ecd",
+  "model": "gemini-2.5-pro",
+  "shot": 0,
+  "n_samples": 500,
+  "total_latency_sec": 2583.96,
+  "avg_latency_sec": 5.168,
+  "total_prompt_tokens": 226899,
+  "total_completion_tokens": 191460,
+  "total_tokens": 418359,
+  "pairaccc_L1": 0.936,
+  "pairaccc_L2": 0.976,
+  "pairaccc_L3": 0.584,
+  "pairaccc_L4": 0.944,
+  "macro_pairaccc": 0.86
+}

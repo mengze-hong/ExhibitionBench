@@ -27,6 +27,7 @@ import time
 import argparse
 import logging
 import random
+import os
 from pathlib import Path
 from collections import defaultdict
 
@@ -35,9 +36,15 @@ from tqdm import tqdm
 
 log = logging.getLogger(__name__)
 
-INTERNAL_API_BASE = "http://csig.litellm.prod.sgpolaris"
-INTERNAL_API_KEY = "sk-TpK0g832p8LbMXTdI_pjkQ"
+INTERNAL_API_BASE = os.environ.get("LLM_API_BASE", "http://YOUR_LLM_API_BASE").rstrip("/")
+INTERNAL_API_KEY = os.environ.get("LLM_API_KEY", "").strip()
 DEFAULT_MODEL = "gpt-5.2"
+
+
+def _require_api_key() -> str:
+    if not INTERNAL_API_KEY:
+        raise RuntimeError("Missing LLM_API_KEY environment variable")
+    return INTERNAL_API_KEY
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -226,7 +233,7 @@ def main():
 
     elif args.cmd == "meip":
         kg = load_kg(base / args.kg)
-        client = OpenAI(api_key=INTERNAL_API_KEY, base_url=INTERNAL_API_BASE)
+        client = OpenAI(api_key=_require_api_key(), base_url=f"{INTERNAL_API_BASE}/v1")
 
         samples = []
         with open(base / args.input, encoding="utf-8") as f:

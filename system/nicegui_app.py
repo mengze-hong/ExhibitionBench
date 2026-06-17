@@ -25,6 +25,7 @@ import argparse
 import asyncio
 import json
 import logging
+import os
 import random
 import re
 from collections import Counter
@@ -43,9 +44,15 @@ LOG_DIR      = BASE / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 FEEDBACK_LOG = LOG_DIR / "feedback_nicegui.jsonl"
 
-API_KEY  = "sk-TpK0g832p8LbMXTdI_pjkQ"
-API_BASE = "http://csig.litellm.prod.sgpolaris/v1"
+API_KEY = os.environ.get("LLM_API_KEY", "").strip()
+API_BASE = os.environ.get("LLM_API_BASE", "http://YOUR_LLM_API_BASE").rstrip("/") + "/v1"
 MODEL    = "gpt-5.2"
+
+
+def _require_api_key() -> str:
+    if not API_KEY:
+        raise RuntimeError("Missing LLM_API_KEY environment variable")
+    return API_KEY
 
 # ─────────────────────────────────────────────────────────────
 # 数据加载
@@ -164,7 +171,7 @@ def _llm_rerank_tes(query: str, candidates: list[dict], top_k: int = 10) -> list
     """TES: 从 50 个候选主题中排序，返回 top_k。candidates 是 TES 候选列表。"""
     try:
         from openai import OpenAI
-        client     = OpenAI(api_key=API_KEY, base_url=API_BASE)
+        client     = OpenAI(api_key=_require_api_key(), base_url=API_BASE)
         # TES candidates 是 theme-level，每个候选有 theme / title / description / sample_objects
         cand_block = "\n".join(
             f"ID:{i+1} | {c.get('title', c.get('theme',''))} | "
@@ -226,7 +233,7 @@ def _llm_predict_meip(sample: dict) -> tuple[str, Optional[dict]]:
     )
     try:
         from openai import OpenAI
-        client = OpenAI(api_key=API_KEY, base_url=API_BASE)
+        client = OpenAI(api_key=_require_api_key(), base_url=API_BASE)
         resp   = client.chat.completions.create(
             model=MODEL,
             messages=[{"role": "user", "content": prompt}],
@@ -275,7 +282,7 @@ def _llm_classify_ecd(sample: dict) -> tuple[str, int, bool]:
     )
     try:
         from openai import OpenAI
-        client = OpenAI(api_key=API_KEY, base_url=API_BASE)
+        client = OpenAI(api_key=_require_api_key(), base_url=API_BASE)
         resp   = client.chat.completions.create(
             model=MODEL,
             messages=[{"role": "user", "content": prompt}],

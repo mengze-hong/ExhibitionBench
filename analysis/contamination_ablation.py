@@ -59,8 +59,15 @@ ANALYSIS_OUT = BASE / "results" / "contamination"
 ANALYSIS_OUT.mkdir(exist_ok=True)
 
 # ── API ───────────────────────────────────────────────────────────────────────
-INTERNAL_API_BASE = "http://csig.litellm.prod.sgpolaris"
-INTERNAL_API_KEY  = "sk-TpK0g832p8LbMXTdI_pjkQ"
+def _require_env(name: str) -> str:
+    value = os.environ.get(name, "").strip()
+    if not value:
+        raise RuntimeError(f"Missing required environment variable: {name}")
+    return value
+
+
+INTERNAL_API_BASE = os.environ.get("LLM_API_BASE", "http://YOUR_LLM_API_BASE").rstrip("/")
+INTERNAL_API_KEY = _require_env("LLM_API_KEY")
 
 CLIENT = openai.OpenAI(
     api_key=INTERNAL_API_KEY,

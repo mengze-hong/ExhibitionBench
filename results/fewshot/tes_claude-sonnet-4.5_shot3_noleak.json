@@ -1,0 +1,13 @@
+{
+  "task": "tes",
+  "model": "claude-sonnet-4.5",
+  "shot": 3,
+  "n_samples": 283,
+  "ndcg@10": 0.4084,
+  "mrr": 0.2584,
+  "total_latency_sec": 5546.49,
+  "avg_latency_sec": 19.599,
+  "total_prompt_tokens": 1588443,
+  "total_completion_tokens": 31580,
+  "total_tokens": 1620023
+}

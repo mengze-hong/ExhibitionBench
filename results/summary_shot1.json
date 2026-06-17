@@ -1,15 +1,29 @@
 [
   {
-    "task": "tes",
-    "model": "gpt-5.2",
+    "task": "meip",
+    "model": "glm-5",
     "shot": 1,
-    "n_samples": 283,
-    "ndcg@10": 0.388,
-    "mrr": 0.2318,
-    "total_latency_sec": 3074.68,
-    "avg_latency_sec": 10.865,
-    "total_prompt_tokens": 1390721,
-    "total_completion_tokens": 12169,
-    "total_tokens": 1402890
+    "n_samples": 982,
+    "mrr": 0.6265,
+    "hit@1": 0.5234,
+    "total_latency_sec": 32016.97,
+    "avg_latency_sec": 32.604,
+    "total_prompt_tokens": 697254,
+    "total_completion_tokens": 1339626,
+    "total_tokens": 2036880,
+    "run_meta": {
+      "workers": 20,
+      "cot": false,
+      "save_raw": true,
+      "tes_noleak": false,
+      "tag": "",
+      "data_fingerprint": {
+        "objects_path": "data\\objects_v3.jsonl",
+        "objects_sha256": "f5bb0aa8879e1e597eda242892d4b44ba3c03cf86d123e461ac58b268e6ae194",
+        "task_data_path": "data\\meip_samples_v3_fixed.jsonl",
+        "task_data_sha256": "f6e0bd1c0d8bb8db110ad07a8cd5ab31e972d01355e6751d57b7b79adb1bf297"
+      },
+      "timestamp": 1779359902.8811378
+    }
   }
 ]

@@ -1,0 +1,272 @@
+{
+  "claude-opus-4.5": {
+    "display": "Claude Opus 4.5",
+    "avg_lat": 5.149368667186281,
+    "total_tok": 2201283,
+    "cost_total": 35.382585,
+    "cost_per_1k": 27.578008573655495,
+    "meip_mrr": 0.7713,
+    "ecd_m": 0.798,
+    "tes_ndcg": 0.409
+  },
+  "claude-opus-4.6": {
+    "display": "Claude Opus 4.6",
+    "avg_lat": 7.0655339049103665,
+    "total_tok": 2221414,
+    "cost_total": 36.89241,
+    "cost_per_1k": 28.75480124707716,
+    "meip_mrr": 0.7814,
+    "ecd_m": 0.836,
+    "tes_ndcg": 0.4368
+  },
+  "claude-sonnet-4.5": {
+    "display": "Claude Sonnet 4.5",
+    "avg_lat": 8.063881527669526,
+    "total_tok": 2206102,
+    "cost_total": 7.148802000000001,
+    "cost_per_1k": 5.571942322681217,
+    "meip_mrr": 0.7559,
+    "ecd_m": 0.802,
+    "tes_ndcg": 0.4182
+  },
+  "deepseek-r1": {
+    "display": "DeepSeek-R1",
+    "avg_lat": 34.80956352299298,
+    "total_tok": 3119674,
+    "cost_total": 3.6965717000000002,
+    "cost_per_1k": 2.8811938425565082,
+    "meip_mrr": 0.6653,
+    "ecd_m": 0.486,
+    "tes_ndcg": 0.3426
+  },
+  "deepseek-v3.2": {
+    "display": "DeepSeek-V3.2",
+    "avg_lat": 32.39435697583788,
+    "total_tok": 1930518,
+    "cost_total": 0.53544116,
+    "cost_per_1k": 0.4173352766952455,
+    "meip_mrr": 0.733,
+    "ecd_m": 0.686,
+    "tes_ndcg": 0.3818
+  },
+  "deepseek-v3": {
+    "display": "DeepSeek-V3",
+    "avg_lat": 5.463913443830571,
+    "total_tok": 2426032,
+    "cost_total": 0.7226752999999999,
+    "cost_per_1k": 0.33272343462246773,
+    "meip_mrr": 0.5978,
+    "ecd_m": 0.8,
+    "tes_ndcg": 0.39
+  },
+  "doubao-seed-1.6": {
+    "display": "Doubao-Seed-1.6",
+    "avg_lat": 30.018807482462982,
+    "total_tok": 3348209,
+    "cost_total": 2.7098248,
+    "cost_per_1k": 2.112100389711613,
+    "meip_mrr": 0.7362,
+    "ecd_m": 0.854,
+    "tes_ndcg": 0.3756
+  },
+  "doubao-seed-2.0-lite": {
+    "display": "Doubao-Seed-2.0-Lite",
+    "avg_lat": 27.1676301369863,
+    "total_tok": 4966268,
+    "cost_total": 2.4488447,
+    "cost_per_1k": 1.1181939269406391,
+    "meip_mrr": 0.6265,
+    "ecd_m": 0.856,
+    "tes_ndcg": 0.3991
+  },
+  "doubao-seed-2.0-pro": {
+    "display": "Doubao-Seed-2.0-Pro",
+    "avg_lat": 27.1660872954014,
+    "total_tok": 3541650,
+    "cost_total": 5.036695,
+    "cost_per_1k": 3.9257170693686674,
+    "meip_mrr": 0.7587,
+    "ecd_m": 0.852,
+    "tes_ndcg": 0.4101
+  },
+  "gemini-2.5-flash": {
+    "display": "Gemini 2.5 Flash",
+    "avg_lat": 25.65185789726356,
+    "total_tok": 4800667,
+    "cost_total": 6.4373241,
+    "cost_per_1k": 3.0904100336053766,
+    "meip_mrr": 0.6172,
+    "ecd_m": 0.732,
+    "tes_ndcg": 0.3788
+  },
+  "gemini-2.5-pro": {
+    "display": "Gemini 2.5 Pro",
+    "avg_lat": 51.13115617715618,
+    "total_tok": 4997852,
+    "cost_total": 27.528557499999998,
+    "cost_per_1k": 12.83382634032634,
+    "meip_mrr": 0.6305,
+    "ecd_m": 0.86,
+    "tes_ndcg": 0.4075
+  },
+  "gemini-3-flash-preview": {
+    "display": "Gemini 3 Flash",
+    "avg_lat": 14.812662276575727,
+    "total_tok": 4624212,
+    "cost_total": 5.9413692,
+    "cost_per_1k": 2.794623330197554,
+    "meip_mrr": 0.6452,
+    "ecd_m": 0.616,
+    "tes_ndcg": 0.3519
+  },
+  "gemini-3-pro-preview": {
+    "display": "Gemini 3 Pro",
+    "avg_lat": 14.250226032735776,
+    "total_tok": 3089531,
+    "cost_total": 16.198352,
+    "cost_per_1k": 12.625371784879189,
+    "meip_mrr": 0.8196,
+    "ecd_m": 0.644,
+    "tes_ndcg": 0.405
+  },
+  "gemini-3.1-pro-preview": {
+    "display": "Gemini 3.1 Pro",
+    "avg_lat": 13.269697663765461,
+    "total_tok": 4440147,
+    "cost_total": 27.406224,
+    "cost_per_1k": 12.554385707741641,
+    "meip_mrr": 0.6848,
+    "ecd_m": 0.876,
+    "tes_ndcg": 0.4084
+  },
+  "glm-5": {
+    "display": "GLM-5",
+    "avg_lat": 28.032938425565085,
+    "total_tok": 2891563,
+    "cost_total": 3.7901064999999994,
+    "cost_per_1k": 2.9540970381917377,
+    "meip_mrr": 0.6879,
+    "ecd_m": 0.588,
+    "tes_ndcg": 0.0761
+  },
+  "gpt-5.1": {
+    "display": "GPT-5.1",
+    "avg_lat": 6.479610288386594,
+    "total_tok": 1916504,
+    "cost_total": 2.65392125,
+    "cost_per_1k": 2.0685278643803584,
+    "meip_mrr": 0.7476,
+    "ecd_m": 0.836,
+    "tes_ndcg": 0.4058
+  },
+  "gpt-5.2": {
+    "display": "GPT-5.2",
+    "avg_lat": 6.971784879189399,
+    "total_tok": 1908849,
+    "cost_total": 2.57737125,
+    "cost_per_1k": 2.008863016367888,
+    "meip_mrr": 0.7459,
+    "ecd_m": 0.774,
+    "tes_ndcg": 0.3871
+  },
+  "gpt-5": {
+    "display": "GPT-5",
+    "avg_lat": 18.352597503900157,
+    "total_tok": 3019619,
+    "cost_total": 13.7293725,
+    "cost_per_1k": 10.709338923556944,
+    "meip_mrr": 0.7137,
+    "ecd_m": 0.756,
+    "tes_ndcg": 0.0769
+  },
+  "kimi-k2.5": {
+    "display": "Kimi-K2.5",
+    "avg_lat": 69.81390686661405,
+    "total_tok": 3318084,
+    "cost_total": 3.7125643,
+    "cost_per_1k": 2.9302007103393843,
+    "meip_mrr": 0.6422,
+    "ecd_m": 0.498,
+    "tes_ndcg": 0.1188
+  },
+  "llama-3.1-70b-instruct": {
+    "display": "Llama-3.1-70B",
+    "avg_lat": 48.328363211223696,
+    "total_tok": 1947852,
+    "cost_total": 0.7791408000000001,
+    "cost_per_1k": 0.607280436477007,
+    "meip_mrr": 0.663,
+    "ecd_m": 0.618,
+    "tes_ndcg": 0.4366
+  },
+  "llama-3.1-8b-instruct": {
+    "display": "Llama-3.1-8B",
+    "avg_lat": 18.757895557287608,
+    "total_tok": 2007905,
+    "cost_total": 0.10039525,
+    "cost_per_1k": 0.07825038971161341,
+    "meip_mrr": 0.498,
+    "ecd_m": 0.504,
+    "tes_ndcg": 0.322
+  },
+  "llama-3.3-70b": {
+    "display": "Llama-3.3-70B",
+    "avg_lat": 7.0047388932190175,
+    "total_tok": 1950352,
+    "cost_total": 0.7801408000000001,
+    "cost_per_1k": 0.6080598597038191,
+    "meip_mrr": 0.6572,
+    "ecd_m": 0.638,
+    "tes_ndcg": 0.4146
+  },
+  "minimax-m2.5": {
+    "display": "MiniMax-M2.5",
+    "avg_lat": 17.03049883086516,
+    "total_tok": 3326509,
+    "cost_total": 1.9198136,
+    "cost_per_1k": 1.4963473109898675,
+    "meip_mrr": 0.5897,
+    "ecd_m": 0.536,
+    "tes_ndcg": 0.1694
+  },
+  "qwen2.5-72b-instruct": {
+    "display": "Qwen2.5-72B",
+    "avg_lat": 8.401948558067032,
+    "total_tok": 2210567,
+    "cost_total": 0.8842268,
+    "cost_per_1k": 0.6891869056897895,
+    "meip_mrr": 0.7332,
+    "ecd_m": 0.674,
+    "tes_ndcg": 0.3912
+  },
+  "qwen2.5-7b-instruct": {
+    "display": "Qwen2.5-7B",
+    "avg_lat": 6.846367887763055,
+    "total_tok": 2247533,
+    "cost_total": 0.11237665,
+    "cost_per_1k": 0.0875889711613406,
+    "meip_mrr": 0.3753,
+    "ecd_m": 0.484,
+    "tes_ndcg": 0.1557
+  },
+  "qwen3-14b": {
+    "display": "Qwen3-14B",
+    "avg_lat": 15.556009353078721,
+    "total_tok": 2212279,
+    "cost_total": 0.2212279,
+    "cost_per_1k": 0.17243016367887765,
+    "meip_mrr": 0.5805,
+    "ecd_m": 0.548,
+    "tes_ndcg": 0.3761
+  },
+  "qwen3-8b": {
+    "display": "Qwen3-8B",
+    "avg_lat": 43.382673753066236,
+    "total_tok": 2815304,
+    "cost_total": 0.1407652,
+    "cost_per_1k": 0.1150982829108749,
+    "meip_mrr": 0.5952,
+    "ecd_m": 0.55,
+    "tes_ndcg": 0.3823
+  }
+}

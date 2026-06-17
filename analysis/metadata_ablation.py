@@ -38,9 +38,20 @@ DATA = BASE / "data"
 RESULTS = BASE / "results" / "metadata_ablation"
 RESULTS.mkdir(parents=True, exist_ok=True)
 
+
+def _require_env(name: str) -> str:
+    value = os.environ.get(name, "").strip()
+    if not value:
+        raise RuntimeError(f"Missing required environment variable: {name}")
+    return value
+
+
+API_BASE = os.environ.get("LLM_API_BASE", "http://YOUR_LLM_API_BASE").rstrip("/")
+API_KEY = _require_env("LLM_API_KEY")
+
 CLIENT = openai.OpenAI(
-    api_key="sk-TpK0g832p8LbMXTdI_pjkQ",
-    base_url="http://csig.litellm.prod.sgpolaris/v1",
+    api_key=API_KEY,
+    base_url=f"{API_BASE}/v1",
 )
 
 REASONING_MODELS = {"deepseek-r1", "kimi-k2.5", "minimax-m2.5"}
