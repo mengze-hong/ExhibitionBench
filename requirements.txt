@@ -26,6 +26,7 @@ pandas>=2.2.0
 
 # Visualization & demo
 gradio>=4.29.0
+nicegui>=2.0.0
 matplotlib>=3.8.0
 
 # KG / ontology

@@ -1,6 +1,27 @@
 # ExhibitionBench
 
+**Accepted at EMNLP 2026 Industry Track.**
+
 A multi-task LLM benchmark for museum exhibition curation, built from 23,658 real objects across 5 open-access museum collections.
+
+ExhibitionBench evaluates whether models can complete an exhibition, retrieve
+thematically relevant exhibitions, and detect curatorial incoherence. The
+repository includes the released benchmark data, model evaluators, retrieval
+baselines, analysis scripts, experiment outputs, and an interactive demo.
+
+## Quick Start
+
+```bash
+git clone https://github.com/mengze-hong/ExhibitionBench.git
+cd ExhibitionBench
+python -m pip install -r requirements.txt
+
+# Read-only validation of all released benchmark files
+python scripts/validate_data.py
+```
+
+The validation command checks JSONL parsing, IDs, candidate counts, gold
+references, and ECD sequence structure without modifying any data.
 
 ---
 
@@ -37,7 +58,7 @@ ExhibitionBench/
 ├── data/
 │   ├── meip_samples.jsonl        # 1,409 MEIP queries
 │   ├── tes_samples.jsonl         # 283 TES queries
-│   ├── ecd_samples.jsonl         # 500 ECD pairs (800 samples, 4 levels)
+│   ├── ecd_samples.jsonl         # 500 ECD pairs (4 levels)
 │   ├── objects.jsonl             # 23,658 museum objects
 │   ├── exhibitions.jsonl         # 300 exhibition records
 │   └── kg.json                   # CIDOC-CRM knowledge-graph triples
@@ -50,6 +71,7 @@ ExhibitionBench/
 │   └── ecd_generator.py          # ECD sample generation utilities
 │
 ├── baselines/
+│   ├── data_utils.py             # Shared schema compatibility helpers
 │   ├── bm25_baseline.py          # BM25 term-overlap ranking
 │   ├── embedding_baseline.py     # SBERT cosine-similarity ranking
 │   └── rag_kg_baseline.py        # RAG + CIDOC-CRM KG triples
@@ -66,6 +88,7 @@ ExhibitionBench/
 │   └── nicegui_app.py            # Interactive demo (NiceGUI, port 7861)
 │
 ├── scripts/
+│   ├── validate_data.py          # Read-only benchmark integrity checks
 │   ├── run_pipeline.py           # End-to-end pipeline orchestration
 │   ├── build_samples.py          # Rebuild benchmark from raw data
 │   └── compile_results.py        # Aggregate results to tables / LaTeX
@@ -92,27 +115,37 @@ ExhibitionBench/
 
 ---
 
-## Setup
+## Environment Configuration
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/ExhibitionBench
-cd ExhibitionBench
-pip install -r requirements.txt
-cp .env.example .env   # fill in your API base + key
+cp .env.example .env
+# Edit .env and provide the endpoint and key used by your selected model.
+source .env
 ```
 
-Supports any OpenAI-compatible endpoint: OpenAI, Anthropic (via proxy), Groq, Together AI, local Ollama, local vLLM.
+The evaluators support OpenAI-compatible endpoints, including hosted gateways,
+Groq, Together AI, local Ollama, and local vLLM. The primary and open-weight
+endpoints are configured independently; only the endpoint used by the selected
+model requires credentials.
 
 ---
 
 ## Evaluation
 
-### Proprietary models
+### Registered models
 
 ```bash
 source .env
-python evaluation/sota_eval.py --task all --model gpt-4o --workers 50 --save-raw
+python evaluation/sota_eval.py \
+    --task all \
+    --model gpt-5.2 \
+    --workers 50 \
+    --save-raw
 ```
+
+Use `python evaluation/sota_eval.py --help` to list registered models and
+options. Results are written under `results/`; `--save-raw` additionally stores
+per-sample traces in `results/raw_responses/`.
 
 ### Open-weight models (Ollama / vLLM / Groq / Together)
 
@@ -127,9 +160,18 @@ python evaluation/openllm_baseline.py \
 ### Non-LLM baselines
 
 ```bash
-python baselines/bm25_baseline.py meip --input data/meip_samples.jsonl
-python baselines/embedding_baseline.py --task meip
+python baselines/bm25_baseline.py meip \
+    --input data/meip_samples.jsonl \
+    --output results/baselines_pred/bm25_meip.jsonl
+
+python baselines/embedding_baseline.py meip \
+    --input data/meip_samples.jsonl \
+    --output results/baselines_pred/sbert_meip.jsonl
 ```
+
+MEIP baselines accept both released representations: embedded candidate
+objects and ID-only candidate lists. ID-only records are resolved from
+`data/objects.jsonl` automatically.
 
 ### Compile results table
 
@@ -155,10 +197,10 @@ Three task tabs (MEIP / ECD / TES), real benchmark samples, live inference, feed
 
 | Source | License | Objects |
 |---|---|---|
-| Metropolitan Museum of Art | CC0 1.0 | ~8,200 |
-| Art Institute of Chicago | CC0 1.0 | ~5,400 |
-| Victoria and Albert Museum | CC BY 4.0 | ~3,900 |
-| Cleveland Museum of Art | CC0 1.0 | ~3,800 |
-| Smithsonian Institution | CC0 / CC BY | ~2,358 |
+| Metropolitan Museum of Art | CC0 1.0 | 1,221 |
+| Art Institute of Chicago | CC0 1.0 | 7,270 |
+| Victoria and Albert Museum | CC BY 4.0 | 4,545 |
+| Cleveland Museum of Art | CC0 1.0 | 4,339 |
+| Europeana | Source-specific rights statements | 6,283 |
 
 Benchmark data: **CC BY 4.0**. Code: **MIT**.

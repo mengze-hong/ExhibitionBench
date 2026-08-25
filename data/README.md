@@ -15,13 +15,13 @@ Benchmark data for **ExhibitionBench** — three tasks derived from real museum 
 
 ## Sources
 
-Objects were collected from five public museum APIs / open datasets:
+Objects were collected from five public collection APIs / open datasets:
 
 - **Metropolitan Museum of Art** — Open Access collection (CC0)
 - **Art Institute of Chicago** — Open Access API (CC0)  
 - **Victoria and Albert Museum** — V&A API (CC BY)
 - **Cleveland Museum of Art** — Open Access collection (CC0)
-- **Smithsonian Institution** — Open Access (CC0 / CC BY)
+- **Europeana** — Aggregated cultural-heritage records (source-specific rights statements)
 
 ## Format
 
@@ -31,10 +31,13 @@ Each MEIP sample:
   "id": "meip_000001",
   "exhibition_theme": "Japanese Woodblock Prints",
   "context": ["met_36491", "met_45677", "aic_185432"],
-  "candidates": [{"id": "met_12345", "title": "...", ...}, ...],
+  "candidate_ids": ["met_12345", "aic_185432", "..."],
   "gold_id": "met_12345"
 }
 ```
+
+MEIP records use either ID-only `candidate_ids` or embedded `candidates`
+objects. Official evaluators and baselines support both representations.
 
 Each ECD sample:
 ```json

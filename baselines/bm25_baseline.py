@@ -28,6 +28,11 @@ from pathlib import Path
 from rank_bm25 import BM25Okapi
 from tqdm import tqdm
 
+try:
+    from .data_utils import exhibition_to_text, load_objects, meip_candidates, meip_context, tes_query
+except ImportError:  # Direct execution: python baselines/bm25_baseline.py
+    from data_utils import exhibition_to_text, load_objects, meip_candidates, meip_context, tes_query
+
 log = logging.getLogger(__name__)
 
 
@@ -53,9 +58,9 @@ def run_tes_bm25(samples: list[dict]) -> list[dict]:
     results = []
     for s in tqdm(samples, desc="BM25 TES"):
         candidates = s["candidates"]
-        docs = [tokenize(obj_to_doc(c)) for c in candidates]
+        docs = [tokenize(exhibition_to_text(c)) for c in candidates]
         bm25 = BM25Okapi(docs)
-        query_tokens = tokenize(s["query"] + " " + s.get("description", ""))
+        query_tokens = tokenize(tes_query(s))
         scores = bm25.get_scores(query_tokens)
         ranked_idx = sorted(range(len(candidates)), key=lambda i: scores[i], reverse=True)
         pred_ids = [candidates[i]["id"] for i in ranked_idx]
@@ -64,15 +69,16 @@ def run_tes_bm25(samples: list[dict]) -> list[dict]:
     return results
 
 
-def run_meip_bm25(samples: list[dict]) -> list[dict]:
+def run_meip_bm25(samples: list[dict], objects: dict[str, dict]) -> list[dict]:
     """
     BM25 MEIP baseline：将上下文展品拼成 pseudo-query，在候选中排序。
     伪查询 = 所有上下文展品的 title 拼接。
     """
     results = []
     for s in tqdm(samples, desc="BM25 MEIP"):
-        context_text = " ".join(c.get("title", "") + " " + c.get("culture", "") for c in s["context"])
-        candidates = s["candidates"]
+        context = meip_context(s, objects)
+        context_text = " ".join(c.get("title", "") + " " + c.get("culture", "") for c in context)
+        candidates = meip_candidates(s, objects)
         docs = [tokenize(obj_to_doc(c)) for c in candidates]
         bm25 = BM25Okapi(docs)
         query_tokens = tokenize(context_text)
@@ -89,6 +95,8 @@ def main():
     parser.add_argument("task", choices=["tes", "meip"])
     parser.add_argument("--input", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument("--objects", default="data/objects.jsonl",
+                        help="Object metadata used to resolve ID-only MEIP samples")
     args = parser.parse_args()
 
     samples = []
@@ -100,7 +108,8 @@ def main():
     if args.task == "tes":
         results = run_tes_bm25(samples)
     else:
-        results = run_meip_bm25(samples)
+        objects = load_objects(Path(args.objects))
+        results = run_meip_bm25(samples, objects)
 
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)

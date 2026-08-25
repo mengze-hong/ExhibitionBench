@@ -201,7 +201,7 @@ def build_meip_prompt(sample: dict, objects: dict) -> tuple[str, list[str]]:
 
 def parse_id_selection(response: str, candidates: list[str]) -> list[str]:
     resp = (response or "").strip()
-    found = [c for c in candidates if c in resp]
+    found = sorted((c for c in candidates if c in resp), key=resp.find)
     if found:
         return found + [c for c in candidates if c not in found]
     nums = re.findall(r"\b(\d+)\b", resp)
@@ -322,27 +322,30 @@ def evaluate_tes(
     lock = Lock()
 
     def _one(exh):
-        theme = exh.get("theme", exh.get("exhibition_theme", ""))
+        theme = exh.get("query_theme", exh.get("theme", exh.get("exhibition_theme", "")))
         gold_ids = exh.get("relevant_ids", exh.get("gold_ids", []))
         if not gold_ids:
             gid = exh.get("gold_id")
             if gid:
                 gold_ids = [gid]
-        candidate_ids = exh.get("candidate_ids", exh.get("candidates", []))
+        candidates = exh.get("candidates", exh.get("candidate_ids", []))
+        candidate_ids = [c["id"] if isinstance(c, dict) else c for c in candidates]
         if not theme or not gold_ids or not candidate_ids:
             return None
         cand_lines = []
-        for idx, cid in enumerate(candidate_ids, 1):
-            obj = objects.get(cid, {})
-            if obj:
+        for idx, (cid, candidate) in enumerate(zip(candidate_ids, candidates), 1):
+            if isinstance(candidate, dict) and candidate.get("sample_objects"):
+                sample_text = "; ".join(
+                    f"{item.get('title', '?')} ({item.get('culture', '?')}, {item.get('date', '?')})"
+                    for item in candidate["sample_objects"][:5]
+                )
+                cand_lines.append(f"  [{idx}] ID={cid} | {sample_text}")
+            else:
+                obj = candidate if isinstance(candidate, dict) else objects.get(cid, {})
                 cand_lines.append(
                     f"  [{idx}] ID={cid} | {obj.get('title', '?')}"
-                    f" | {obj.get('culture', '?')}"
-                    f" | {obj.get('date', '?')}"
-                    f" | {(obj.get('medium') or '')[:60]}"
+                    f" | {obj.get('culture', '?')} | {obj.get('date', '?')}"
                 )
-            else:
-                cand_lines.append(f"  [{idx}] ID={cid}")
         prompt = TES_PROMPT_TEMPLATE.format(
             theme=theme, candidates="\n".join(cand_lines)
         )
@@ -350,7 +353,7 @@ def evaluate_tes(
         if response is None:
             return None
         resp = response.strip()
-        found = [c for c in candidate_ids if c in resp]
+        found = sorted((c for c in candidate_ids if c in resp), key=resp.find)
         if not found:
             nums = re.findall(r"\b(\d+)\b", resp)
             idx_order: list[int] = []
@@ -448,9 +451,14 @@ def evaluate_ecd(
         return "\n".join(lines) if lines else "(empty)"
 
     def _one(sample):
-        level = str(sample.get("level", "L1"))
+        level_raw = str(sample.get("level", "1"))
+        level = level_raw if level_raw.startswith("L") else f"L{level_raw}"
         pos_seq = sample.get("positive_sequence", sample.get("pos_seq"))
         neg_seq = sample.get("negative_sequence", sample.get("neg_seq"))
+        if not pos_seq:
+            pos_seq = sample.get("positive", {}).get("items")
+        if not neg_seq:
+            neg_seq = sample.get("negative", {}).get("items")
         if not pos_seq or not neg_seq:
             return None
         # Randomly assign A/B to avoid position bias

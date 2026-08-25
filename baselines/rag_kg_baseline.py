@@ -29,10 +29,14 @@ import logging
 import random
 import os
 from pathlib import Path
-from collections import defaultdict
 
 from openai import OpenAI
 from tqdm import tqdm
+
+try:
+    from .data_utils import meip_candidates, meip_context
+except ImportError:  # Direct execution: python baselines/rag_kg_baseline.py
+    from data_utils import meip_candidates, meip_context
 
 log = logging.getLogger(__name__)
 
@@ -151,9 +155,12 @@ You have access to structured knowledge about artworks. Use the provided knowled
 to reason about which candidate artwork best fits the exhibition's curatorial logic.
 """
 
-def run_meip_rag_kg(client: OpenAI, sample: dict, kg: dict, model: str = DEFAULT_MODEL) -> dict:
-    context_ids = [c["id"] for c in sample["context"]]
-    candidate_ids = [c["id"] for c in sample["candidates"]]
+def run_meip_rag_kg(client: OpenAI, sample: dict, kg: dict,
+                    objects: dict[str, dict], model: str = DEFAULT_MODEL) -> dict:
+    context = meip_context(sample, objects)
+    candidates = meip_candidates(sample, objects)
+    context_ids = [c["id"] for c in context]
+    candidate_ids = [c["id"] for c in candidates]
 
     kg_text = retrieve_kg_context(context_ids, candidate_ids, kg)
 
@@ -163,8 +170,8 @@ def run_meip_rag_kg(client: OpenAI, sample: dict, kg: dict, model: str = DEFAULT
             f'{obj.get("medium","")} | {obj.get("date","")}'
         )
 
-    ctx_block = "\n".join(f"- {obj_line(c)}" for c in sample["context"])
-    cand_block = "\n".join(f"- {obj_line(c)}" for c in sample["candidates"])
+    ctx_block = "\n".join(f"- {obj_line(c)}" for c in context)
+    cand_block = "\n".join(f"- {obj_line(c)}" for c in candidates)
 
     user_content = (
         f"## Exhibition Context\nThese artworks are already in the exhibition:\n{ctx_block}\n\n"
@@ -222,6 +229,7 @@ def main():
     meip_p.add_argument("--kg", default="data/kg.json")
     meip_p.add_argument("--output", required=True)
     meip_p.add_argument("--model", default=DEFAULT_MODEL)
+    meip_p.add_argument("--objects", default="data/objects.jsonl")
     meip_p.add_argument("--max-samples", type=int, default=None)
     meip_p.add_argument("--sleep", type=float, default=0.3)
 
@@ -233,7 +241,10 @@ def main():
 
     elif args.cmd == "meip":
         kg = load_kg(base / args.kg)
-        client = OpenAI(api_key=_require_api_key(), base_url=f"{INTERNAL_API_BASE}/v1")
+        with open(base / args.objects, encoding="utf-8") as handle:
+            objects = {obj["id"]: obj for line in handle if (obj := json.loads(line))}
+        api_base = INTERNAL_API_BASE if INTERNAL_API_BASE.endswith("/v1") else f"{INTERNAL_API_BASE}/v1"
+        client = OpenAI(api_key=_require_api_key(), base_url=api_base)
 
         samples = []
         with open(base / args.input, encoding="utf-8") as f:
@@ -257,7 +268,7 @@ def main():
             for sample in tqdm(samples, desc=f"RAG+KG MEIP [{args.model}]"):
                 if sample["id"] in done_ids:
                     continue
-                result = run_meip_rag_kg(client, sample, kg, model=args.model)
+                result = run_meip_rag_kg(client, sample, kg, objects, model=args.model)
                 out.write(json.dumps(result, ensure_ascii=False) + "\n")
                 out.flush()
                 time.sleep(args.sleep)

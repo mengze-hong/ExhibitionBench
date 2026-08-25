@@ -10,6 +10,10 @@ Non-LLM retrieval baselines for ExhibitionBench.
 | `embedding_baseline.py` | SBERT cosine-similarity ranking | MEIP, TES |
 | `rag_kg_baseline.py` | RAG + CIDOC-CRM knowledge-graph triples | MEIP |
 
+The MEIP baselines accept both released schemas: embedded `candidates`
+objects and ID-only `candidate_ids`. ID-only records are resolved through
+`data/objects.jsonl`; use `--objects` to select another metadata file.
+
 ## Usage
 
 ```bash
@@ -23,13 +27,14 @@ python baselines/bm25_baseline.py tes \
     --output results/bm25_tes_pred.jsonl
 
 # SBERT (requires sentence-transformers)
-python baselines/embedding_baseline.py \
-    --task meip \
-    --model all-MiniLM-L6-v2
+python baselines/embedding_baseline.py meip \
+    --input data/meip_samples.jsonl \
+    --output results/sbert_meip_pred.jsonl
 
 # RAG+KG (requires OpenAI-compatible endpoint for GPT prompting)
-python baselines/rag_kg_baseline.py \
-    --task meip \
+python baselines/rag_kg_baseline.py meip \
+    --input data/meip_samples.jsonl \
+    --output results/rag_kg_meip_pred.jsonl \
     --kg data/kg.json
 ```
 

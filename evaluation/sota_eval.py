@@ -71,25 +71,33 @@ def _file_sha256(path: Path) -> str:
     return h.hexdigest()
 
 
-INTERNAL_API_BASE = os.environ.get(
-    "LLM_API_BASE",
-    "http://YOUR_LLM_API_BASE",
-).rstrip("/")
-INTERNAL_API_KEY = _require_env("LLM_API_KEY")
+def _normalise_api_base(value: str) -> str:
+    """Return an OpenAI-compatible base URL without duplicating ``/v1``."""
+    base = value.rstrip("/")
+    return base if base.endswith("/v1") else f"{base}/v1"
 
-CLIENT = openai.OpenAI(
-    api_key=INTERNAL_API_KEY,
-    base_url=f"{INTERNAL_API_BASE}/v1",
-)
+
+INTERNAL_API_BASE = os.environ.get("LLM_API_BASE", "http://YOUR_LLM_API_BASE")
 
 # Open-weight models via an OpenAI-compatible gateway (Llama / Qwen / Mistral)
-XTY_API_BASE = os.environ.get("LLM_OPENWEIGHT_API_BASE", "https://YOUR_OPENWEIGHT_API_BASE").rstrip("/")
-XTY_API_KEY  = _require_env("LLM_OPENWEIGHT_API_KEY")
-
-XTY_CLIENT = openai.OpenAI(
-    api_key=XTY_API_KEY,
-    base_url=XTY_API_BASE,
+XTY_API_BASE = os.environ.get(
+    "LLM_OPENWEIGHT_API_BASE", "https://YOUR_OPENWEIGHT_API_BASE"
 )
+
+_CLIENTS: dict[str, openai.OpenAI] = {}
+
+
+def _get_client(open_weight: bool = False) -> openai.OpenAI:
+    """Create only the client required by the selected model."""
+    endpoint = "open_weight" if open_weight else "primary"
+    if endpoint not in _CLIENTS:
+        key_name = "LLM_OPENWEIGHT_API_KEY" if open_weight else "LLM_API_KEY"
+        base = XTY_API_BASE if open_weight else INTERNAL_API_BASE
+        _CLIENTS[endpoint] = openai.OpenAI(
+            api_key=_require_env(key_name),
+            base_url=_normalise_api_base(base),
+        )
+    return _CLIENTS[endpoint]
 
 # ── Model Registry ────────────────────────────────────────────────────────────
 
@@ -179,7 +187,7 @@ def call_llm(model: str, prompt: str, max_tokens: int = 2048,
     actual_max = max_tokens * 8 if model in LARGE_TOKEN_MODELS else max_tokens
     empty_usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
     # Route open-weight models to an OpenAI-compatible gateway, others to primary LLM endpoint
-    client = XTY_CLIENT if model in XTY_MODELS else CLIENT
+    client = _get_client(open_weight=model in XTY_MODELS)
     for attempt in range(retries):
         try:
             t0 = time.perf_counter()
@@ -393,10 +401,10 @@ def parse_selection(response: str, candidates: list[str]) -> list[str]:
     resp = response.strip() if response else ""
 
     # Try to find IDs directly mentioned
-    found = []
-    for cid in candidates:
-        if cid in resp:
-            found.append(cid)
+    found = sorted(
+        (cid for cid in candidates if cid in resp),
+        key=resp.find,
+    )
     if found:
         return found + [c for c in candidates if c not in found]
 
@@ -448,10 +456,10 @@ def parse_tes_ranked_ids(response: str, anon_candidate_ids: list[str]) -> Option
     text = (response or "").strip()
     if not text:
         return None
-    ranked = []
-    for aid in anon_candidate_ids:
-        if aid in text and aid not in ranked:
-            ranked.append(aid)
+    ranked = sorted(
+        (aid for aid in anon_candidate_ids if aid in text),
+        key=text.find,
+    )
     if ranked:
         ranked += [x for x in anon_candidate_ids if x not in ranked]
         return ranked
@@ -914,7 +922,6 @@ def evaluate_tes(model: str, samples: list[dict],
         prompt, anon_to_real = build_tes_prompt(sample, cot=cot)
         prompt = build_tes_fewshot_prefix(shot) + prompt
         real_to_anon = {v: k for k, v in anon_to_real.items()}
-        anon_gold_ids = {real_to_anon.get(g, g) for g in gold_ids}
         all_anon_ids = [real_to_anon.get(rid, rid) for rid in all_candidate_ids]
         max_tok = 600 if cot else 300
         response_text, latency, usage = call_llm(model, prompt, max_tokens=max_tok)

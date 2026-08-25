@@ -26,6 +26,11 @@ import numpy as np
 from pathlib import Path
 from tqdm import tqdm
 
+try:
+    from .data_utils import exhibition_to_text, load_objects, meip_candidates, meip_context, tes_query
+except ImportError:  # Direct execution: python baselines/embedding_baseline.py
+    from data_utils import exhibition_to_text, load_objects, meip_candidates, meip_context, tes_query
+
 log = logging.getLogger(__name__)
 
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
@@ -56,8 +61,8 @@ def run_tes_sbert(samples: list[dict], model) -> list[dict]:
     """TES: query → 最相似候选 top-k。"""
     results = []
     for s in tqdm(samples, desc="SBERT TES"):
-        query_text = s["query"] + " " + s.get("description", "")
-        cand_texts = [obj_to_text(c) for c in s["candidates"]]
+        query_text = tes_query(s)
+        cand_texts = [exhibition_to_text(c) for c in s["candidates"]]
 
         query_emb = model.encode(query_text, normalize_embeddings=True)
         cand_embs = model.encode(cand_texts, normalize_embeddings=True, batch_size=32)
@@ -70,12 +75,14 @@ def run_tes_sbert(samples: list[dict], model) -> list[dict]:
     return results
 
 
-def run_meip_sbert(samples: list[dict], model) -> list[dict]:
+def run_meip_sbert(samples: list[dict], model, objects: dict[str, dict]) -> list[dict]:
     """MEIP: 上下文平均 embedding → 最近邻候选。"""
     results = []
     for s in tqdm(samples, desc="SBERT MEIP"):
-        ctx_texts = [obj_to_text(c) for c in s["context"]]
-        cand_texts = [obj_to_text(c) for c in s["candidates"]]
+        context = meip_context(s, objects)
+        candidates = meip_candidates(s, objects)
+        ctx_texts = [obj_to_text(c) for c in context]
+        cand_texts = [obj_to_text(c) for c in candidates]
 
         ctx_embs = model.encode(ctx_texts, normalize_embeddings=True, batch_size=32)
         cand_embs = model.encode(cand_texts, normalize_embeddings=True, batch_size=32)
@@ -86,7 +93,7 @@ def run_meip_sbert(samples: list[dict], model) -> list[dict]:
 
         scores = cand_embs @ query_emb
         ranked_idx = np.argsort(-scores).tolist()
-        ranked_ids = [s["candidates"][i]["id"] for i in ranked_idx]
+        ranked_ids = [candidates[i]["id"] for i in ranked_idx]
         results.append({"id": s["id"], "ranked_ids": ranked_ids})
     return results
 
@@ -98,6 +105,8 @@ def main():
     parser.add_argument("--input", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--model", default=MODEL_NAME)
+    parser.add_argument("--objects", default="data/objects.jsonl",
+                        help="Object metadata used to resolve ID-only MEIP samples")
     args = parser.parse_args()
 
     samples = []
@@ -111,7 +120,8 @@ def main():
     if args.task == "tes":
         results = run_tes_sbert(samples, model)
     else:
-        results = run_meip_sbert(samples, model)
+        objects = load_objects(Path(args.objects))
+        results = run_meip_sbert(samples, model, objects)
 
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
