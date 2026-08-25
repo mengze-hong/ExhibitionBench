@@ -18,7 +18,7 @@ the root of this directory are the canonical inputs consumed by
 | `metadata_ablation/` | Metadata sensitivity results |
 | `contamination/` | Contamination analysis outputs |
 | `cultural_bias/` | Culture-wise analysis outputs |
-| `tables/` | Frozen CSV and LaTeX tables released with the repository |
+| `tables/` | Camera-ready-aligned CSV and LaTeX summary tables |
 | `deployment_summary.json` | Per-model quality, latency, token, and cost summary |
 
 ## Deployment Summary Format
@@ -43,3 +43,6 @@ Raw per-sample traces produced with `--save-raw` are written to
 `results/raw_responses/` and are excluded from Git by default.
 Newly compiled tables are written to the ignored `results/tables/generated/`
 directory, so routine validation never overwrites the frozen released tables.
+For zero-shot MEIP, the compiler prefers the corrected full-set `v3fixed`
+outputs used in the camera-ready paper. For TES, it prefers the anonymized
+`noleak` outputs used in the paper.

@@ -79,6 +79,7 @@ def load_results(shot: int, tag: str = "") -> dict[str, dict[str, dict]]:
     Scans files matching:
       - {task}_{model}_shot{shot}.json
       - {task}_{model}_shot{shot}_{tag}.json
+      - MEIP zero-shot v3fixed variants (preferred for paper-aligned results)
       - TES noleak variants (preferred):
         {task}_{model}_shot{shot}_noleak.json
         {task}_{model}_shot{shot}_noleak_{tag}.json
@@ -101,8 +102,17 @@ def load_results(shot: int, tag: str = "") -> dict[str, dict[str, dict]]:
 
         if tag and suffix_tag != tag:
             continue
-        if not tag and suffix_tag:
-            continue
+        if not tag:
+            # The camera-ready MEIP main table uses the corrected full-set
+            # evaluation. Prefer it whenever available, including baselines.
+            if task == "meip" and shot == 0:
+                preferred = RESULTS_DIR / f"{task}_{model}_shot0_v3fixed.json"
+                if preferred.exists() and suffix_tag != "v3fixed":
+                    continue
+                if not preferred.exists() and suffix_tag:
+                    continue
+            elif suffix_tag:
+                continue
 
         # For TES: only use preferred noleak file when present.
         if task == "tes" and not has_noleak:
@@ -330,11 +340,12 @@ def export_csv(data: dict, shot: int, tag: str = "") -> None:
 
 def export_latex(data: dict, shot: int, tag: str = "") -> None:
     """Generate LaTeX table for the paper."""
+    setting = "Zero-shot" if shot == 0 else f"{shot}-shot"
     lines = []
     lines.append(r"\begin{table*}[ht]")
     lines.append(r"\centering")
-    lines.append(r"\caption{ExhibitionBench Main Results (Zero-shot)}")
-    lines.append(r"\label{tab:main-results}")
+    lines.append(f"\\caption{{ExhibitionBench Main Results ({setting})}}")
+    lines.append(f"\\label{{tab:main-results-shot{shot}}}")
     lines.append(r"\begin{tabular}{l|cc|cc|ccccc}")
     lines.append(r"\toprule")
     lines.append(

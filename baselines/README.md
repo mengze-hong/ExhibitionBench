@@ -38,13 +38,13 @@ python baselines/rag_kg_baseline.py meip \
     --kg data/kg.json
 ```
 
-## Results (zero-shot, full evaluation set)
+## Camera-ready Results (zero-shot)
 
-| Baseline | MEIP MRR | MEIP Hit@1 | ECD Macro |
-|---|---|---|---|
-| Random | 0.287 | 0.098 | 0.514 |
-| BM25 | 0.449 | 0.281 | 0.864 |
-| SBERT | pending | pending | pending |
-| RAG+KG | pending | pending | n/a |
+| Baseline | MEIP MRR | MEIP Hit@1 | TES NDCG@10 | TES MRR | ECD Macro |
+|---|---:|---:|---:|---:|---:|
+| BM25 | 0.449 | 0.281 | 0.347 | 0.328 | 0.864 |
+| SBERT | 0.859 | 0.780 | 0.282 | 0.255 | 0.588 |
+| RAG+KG (GPT-5.2) | 0.911 | 0.853 | 0.282 | 0.255 | 0.593 |
 
-BM25 surprisingly strong on ECD (L1/L2) due to high surface-form overlap in coherent sequences.
+Values are rounded exactly as in the camera-ready main table. BM25 is strong on
+ECD L1/L2 because surface-form and metadata cues are informative at those levels.
