@@ -47,7 +47,7 @@ references, and ECD sequence structure without modifying any data.
 | Qwen2.5-72B (open-weight) | 0.733 | 0.391 | 0.674 | 8.4 | 0.69 |
 | BM25 | 0.449 | 0.347 | 0.864 | <0.1 | ~0 |
 
-Full results: [`results_summary/deployment_summary.json`](results_summary/deployment_summary.json)
+Full results: [`results/deployment_summary.json`](results/deployment_summary.json)
 
 ---
 
@@ -104,9 +104,7 @@ ExhibitionBench/
 │   ├── cultural_bias/            # Cultural bias per-region outputs
 │   ├── baselines_pred/           # BM25 / SBERT / RAG prediction files
 │   ├── manifests/                # Experiment completeness reports
-│   └── tables/                   # LaTeX / CSV summary tables
-│
-├── results_summary/
+│   ├── tables/                   # LaTeX / CSV summary tables
 │   └── deployment_summary.json   # Per-model latency, cost, accuracy summary
 │
 ├── .env.example                  # API credential template

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# baselines/openllm_baseline.py — Open-Weight LLM Evaluation for ExhibitionBench
+# evaluation/openllm_baseline.py — Open-Weight LLM Evaluation for ExhibitionBench
 # ==============================================================================
 # Reproducibility artifact for evaluating open-weight models on ExhibitionBench.
 # Supports multiple backends: HuggingFace Serverless API, Together AI, Groq,
@@ -7,28 +7,28 @@
 #
 # Usage examples:
 #   # Groq (free tier, Llama-3.3-70B)
-#   python baselines/openllm_baseline.py \
+#   python evaluation/openllm_baseline.py \
 #       --api-base https://api.groq.com/openai/v1 \
 #       --api-key YOUR_GROQ_KEY \
 #       --model llama-3.3-70b-versatile \
 #       --tasks meip tes ecd
 #
 #   # Together AI (Llama-3.1-8B)
-#   python baselines/openllm_baseline.py \
+#   python evaluation/openllm_baseline.py \
 #       --api-base https://api.together.xyz/v1 \
 #       --api-key YOUR_TOGETHER_KEY \
 #       --model meta-llama/Llama-3.1-8B-Instruct-Turbo \
 #       --tasks meip tes ecd
 #
 #   # Local Ollama
-#   python baselines/openllm_baseline.py \
+#   python evaluation/openllm_baseline.py \
 #       --api-base http://localhost:11434/v1 \
 #       --api-key ollama \
 #       --model llama3:70b \
 #       --tasks meip tes ecd
 #
 #   # Local vLLM server
-#   python baselines/openllm_baseline.py \
+#   python evaluation/openllm_baseline.py \
 #       --api-base http://localhost:8000/v1 \
 #       --api-key vllm \
 #       --model meta-llama/Meta-Llama-3.1-8B-Instruct \

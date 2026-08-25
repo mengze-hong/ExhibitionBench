@@ -1,5 +1,5 @@
 """
-baselines/sota_eval.py — ExhibitionBench SOTA Multi-Model Evaluator
+evaluation/sota_eval.py — ExhibitionBench SOTA Multi-Model Evaluator
 ====================================================================
 Evaluates all SOTA LLMs from diverse families on all three benchmark tasks:
   - MEIP  (Museum Exhibition Item Prediction) — 10-way ranking, MRR metric
@@ -17,10 +17,10 @@ Models evaluated (one strong representative per family):
   Minimax   : minimax-m2.5
 
 Usage:
-  python baselines/sota_eval.py --task meip --model gpt-5.2
-  python baselines/sota_eval.py --task all --model all
-  python baselines/sota_eval.py --task meip --model all --max-samples 200
-  python baselines/sota_eval.py --task all --model all --max-samples 100 --shot 0
+  python evaluation/sota_eval.py --task meip --model gpt-5.2
+  python evaluation/sota_eval.py --task all --model all
+  python evaluation/sota_eval.py --task meip --model all --max-samples 200
+  python evaluation/sota_eval.py --task all --model all --max-samples 100 --shot 0
 """
 
 from __future__ import annotations
