@@ -330,12 +330,11 @@ def export_csv(data: dict, shot: int, tag: str = "") -> None:
 
 def export_latex(data: dict, shot: int, tag: str = "") -> None:
     """Generate LaTeX table for the paper."""
-    setting = "Zero-shot" if shot == 0 else f"{shot}-shot"
     lines = []
     lines.append(r"\begin{table*}[ht]")
     lines.append(r"\centering")
-    lines.append(f"\\caption{{ExhibitionBench Main Results ({setting})}}")
-    lines.append(f"\\label{{tab:main-results-shot{shot}}}")
+    lines.append(r"\caption{ExhibitionBench Main Results (Zero-shot)}")
+    lines.append(r"\label{tab:main-results}")
     lines.append(r"\begin{tabular}{l|cc|cc|ccccc}")
     lines.append(r"\toprule")
     lines.append(
