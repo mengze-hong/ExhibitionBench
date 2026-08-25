@@ -1,12 +1,12 @@
 """
-results/compile_sota_results.py
+scripts/compile_results.py
 ================================
 汇总所有 sota_eval.py 输出的 JSON 结果，生成完整的 main_table（含 latency + token cost）。
 
 使用方法：
-  python results/compile_sota_results.py
-  python results/compile_sota_results.py --shot 0 1 3 5   # 比较不同 shot
-  python results/compile_sota_results.py --latex           # 输出 LaTeX 表格
+  python scripts/compile_results.py
+  python scripts/compile_results.py --shot 0 1 3 5   # 比较不同 shot
+  python scripts/compile_results.py --latex           # 输出 LaTeX 表格
 """
 from __future__ import annotations
 import json
@@ -15,7 +15,9 @@ import argparse
 import re
 from pathlib import Path
 
-RESULTS_DIR = Path(__file__).resolve().parent
+BASE = Path(__file__).resolve().parent.parent
+RESULTS_DIR = BASE / "results"
+GENERATED_TABLE_DIR = RESULTS_DIR / "tables" / "generated"
 
 MODEL_DISPLAY = {
     "gpt-5.2":              "GPT-5.2",
@@ -275,7 +277,7 @@ def print_latency_cost_table(data: dict, shot: int) -> None:
 
 
 def export_csv(data: dict, shot: int, tag: str = "") -> None:
-    table_dir = RESULTS_DIR / "tables"
+    table_dir = GENERATED_TABLE_DIR
     table_dir.mkdir(parents=True, exist_ok=True)
     out_name = f"sota_main_table_shot{shot}.csv" if not tag else f"sota_main_table_shot{shot}_{tag}.csv"
     out = table_dir / out_name
@@ -318,7 +320,9 @@ def export_csv(data: dict, shot: int, tag: str = "") -> None:
 
     with open(out, "w", newline="", encoding="utf-8") as f:
         if rows:
-            writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+            writer = csv.DictWriter(
+                f, fieldnames=list(rows[0].keys()), lineterminator="\n"
+            )
             writer.writeheader()
             writer.writerows(rows)
     print(f"\nCSV saved → {out}")
@@ -326,11 +330,12 @@ def export_csv(data: dict, shot: int, tag: str = "") -> None:
 
 def export_latex(data: dict, shot: int, tag: str = "") -> None:
     """Generate LaTeX table for the paper."""
+    setting = "Zero-shot" if shot == 0 else f"{shot}-shot"
     lines = []
     lines.append(r"\begin{table*}[ht]")
     lines.append(r"\centering")
-    lines.append(r"\caption{ExhibitionBench Main Results (Zero-shot)}")
-    lines.append(r"\label{tab:main-results}")
+    lines.append(f"\\caption{{ExhibitionBench Main Results ({setting})}}")
+    lines.append(f"\\label{{tab:main-results-shot{shot}}}")
     lines.append(r"\begin{tabular}{l|cc|cc|ccccc}")
     lines.append(r"\toprule")
     lines.append(
@@ -373,7 +378,7 @@ def export_latex(data: dict, shot: int, tag: str = "") -> None:
     lines.append(r"\end{tabular}")
     lines.append(r"\end{table*}")
 
-    table_dir = RESULTS_DIR / "tables"
+    table_dir = GENERATED_TABLE_DIR
     table_dir.mkdir(parents=True, exist_ok=True)
     out_name = f"latex_main_table_shot{shot}.tex" if not tag else f"latex_main_table_shot{shot}_{tag}.tex"
     out = table_dir / out_name

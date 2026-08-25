@@ -20,21 +20,21 @@ objects and ID-only `candidate_ids`. ID-only records are resolved through
 # BM25
 python baselines/bm25_baseline.py meip \
     --input data/meip_samples.jsonl \
-    --output results/bm25_meip_pred.jsonl
+    --output results/baselines_pred/bm25_meip_pred.jsonl
 
 python baselines/bm25_baseline.py tes \
     --input data/tes_samples.jsonl \
-    --output results/bm25_tes_pred.jsonl
+    --output results/baselines_pred/bm25_tes_pred.jsonl
 
 # SBERT (requires sentence-transformers)
 python baselines/embedding_baseline.py meip \
     --input data/meip_samples.jsonl \
-    --output results/sbert_meip_pred.jsonl
+    --output results/baselines_pred/sbert_meip_pred.jsonl
 
 # RAG+KG (requires OpenAI-compatible endpoint for GPT prompting)
 python baselines/rag_kg_baseline.py meip \
     --input data/meip_samples.jsonl \
-    --output results/rag_kg_meip_pred.jsonl \
+    --output results/baselines_pred/rag_kg_meip_pred.jsonl \
     --kg data/kg.json
 ```
 

@@ -1,5 +1,5 @@
 """
-benchmark/meip_eval.py
+evaluation/meip_eval.py
 ======================
 MEIP (Masked Exhibition Item Prediction) 评测 harness。
 
@@ -34,8 +34,8 @@ pred 格式：每行 {"id": "meip_001", "ranked_ids": ["obj_gold", "obj_neg2", .
   ranked_ids 从最可能到最不可能排列。
 
 使用方法：
-  python benchmark/meip_eval.py build --exhibitions data/exhibitions.jsonl ...
-  python benchmark/meip_eval.py eval --gold data/meip_samples.jsonl --pred results/pred.jsonl
+  python evaluation/meip_eval.py build --exhibitions data/exhibitions.jsonl ...
+  python evaluation/meip_eval.py eval --gold data/meip_samples.jsonl --pred results/pred.jsonl
 """
 
 from __future__ import annotations

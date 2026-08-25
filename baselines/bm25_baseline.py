@@ -10,12 +10,12 @@ MEIP 任务：将上下文展品拼接成 pseudo-query，BM25 在候选中排序
   # TES
   python baselines/bm25_baseline.py tes \\
       --input data/tes_samples.jsonl \\
-      --output results/bm25_tes_pred.jsonl
+      --output results/baselines_pred/bm25_tes_pred.jsonl
 
   # MEIP
   python baselines/bm25_baseline.py meip \\
       --input data/meip_samples.jsonl \\
-      --output results/bm25_meip_pred.jsonl
+      --output results/baselines_pred/bm25_meip_pred.jsonl
 """
 
 from __future__ import annotations

@@ -1,5 +1,5 @@
 """
-benchmark/tes_eval.py
+evaluation/tes_eval.py
 =====================
 TES (Theme-based Exhibition Selection) 评测 harness。
 
@@ -27,9 +27,9 @@ TES (Theme-based Exhibition Selection) 评测 harness。
 
 使用方法：
   # 从文件评测某个 baseline 的预测结果
-  python benchmark/tes_eval.py \\
+  python evaluation/tes_eval.py \\
       --gold data/tes_samples.jsonl \\
-      --pred results/bm25_tes_pred.jsonl \\
+      --pred results/baselines_pred/bm25_tes_pred.jsonl \\
       --k 5 10
 """
 

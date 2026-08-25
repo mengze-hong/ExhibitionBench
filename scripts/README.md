@@ -27,9 +27,9 @@ python evaluation/sota_eval.py \
 
 # 3. Run non-LLM baselines
 python baselines/bm25_baseline.py meip \
-    --input data/meip_samples.jsonl --output results/bm25_meip_pred.jsonl
+    --input data/meip_samples.jsonl --output results/baselines_pred/bm25_meip_pred.jsonl
 python baselines/embedding_baseline.py meip \
-    --input data/meip_samples.jsonl --output results/sbert_meip_pred.jsonl
+    --input data/meip_samples.jsonl --output results/baselines_pred/sbert_meip_pred.jsonl
 
 # 4. Compile result tables
 python scripts/compile_results.py --shot 0 --latex
@@ -42,8 +42,8 @@ python analysis/metadata_ablation.py
 ## run_pipeline.py — Automated Pipeline
 
 ```bash
-# Full pipeline (manifest + QC + backfill + recompile)
-python scripts/run_pipeline.py --stage all --execute
+# Validate released data and recompile all result tables
+python scripts/run_pipeline.py --stage all
 
 # Only recompile tables
 python scripts/run_pipeline.py --stage recompile

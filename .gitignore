@@ -5,6 +5,8 @@ secrets/
 
 # Python
 __pycache__/
+.ruff_cache/
+results/tables/generated/
 *.py[cod]
 *.pyo
 *.egg-info/

@@ -16,7 +16,7 @@ RAG + 知识图谱增强 baseline。
   python baselines/rag_kg_baseline.py meip \\
       --input data/meip_samples.jsonl \\
       --kg data/kg.json \\
-      --output results/rag_kg_meip_pred.jsonl \\
+      --output results/baselines_pred/rag_kg_meip_pred.jsonl \\
       --model gpt-5.2
 """
 

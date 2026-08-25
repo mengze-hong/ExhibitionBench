@@ -94,8 +94,8 @@ ExhibitionBench/
 │   └── compile_results.py        # Aggregate results to tables / LaTeX
 │
 ├── results/
-│   ├── main_table/               # Zero-shot results, all 30 models × 3 tasks
-│   ├── fewshot/                  # Shot 1/3 results, all models × 3 tasks
+│   ├── main_table/               # Additional main-table artifacts
+│   ├── fewshot/                  # Additional few-shot artifacts
 │   ├── fewshot_analysis/         # Few-shot mechanism analysis outputs
 │   ├── ablation_cot/             # CoT prompting ablation
 │   ├── ablation_vision/          # Multimodal (text+image) ablation

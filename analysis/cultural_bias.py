@@ -103,12 +103,13 @@ def load_jsonl(path: Path) -> list[dict]:
 # MEIP 分析
 # ─────────────────────────────────────────────────────────────────────────────
 
+BASELINE_RESULTS = BASE / "results" / "baselines_pred"
 MEIP_BASELINES = {
-    "BM25":            BASE / "results/bm25_meip_pred.jsonl",
-    "SBERT":           BASE / "results/sbert_meip_pred.jsonl",
-    "GPT-5.2 0-shot":  BASE / "results/zeroshot_meip_pred.jsonl",
-    "GPT-5.2 few-shot":BASE / "results/gpt5_fewshot_meip_pred.jsonl",
-    "RAG+KG":          BASE / "results/rag_kg_meip_pred.jsonl",
+    "BM25":            BASELINE_RESULTS / "bm25_meip_pred.jsonl",
+    "SBERT":           BASELINE_RESULTS / "sbert_meip_pred.jsonl",
+    "GPT-5.2 0-shot":  BASELINE_RESULTS / "zeroshot_meip_pred.jsonl",
+    "GPT-5.2 few-shot":BASELINE_RESULTS / "gpt5_fewshot_meip_pred.jsonl",
+    "RAG+KG":          BASELINE_RESULTS / "rag_kg_meip_pred.jsonl",
 }
 
 
@@ -179,10 +180,10 @@ def analyze_meip_by_culture(gold_samples: list[dict], objects: dict) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 TES_BASELINES = {
-    "BM25":            BASE / "results/bm25_tes_pred.jsonl",
-    "SBERT":           BASE / "results/sbert_tes_pred.jsonl",
-    "GPT-5.2 0-shot":  BASE / "results/zeroshot_tes_pred.jsonl",
-    "GPT-5.2 few-shot":BASE / "results/gpt5_fewshot_tes_pred.jsonl",
+    "BM25":            BASELINE_RESULTS / "bm25_tes_pred.jsonl",
+    "SBERT":           BASELINE_RESULTS / "sbert_tes_pred.jsonl",
+    "GPT-5.2 0-shot":  BASELINE_RESULTS / "zeroshot_tes_pred.jsonl",
+    "GPT-5.2 few-shot":BASELINE_RESULTS / "gpt5_fewshot_tes_pred.jsonl",
 }
 
 

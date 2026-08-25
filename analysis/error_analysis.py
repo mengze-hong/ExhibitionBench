@@ -29,17 +29,18 @@ import re
 log = logging.getLogger(__name__)
 
 BASE = Path(__file__).resolve().parent.parent
+BASELINE_RESULTS = BASE / "results" / "baselines_pred"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 配置
 # ─────────────────────────────────────────────────────────────────────────────
 
 BASELINES_MEIP = {
-    "BM25":             BASE / "results/bm25_meip_pred.jsonl",
-    "SBERT":            BASE / "results/sbert_meip_pred.jsonl",
-    "GPT-5.2 0-shot":   BASE / "results/zeroshot_meip_pred.jsonl",
-    "GPT-5.2 few-shot": BASE / "results/gpt5_fewshot_meip_pred.jsonl",
-    "RAG+KG":           BASE / "results/rag_kg_meip_pred.jsonl",
+    "BM25":             BASELINE_RESULTS / "bm25_meip_pred.jsonl",
+    "SBERT":            BASELINE_RESULTS / "sbert_meip_pred.jsonl",
+    "GPT-5.2 0-shot":   BASELINE_RESULTS / "zeroshot_meip_pred.jsonl",
+    "GPT-5.2 few-shot": BASELINE_RESULTS / "gpt5_fewshot_meip_pred.jsonl",
+    "RAG+KG":           BASELINE_RESULTS / "rag_kg_meip_pred.jsonl",
 }
 
 # 粗略的时代映射（世纪）

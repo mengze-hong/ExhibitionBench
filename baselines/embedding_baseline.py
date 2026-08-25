@@ -11,11 +11,11 @@ MEIP 任务：上下文展品平均 embedding vs. 候选展品 embedding，最�
 
   python baselines/embedding_baseline.py tes \\
       --input data/tes_samples.jsonl \\
-      --output results/sbert_tes_pred.jsonl
+      --output results/baselines_pred/sbert_tes_pred.jsonl
 
   python baselines/embedding_baseline.py meip \\
       --input data/meip_samples.jsonl \\
-      --output results/sbert_meip_pred.jsonl
+      --output results/baselines_pred/sbert_meip_pred.jsonl
 """
 
 from __future__ import annotations
