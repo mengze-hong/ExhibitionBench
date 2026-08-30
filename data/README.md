@@ -7,9 +7,9 @@ Benchmark data for **ExhibitionBench** — three tasks derived from real museum 
 | File | Size | Description |
 |---|---|---|
 | `objects.jsonl` | ~13 MB | 23,658 museum objects (id, title, culture, date, medium, description, source) |
-| `exhibitions.jsonl` | ~700 KB | Exhibition metadata from 5 museum sources |
-| `meip_samples.jsonl` | ~4.3 MB | 1,409 MEIP queries (10-way ranking, gold_id) |
-| `tes_samples.jsonl` | ~9.5 MB | 283 TES queries (50-way ranking, gold_ids, leak-free anonymisation) |
+| `exhibitions.jsonl` | ~700 KB | Institutional exhibition and thematic collection records from 5 public sources |
+| `meip_samples.jsonl` | ~4.3 MB | 1,409 MEIP queries (single choice from 10 candidates, `gold_id`) |
+| `tes_samples.jsonl` | ~9.5 MB | 283 TES queries (50-exhibition ranking, one reference exhibition, leak-free anonymisation) |
 | `ecd_samples.jsonl` | ~2.3 MB | 500 ECD pairs (4 difficulty levels L1–L4, 125 per level, positive + negative sequences) |
 | `kg.json` | ~600 KB | Knowledge-graph triples (CIDOC-CRM) used by RAG+KG baseline |
 

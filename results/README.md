@@ -10,8 +10,6 @@ the root of this directory are the canonical inputs consumed by
 | Path | Description |
 |---|---|
 | Root `*.json` | Canonical per-model task results and compiled summaries |
-| `main_table/` | Additional zero-shot artifacts used in the main comparison |
-| `fewshot/` | Additional few-shot evaluation artifacts |
 | `baselines_pred/` | BM25, embedding, and RAG baseline predictions |
 | `ablation_cot/` | Chain-of-thought ablation outputs |
 | `ablation_vision/` | Vision-input ablation outputs |
@@ -46,3 +44,13 @@ directory, so routine validation never overwrites the frozen released tables.
 For zero-shot MEIP, the compiler prefers the corrected full-set `v3fixed`
 outputs used in the camera-ready paper. For TES, it prefers the anonymized
 `noleak` outputs used in the paper.
+
+## Reproducibility boundary
+
+The frozen JSON files preserve the values used to compile the paper tables.
+They make table regeneration deterministic; re-querying hosted models still
+requires the corresponding provider access and may not be bit-for-bit
+repeatable after a provider updates a model.
+
+The non-LLM ECD artifacts are generated from the final 500-pair release with
+`baselines/ecd_baseline.py` and fixed seed 42.

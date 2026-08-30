@@ -2,14 +2,19 @@
 
 Core evaluation scripts for all three ExhibitionBench tasks.
 
+`sota_eval.py` is the canonical evaluator and the source of truth for released
+prompting, parsing, and metrics. Final-protocol TES ranks 50 anonymous
+exhibition candidates (`EX_001`--`EX_050`) and returns the top 10. The earlier
+object-set TES harness has been removed because it implements a different,
+obsolete task.
+
 ## Files
 
 | Script | Purpose |
 |---|---|
-| `sota_eval.py` | Main evaluator — runs MEIP / TES / ECD on any model via OpenAI-compatible API |
+| `sota_eval.py` | Canonical evaluator — runs MEIP / TES / ECD on any model via OpenAI-compatible API |
 | `openllm_baseline.py` | Lightweight evaluator for open-weight models (Ollama, vLLM, Groq, Together AI) |
 | `meip_eval.py` | Standalone MEIP metric computation (MRR, Hit@1) |
-| `tes_eval.py` | Standalone TES metric computation (NDCG@10, MRR) |
 | `ecd_generator.py` | ECD sample generation utilities |
 
 ## Quick Start

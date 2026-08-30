@@ -45,7 +45,7 @@ references, and ECD sequence structure without modifying any data.
 | Doubao-Seed-2.0-Pro | 0.642 | 0.410 | 0.852 | 27.2 | 3.93 |
 | DeepSeek-V3 | 0.598 | 0.390 | 0.800 | **5.5** | **0.33** |
 | Qwen2.5-72B (open-weight) | 0.733 | 0.391 | 0.674 | 8.4 | 0.69 |
-| BM25 | 0.449 | 0.347 | 0.864 | <0.1 | ~0 |
+| BM25 | 0.449 | 0.347 | 0.838 | <0.1 | ~0 |
 
 Full results: [`results/deployment_summary.json`](results/deployment_summary.json)
 
@@ -64,21 +64,21 @@ ExhibitionBench/
 │   └── kg.json                   # CIDOC-CRM knowledge-graph triples
 │
 ├── evaluation/
-│   ├── sota_eval.py              # Evaluate any model via OpenAI-compatible API
+│   ├── sota_eval.py              # Canonical MEIP / TES / ECD evaluator
 │   ├── openllm_baseline.py       # Lightweight evaluator for open-weight models
 │   ├── meip_eval.py              # MEIP metric computation
-│   ├── tes_eval.py               # TES metric computation
 │   └── ecd_generator.py          # ECD sample generation utilities
 │
 ├── baselines/
 │   ├── data_utils.py             # Shared schema compatibility helpers
 │   ├── bm25_baseline.py          # BM25 term-overlap ranking
 │   ├── embedding_baseline.py     # SBERT cosine-similarity ranking
+│   ├── ecd_baseline.py           # ECD BM25/random baselines (500 pairs)
 │   └── rag_kg_baseline.py        # RAG + CIDOC-CRM KG triples
 │
 ├── analysis/
 │   ├── contamination_ablation.py # Dataset contamination check
-│   ├── cultural_bias.py          # Per-region accuracy breakdown
+│   ├── cultural_bias.py          # MEIP per-region accuracy breakdown
 │   ├── cultural_bias_multi_model.py
 │   ├── error_analysis.py         # Error taxonomy
 │   ├── fewshot_mechanism.py      # 0/1/3-shot mechanism analysis
@@ -90,12 +90,9 @@ ExhibitionBench/
 ├── scripts/
 │   ├── validate_data.py          # Read-only benchmark integrity checks
 │   ├── run_pipeline.py           # End-to-end pipeline orchestration
-│   ├── build_samples.py          # Rebuild benchmark from raw data
 │   └── compile_results.py        # Aggregate results to tables / LaTeX
 │
 ├── results/
-│   ├── main_table/               # Additional main-table artifacts
-│   ├── fewshot/                  # Additional few-shot artifacts
 │   ├── fewshot_analysis/         # Few-shot mechanism analysis outputs
 │   ├── ablation_cot/             # CoT prompting ablation
 │   ├── ablation_vision/          # Multimodal (text+image) ablation
@@ -103,7 +100,6 @@ ExhibitionBench/
 │   ├── contamination/            # Contamination check outputs
 │   ├── cultural_bias/            # Cultural bias per-region outputs
 │   ├── baselines_pred/           # BM25 / SBERT / RAG prediction files
-│   ├── manifests/                # Experiment completeness reports
 │   ├── tables/                   # LaTeX / CSV summary tables
 │   └── deployment_summary.json   # Per-model latency, cost, accuracy summary
 │
@@ -129,6 +125,11 @@ model requires credentials.
 ---
 
 ## Evaluation
+
+`evaluation/sota_eval.py` is the canonical evaluation path for all three
+released tasks. In particular, final-protocol TES ranks 50 candidate
+**exhibitions** anonymized as `EX_001`--`EX_050` and returns the top 10. The
+retired object-set TES harness is not part of this release.
 
 ### Registered models
 
@@ -176,6 +177,11 @@ objects and ID-only candidate lists. ID-only records are resolved from
 ```bash
 python scripts/compile_results.py --shot 0 --latex
 ```
+
+This deterministically rebuilds tables from the frozen result JSON files.
+Fresh hosted-model runs require provider credentials and may differ if a
+provider has updated a model. See `results/README.md` for the documented scope
+of exact reproducibility.
 
 ---
 

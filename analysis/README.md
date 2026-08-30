@@ -7,7 +7,7 @@ Post-hoc analysis scripts for ExhibitionBench experiments.
 | Script | What it computes |
 |---|---|
 | `contamination_ablation.py` | Dataset contamination check: compares performance on pre-/post-training-cutoff exhibitions |
-| `cultural_bias.py` | Per-region accuracy breakdown (East Asia, South Asia, Western Europe, Americas, etc.) |
+| `cultural_bias.py` | MEIP per-region accuracy breakdown (East Asia, South Asia, Western Europe, Americas, etc.) |
 | `cultural_bias_multi_model.py` | Cross-model cultural bias heatmap |
 | `error_analysis.py` | Parse failure taxonomy (invalid output, wrong ID format, truncated response) |
 | `fewshot_mechanism.py` | Few-shot ablation: 0-shot vs 1-shot vs 3-shot across tasks |
@@ -20,7 +20,7 @@ Post-hoc analysis scripts for ExhibitionBench experiments.
 python analysis/contamination_ablation.py
 
 # Cultural bias for a single model
-python analysis/cultural_bias.py --model gpt-4o
+python analysis/cultural_bias.py
 
 # Cross-model bias comparison
 python analysis/cultural_bias_multi_model.py

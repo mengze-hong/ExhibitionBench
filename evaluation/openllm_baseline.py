@@ -285,16 +285,17 @@ def evaluate_meip(
 # ── TES evaluation ────────────────────────────────────────────────────────────
 
 TES_PROMPT_TEMPLATE = """\
-You are a museum curator. Given an exhibition theme, rank the following candidate objects \
-from most to least relevant to the theme. Consider cultural fit, historical period, artistic \
-style, and thematic coherence.
+You are a museum curator selecting an exhibition. Given a thematic query, rank the provided \
+exhibition candidates from most to least relevant.
 
-Exhibition theme: {theme}
+Query theme: {theme}
+Query description: {description}
 
-Candidate objects (rank ALL of them):
+Exhibition candidates (each identified by an anonymous ID; judge solely by the artworks inside):
 {candidates}
 
-Reply with ONLY the IDs in ranked order, one per line, most relevant first.
+Return ONLY the anonymous IDs of the top 10 most relevant exhibitions, in order from best to worst.
+Format: EX_001, EX_002, EX_003, ... (comma-separated)
 """
 
 
@@ -323,48 +324,58 @@ def evaluate_tes(
 
     def _one(exh):
         theme = exh.get("query_theme", exh.get("theme", exh.get("exhibition_theme", "")))
+        description = exh.get("query_description", exh.get("description", ""))
         gold_ids = exh.get("relevant_ids", exh.get("gold_ids", []))
         if not gold_ids:
             gid = exh.get("gold_id")
             if gid:
                 gold_ids = [gid]
-        candidates = exh.get("candidates", exh.get("candidate_ids", []))
+        candidates = exh.get("candidates", exh.get("candidate_ids", []))[:50]
         candidate_ids = [c["id"] if isinstance(c, dict) else c for c in candidates]
         if not theme or not gold_ids or not candidate_ids:
             return None
         cand_lines = []
+        anon_to_real: dict[str, str] = {}
         for idx, (cid, candidate) in enumerate(zip(candidate_ids, candidates), 1):
+            anon_id = f"EX_{idx:03d}"
+            anon_to_real[anon_id] = cid
             if isinstance(candidate, dict) and candidate.get("sample_objects"):
                 sample_text = "; ".join(
                     f"{item.get('title', '?')} ({item.get('culture', '?')}, {item.get('date', '?')})"
                     for item in candidate["sample_objects"][:5]
                 )
-                cand_lines.append(f"  [{idx}] ID={cid} | {sample_text}")
+                cand_lines.append(f"  [{anon_id}] {sample_text}")
             else:
                 obj = candidate if isinstance(candidate, dict) else objects.get(cid, {})
                 cand_lines.append(
-                    f"  [{idx}] ID={cid} | {obj.get('title', '?')}"
+                    f"  [{anon_id}] {obj.get('title', '?')}"
                     f" | {obj.get('culture', '?')} | {obj.get('date', '?')}"
                 )
         prompt = TES_PROMPT_TEMPLATE.format(
-            theme=theme, candidates="\n".join(cand_lines)
+            theme=theme,
+            description=description[:300],
+            candidates="\n".join(cand_lines),
         )
         response, lat, usage = call_llm(client, model, prompt, max_tokens=500)
         if response is None:
             return None
         resp = response.strip()
-        found = sorted((c for c in candidate_ids if c in resp), key=resp.find)
-        if not found:
+        anon_ids = list(anon_to_real)
+        ranked_anon = sorted((aid for aid in anon_ids if aid in resp), key=resp.find)
+        if not ranked_anon:
             nums = re.findall(r"\b(\d+)\b", resp)
             idx_order: list[int] = []
             for n in nums:
                 idx = int(n) - 1
-                if 0 <= idx < len(candidate_ids) and idx not in idx_order:
+                if 0 <= idx < len(anon_ids) and idx not in idx_order:
                     idx_order.append(idx)
-            found = [candidate_ids[i] for i in idx_order]
-            found += [c for c in candidate_ids if c not in found]
+            ranked_anon = [anon_ids[i] for i in idx_order]
+        if not ranked_anon:
+            return None
+        ranked_anon += [aid for aid in anon_ids if aid not in ranked_anon]
+        ranked_real = [anon_to_real[aid] for aid in ranked_anon]
         primary = gold_ids[0]
-        return ndcg_at_k(primary, found, k=k), mrr_score(primary, found), lat, usage
+        return ndcg_at_k(primary, ranked_real, k=k), mrr_score(primary, ranked_real), lat, usage
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
         futs = {ex.submit(_one, e): e for e in exhibitions}
@@ -401,9 +412,12 @@ def evaluate_tes(
 # ── ECD evaluation ────────────────────────────────────────────────────────────
 
 ECD_PROMPT_TEMPLATE = """\
-You are an expert museum curator. Two exhibition sequences are shown below.
-One is coherent (real), the other contains a disruptive artifact that breaks coherence.
-Identify which sequence is the COHERENT one.
+You are a museum curator evaluating exhibition coherence.
+
+Exhibition theme: {theme}
+
+Two exhibition sequences are shown below. One is the ORIGINAL coherent sequence; \
+the other has been DISRUPTED by swapping one item.
 
 Sequence A:
 {seq_a}
@@ -411,6 +425,7 @@ Sequence A:
 Sequence B:
 {seq_b}
 
+Which sequence is more coherent and fits the exhibition theme better?
 Reply with ONLY "A" or "B".
 """
 
@@ -437,6 +452,8 @@ def evaluate_ecd(
     usage_agg = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
     done = [0]
     lock = Lock()
+    rng = random.Random(42)
+    assignments = [rng.random() > 0.5 for _ in samples]
 
     def _format_seq(seq) -> str:
         if not seq:
@@ -450,7 +467,8 @@ def evaluate_ecd(
                 lines.append(f"  {i}. {format_obj(obj)}")
         return "\n".join(lines) if lines else "(empty)"
 
-    def _one(sample):
+    def _one(item):
+        sample, gold_is_a = item
         level_raw = str(sample.get("level", "1"))
         level = level_raw if level_raw.startswith("L") else f"L{level_raw}"
         pos_seq = sample.get("positive_sequence", sample.get("pos_seq"))
@@ -461,12 +479,13 @@ def evaluate_ecd(
             neg_seq = sample.get("negative", {}).get("items")
         if not pos_seq or not neg_seq:
             return None
-        # Randomly assign A/B to avoid position bias
-        if random.random() < 0.5:
+        theme = sample.get("positive", {}).get("theme", sample.get("theme", ""))
+        if gold_is_a:
             seq_a, seq_b, gold = pos_seq, neg_seq, "A"
         else:
             seq_a, seq_b, gold = neg_seq, pos_seq, "B"
         prompt = ECD_PROMPT_TEMPLATE.format(
+            theme=theme,
             seq_a=_format_seq(seq_a),
             seq_b=_format_seq(seq_b),
         )
@@ -474,11 +493,14 @@ def evaluate_ecd(
         if response is None:
             return None
         resp = response.strip().upper()
-        pred = "A" if "A" in resp else ("B" if "B" in resp else "?")
+        pred = "A" if resp.startswith("A") else ("B" if resp.startswith("B") else "?")
         return level, (1 if pred == gold else 0), lat, usage
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
-        futs = {ex.submit(_one, s): s for s in samples}
+        futs = {
+            ex.submit(_one, (sample, gold_is_a)): sample
+            for sample, gold_is_a in zip(samples, assignments)
+        }
         for fut in as_completed(futs):
             res = fut.result()
             with lock:

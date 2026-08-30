@@ -3,7 +3,7 @@ baselines/embedding_baseline.py
 ================================
 语义嵌入 baseline（SBERT + 可选 CLIP）。
 
-TES 任务：query embedding vs. 候选展品 description embedding，cosine 排序。
+TES 任务：query embedding vs. 候选展览采样展品 embedding，cosine 排序。
 MEIP 任务：上下文展品平均 embedding vs. 候选展品 embedding，最近邻。
 
 使用方法：
@@ -58,7 +58,7 @@ def load_model(model_name: str = MODEL_NAME):
 
 
 def run_tes_sbert(samples: list[dict], model) -> list[dict]:
-    """TES: query → 最相似候选 top-k。"""
+    """TES: query → 仅由采样展品表示的最相似候选展览 top-k。"""
     results = []
     for s in tqdm(samples, desc="SBERT TES"):
         query_text = tes_query(s)

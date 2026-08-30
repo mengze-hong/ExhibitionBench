@@ -1,10 +1,12 @@
 {
   "task": "ecd",
   "model": "bm25",
-  "pairaccc_L1": 0.935,
-  "pairaccc_L2": 0.98,
-  "pairaccc_L3": 0.585,
-  "pairaccc_L4": 0.955,
-  "macro_pairaccc": 0.8638,
-  "n_samples": 800
+  "protocol": "final-500",
+  "pairaccc_L1": 0.96,
+  "pairaccc_L2": 0.976,
+  "pairaccc_L3": 0.48,
+  "pairaccc_L4": 0.936,
+  "macro_pairaccc": 0.838,
+  "n_samples": 500,
+  "seed": 42
 }

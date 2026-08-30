@@ -219,12 +219,13 @@ def build_meip_prompt_nshot(sample: dict, objects: dict, shot: int = 0,
                     ex["answer"] = rng.choice(wrong_answers).strip("[]")
             prefix += format_example(ex)
 
+    candidates_text = "\n".join(cand_lines)
     query = (
         f"You are assisting a museum curator. Given an exhibition theme and some context objects already selected, "
         f"identify which ONE candidate object best fits the exhibition and should be added next.\n\n"
         f"Exhibition theme: {theme}\n\n"
         f"Context objects already in exhibition:\n{context_str}\n\n"
-        f"Candidate objects (choose the best fit):\n{'\n'.join(cand_lines)}\n\n"
+        f"Candidate objects (choose the best fit):\n{candidates_text}\n\n"
         f"Reply with ONLY the ID of the best-fitting candidate object (e.g., \"met_123456\").\n"
     )
 

@@ -1,10 +1,12 @@
 {
   "task": "ecd",
   "model": "random",
-  "pairaccc_L1": 0.48,
-  "pairaccc_L2": 0.555,
-  "pairaccc_L3": 0.495,
-  "pairaccc_L4": 0.525,
-  "macro_pairaccc": 0.5138,
-  "n_samples": 800
+  "protocol": "final-500",
+  "pairaccc_L1": 0.504,
+  "pairaccc_L2": 0.48,
+  "pairaccc_L3": 0.536,
+  "pairaccc_L4": 0.464,
+  "macro_pairaccc": 0.496,
+  "n_samples": 500,
+  "seed": 42
 }

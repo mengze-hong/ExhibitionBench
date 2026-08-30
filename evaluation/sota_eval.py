@@ -2,8 +2,8 @@
 evaluation/sota_eval.py — ExhibitionBench SOTA Multi-Model Evaluator
 ====================================================================
 Evaluates all SOTA LLMs from diverse families on all three benchmark tasks:
-  - MEIP  (Museum Exhibition Item Prediction) — 10-way ranking, MRR metric
-  - TES   (Thematic Exhibition Selection)      — 50-way ranking, NDCG@10 metric
+  - MEIP  (Museum Exhibition Item Prediction) — single choice from 10, released MRR metric
+  - TES   (Thematic Exhibition Selection)      — 50-way ranking, NDCG@10 and MRR metrics
   - ECD   (Exhibition Coherence Discrimination) — pairwise, PairAcc metric
 
 Models evaluated (one strong representative per family):
@@ -785,6 +785,8 @@ def evaluate_meip(model: str, samples: list[dict], objects: dict[str, dict],
 
     mrr_scores = []
     hit1_scores = []
+    hit3_scores = []
+    hit5_scores = []
     total_latency = 0.0
     total_prompt_tokens = 0
     total_completion_tokens = 0
@@ -802,6 +804,8 @@ def evaluate_meip(model: str, samples: list[dict], objects: dict[str, dict],
             with lock:
                 mrr_scores.append(score)
                 hit1_scores.append(hit1)
+                hit3_scores.append(1.0 if score >= (1.0 / 3.0) else 0.0)
+                hit5_scores.append(1.0 if score >= (1.0 / 5.0) else 0.0)
                 total_latency += latency
                 total_prompt_tokens += usage["prompt_tokens"]
                 total_completion_tokens += usage["completion_tokens"]
@@ -819,6 +823,8 @@ def evaluate_meip(model: str, samples: list[dict], objects: dict[str, dict],
         "n_samples": n,
         "mrr": round(sum(mrr_scores) / n, 4) if n else 0,
         "hit@1": round(sum(hit1_scores) / n, 4) if n else 0,
+        "hits@3": round(sum(hit3_scores) / n, 4) if n else 0,
+        "hits@5": round(sum(hit5_scores) / n, 4) if n else 0,
         "total_latency_sec": round(total_latency, 2),
         "avg_latency_sec": round(total_latency / n, 3) if n else 0,
         "total_prompt_tokens": total_prompt_tokens,
@@ -973,6 +979,14 @@ def evaluate_tes(model: str, samples: list[dict],
         ranked_real = [anon_to_real.get(aid, aid) for aid in ranked_anon]
         nd = ndcg_at_k(gold_ids, ranked_real, k=10)
         mr = mrr(next(iter(gold_ids)), ranked_real)
+        reference_rank = next(
+            (rank for rank, rid in enumerate(ranked_real, 1) if rid in gold_ids),
+            None,
+        )
+        hit1 = 1.0 if reference_rank == 1 else 0.0
+        p3 = (1.0 / 3.0) if reference_rank is not None and reference_rank <= 3 else 0.0
+        p5 = (1.0 / 5.0) if reference_rank is not None and reference_rank <= 5 else 0.0
+        p10 = (1.0 / 10.0) if reference_rank is not None and reference_rank <= 10 else 0.0
         if raw_logger:
             raw_logger.write(
                 {
@@ -989,7 +1003,14 @@ def evaluate_tes(model: str, samples: list[dict],
                         "ranked_anon_ids": ranked_anon,
                         "ranked_ids": ranked_real,
                     },
-                    "metrics": {"ndcg@10": nd, "mrr": mr},
+                    "metrics": {
+                        "ndcg@10": nd,
+                        "mrr": mr,
+                        "hit@1": hit1,
+                        "p@3": p3,
+                        "p@5": p5,
+                        "p@10": p10,
+                    },
                     "latency_sec": latency,
                     "usage_tokens": usage,
                 }
@@ -997,10 +1018,18 @@ def evaluate_tes(model: str, samples: list[dict],
         return (i,
                 nd,
                 mr,
+                hit1,
+                p3,
+                p5,
+                p10,
                 latency, usage)
 
     ndcg_scores = []
     mrr_scores = []
+    hit1_scores = []
+    p3_scores = []
+    p5_scores = []
+    p10_scores = []
     total_latency = 0.0
     total_prompt_tokens = 0
     total_completion_tokens = 0
@@ -1014,10 +1043,14 @@ def evaluate_tes(model: str, samples: list[dict],
             res = fut.result()
             if res is None:
                 continue
-            _, nd, mr, latency, usage = res
+            _, nd, mr, hit1, p3, p5, p10, latency, usage = res
             with lock:
                 ndcg_scores.append(nd)
                 mrr_scores.append(mr)
+                hit1_scores.append(hit1)
+                p3_scores.append(p3)
+                p5_scores.append(p5)
+                p10_scores.append(p10)
                 total_latency += latency
                 total_prompt_tokens += usage["prompt_tokens"]
                 total_completion_tokens += usage["completion_tokens"]
@@ -1035,6 +1068,10 @@ def evaluate_tes(model: str, samples: list[dict],
         "n_samples": n,
         "ndcg@10": round(sum(ndcg_scores) / n, 4) if n else 0,
         "mrr": round(sum(mrr_scores) / n, 4) if n else 0,
+        "hit@1": round(sum(hit1_scores) / n, 4) if n else 0,
+        "p@3": round(sum(p3_scores) / n, 4) if n else 0,
+        "p@5": round(sum(p5_scores) / n, 4) if n else 0,
+        "p@10": round(sum(p10_scores) / n, 4) if n else 0,
         "total_latency_sec": round(total_latency, 2),
         "avg_latency_sec": round(total_latency / n, 3) if n else 0,
         "total_prompt_tokens": total_prompt_tokens,

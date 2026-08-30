@@ -9,9 +9,7 @@ analysis/cultural_bias.py
 3. 各 baseline 在不同文化分组上的 Acc@1 (MEIP) 和 NDCG@10 (TES)
 
 使用方法:
-  python analysis/cultural_bias.py --task meip --gold data/meip_samples.jsonl
-  python analysis/cultural_bias.py --task tes  --gold data/tes_samples.jsonl
-  python analysis/cultural_bias.py --all
+  python analysis/cultural_bias.py --gold-meip data/meip_samples.jsonl
 """
 
 from __future__ import annotations
@@ -179,106 +177,19 @@ def analyze_meip_by_culture(gold_samples: list[dict], objects: dict) -> None:
 # TES 分析
 # ─────────────────────────────────────────────────────────────────────────────
 
-TES_BASELINES = {
-    "BM25":            BASELINE_RESULTS / "bm25_tes_pred.jsonl",
-    "SBERT":           BASELINE_RESULTS / "sbert_tes_pred.jsonl",
-    "GPT-5.2 0-shot":  BASELINE_RESULTS / "zeroshot_tes_pred.jsonl",
-    "GPT-5.2 few-shot":BASELINE_RESULTS / "gpt5_fewshot_tes_pred.jsonl",
-}
-
-
-def _ndcg_at_k(ranked_ids: list[str], gold_ids: set[str], k: int) -> float:
-    dcg = sum(1.0 / np.log2(i + 2) for i, rid in enumerate(ranked_ids[:k]) if rid in gold_ids)
-    idcg = sum(1.0 / np.log2(i + 2) for i in range(min(k, len(gold_ids))))
-    return dcg / idcg if idcg > 0 else 0.0
-
-
-def analyze_tes_by_culture(gold_samples: list[dict], objects: dict) -> None:
-    """按展览主题的主流文化分组统计 TES NDCG@10。"""
-    print("\n" + "=" * 70)
-    print("TES 文化偏差分析（NDCG@10）")
-    print("=" * 70)
-
-    # 通过 gold_ids 展品的 culture 确定展览文化分组（多数投票）
-    sample_culture = {}
-    for s in gold_samples:
-        cultures = []
-        for oid in s.get("gold_ids", []):
-            obj = objects.get(oid, {})
-            cultures.append(classify_culture(obj.get("culture", "")))
-        if cultures:
-            # 多数投票
-            from collections import Counter
-            top = Counter(cultures).most_common(1)[0][0]
-            sample_culture[s["id"]] = top
-        else:
-            sample_culture[s["id"]] = "Unknown"
-
-    culture_counts = defaultdict(int)
-    for c in sample_culture.values():
-        culture_counts[c] += 1
-    print("\n各文化分组样本数:")
-    for c, n in sorted(culture_counts.items(), key=lambda x: -x[1]):
-        print(f"  {c:25s}: {n} 样本")
-
-    results = {}
-    for bl_name, pred_path in TES_BASELINES.items():
-        if not pred_path.exists():
-            continue
-        preds = {r["id"]: r.get("pred_ids") or r.get("ranked_ids", []) for r in load_jsonl(pred_path)}
-        gold_map = {s["id"]: set(s["gold_ids"]) for s in gold_samples}
-
-        group_scores = defaultdict(list)
-        for sid, gold_ids in gold_map.items():
-            if sid not in preds or sid not in sample_culture:
-                continue
-            ndcg = _ndcg_at_k(preds[sid], gold_ids, k=10)
-            group_scores[sample_culture[sid]].append(ndcg)
-
-        results[bl_name] = {g: np.mean(v) for g, v in group_scores.items()}
-
-    all_groups = sorted(culture_counts.keys(), key=lambda x: -culture_counts[x])
-    header = f"{'Baseline':20s}" + "".join(f"{g:22s}" for g in all_groups)
-    print("\n" + header)
-    print("-" * len(header))
-    for bl_name, group_scores in results.items():
-        row = f"{bl_name:20s}"
-        for g in all_groups:
-            score = group_scores.get(g, float("nan"))
-            row += f"{score:>10.4f}            " if not np.isnan(score) else f"{'N/A':>10s}            "
-        print(row)
-
-    print("\n各 Baseline 文化偏差（max - min NDCG@10）:")
-    for bl_name, group_scores in results.items():
-        valid = [v for v in group_scores.values() if not np.isnan(v) and len(group_scores) > 1]
-        if len(valid) >= 2:
-            gap = max(valid) - min(valid)
-            best = max(group_scores, key=lambda g: group_scores.get(g, -1))
-            worst = min(group_scores, key=lambda g: group_scores.get(g, 999))
-            print(f"  {bl_name:20s}: 偏差={gap:.4f}  最佳={best}({group_scores[best]:.4f})  最差={worst}({group_scores[worst]:.4f})")
-
-
 def main():
     logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
     parser = argparse.ArgumentParser(description="文化偏差分析")
-    parser.add_argument("--task", choices=["meip", "tes", "all"], default="all")
     parser.add_argument("--gold-meip", default="data/meip_samples.jsonl")
-    parser.add_argument("--gold-tes", default="data/tes_samples.jsonl")
     parser.add_argument("--objects", default="data/objects.jsonl")
     args = parser.parse_args()
 
     objects = load_objects(BASE / args.objects)
     log.info(f"加载展品: {len(objects)}")
 
-    if args.task in ("meip", "all"):
-        gold_samples = load_jsonl(BASE / args.gold_meip)
-        log.info(f"MEIP 样本: {len(gold_samples)}")
-        analyze_meip_by_culture(gold_samples, objects)
-
-    if args.task in ("tes", "all"):
-        gold_samples = load_jsonl(BASE / args.gold_tes)
-        log.info(f"TES 样本: {len(gold_samples)}")
-        analyze_tes_by_culture(gold_samples, objects)
+    gold_samples = load_jsonl(BASE / args.gold_meip)
+    log.info(f"MEIP 样本: {len(gold_samples)}")
+    analyze_meip_by_culture(gold_samples, objects)
 
 
 if __name__ == "__main__":

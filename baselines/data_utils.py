@@ -40,12 +40,8 @@ def tes_query(sample: dict) -> str:
 
 
 def exhibition_to_text(exhibition: dict) -> str:
-    """Represent a TES candidate using its metadata and sampled artworks."""
-    parts = [
-        exhibition.get("theme", ""),
-        exhibition.get("title", ""),
-        exhibition.get("description", ""),
-    ]
+    """Represent a TES candidate only through sampled artworks (leak-free)."""
+    parts = []
     for item in exhibition.get("sample_objects", []):
         parts.extend(
             [item.get("title", ""), item.get("culture", ""), item.get("date", "")]

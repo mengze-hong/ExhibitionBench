@@ -3,7 +3,7 @@ baselines/bm25_baseline.py
 ===========================
 BM25 检索 baseline。
 
-TES 任务：用展品 title + description 建倒排索引，query → BM25 top-k。
+TES 任务：仅用候选展览中的采样展品建倒排索引，query → 50 个匿名展览的 top-10。
 MEIP 任务：将上下文展品拼接成 pseudo-query，BM25 在候选中排序。
 
 使用方法：
@@ -54,7 +54,7 @@ def obj_to_doc(obj: dict) -> str:
 
 
 def run_tes_bm25(samples: list[dict]) -> list[dict]:
-    """BM25 TES baseline：对每个样本单独建索引（candidates 各不相同）。"""
+    """BM25 TES baseline：仅从候选展览的采样展品构建 leak-free 索引。"""
     results = []
     for s in tqdm(samples, desc="BM25 TES"):
         candidates = s["candidates"]
