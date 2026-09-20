@@ -1,6 +1,14 @@
-# ExhibitionBench
+<div align="center">
 
-**Accepted at EMNLP 2026 Industry Track.**
+<img src="assets/figures/exhibition-emnlp-2026-banner.png" width="100%" alt="ExhibitionBench accepted at EMNLP 2026 Industry Track" />
+
+<h1 align="center">ExhibitionBench: A Multi-Source, Multi-Task Benchmark for Evaluating LLMs as Exhibition Curation Assistants</h1>
+
+**News:** ExhibitionBench is accepted at **EMNLP 2026 Industry Track**
+
+</div>
+
+---
 
 A multi-task LLM benchmark for museum exhibition curation, built from 23,658 real objects across 5 open-access museum collections.
 
