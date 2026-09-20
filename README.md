@@ -118,8 +118,6 @@ model requires credentials.
 
 ---
 
----
-
 ## Interactive Demo
 
 ```bash
