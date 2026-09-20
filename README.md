@@ -10,7 +10,9 @@
 
 ---
 
-A multi-task LLM benchmark for museum exhibition curation, built from 23,658 real objects across 5 open-access museum collections.
+## Overview
+
+A multi-task LLM benchmark for museum exhibition curation, built from 23,658 real objects across five open-access museum collections.
 
 ExhibitionBench evaluates whether models can complete an exhibition, retrieve
 thematically relevant exhibitions, and detect curatorial incoherence. The
@@ -40,22 +42,6 @@ references, and ECD sequence structure without modifying any data.
 | **MEIP** — Museum Exhibition Item Prediction | Given a theme + context objects, pick the best-fitting candidate from 10 options | MRR, Hit@1 | 1,409 queries |
 | **TES** — Thematic Exhibition Selection | Rank 50 candidate exhibitions by thematic relevance | NDCG@10, MRR | 283 queries |
 | **ECD** — Exhibition Coherence Discrimination | Identify the coherent sequence from a pair (4 difficulty levels) | PairAcc, Macro | 500 pairs |
-
----
-
-## Key Results
-
-| Model | MEIP MRR | TES NDCG@10 | ECD Macro | Latency (s) | Cost ($/1k) |
-|---|---|---|---|---|---|
-| Gemini 3.1 Pro | **0.685** | 0.408 | **0.876** | 13.3 | 12.55 |
-| Claude Opus 4.6 | 0.621 | **0.437** | 0.836 | 7.1 | 28.75 |
-| GPT-5.2 | 0.619 | 0.387 | 0.774 | 7.0 | 2.01 |
-| Doubao-Seed-2.0-Pro | 0.642 | 0.410 | 0.852 | 27.2 | 3.93 |
-| DeepSeek-V3 | 0.598 | 0.390 | 0.800 | **5.5** | **0.33** |
-| Qwen2.5-72B (open-weight) | 0.733 | 0.391 | 0.674 | 8.4 | 0.69 |
-| BM25 | 0.449 | 0.347 | 0.838 | <0.1 | ~0 |
-
-Full results: [`results/deployment_summary.json`](results/deployment_summary.json)
 
 ---
 
@@ -131,65 +117,6 @@ endpoints are configured independently; only the endpoint used by the selected
 model requires credentials.
 
 ---
-
-## Evaluation
-
-`evaluation/sota_eval.py` is the canonical evaluation path for all three
-released tasks. In particular, final-protocol TES ranks 50 candidate
-**exhibitions** anonymized as `EX_001`--`EX_050` and returns the top 10. The
-retired object-set TES harness is not part of this release.
-
-### Registered models
-
-```bash
-source .env
-python evaluation/sota_eval.py \
-    --task all \
-    --model gpt-5.2 \
-    --workers 50 \
-    --save-raw
-```
-
-Use `python evaluation/sota_eval.py --help` to list registered models and
-options. Results are written under `results/`; `--save-raw` additionally stores
-per-sample traces in `results/raw_responses/`.
-
-### Open-weight models (Ollama / vLLM / Groq / Together)
-
-```bash
-python evaluation/openllm_baseline.py \
-    --api-base https://api.groq.com/openai/v1 \
-    --api-key $GROQ_API_KEY \
-    --model llama-3.3-70b-versatile \
-    --tasks meip tes ecd
-```
-
-### Non-LLM baselines
-
-```bash
-python baselines/bm25_baseline.py meip \
-    --input data/meip_samples.jsonl \
-    --output results/baselines_pred/bm25_meip.jsonl
-
-python baselines/embedding_baseline.py meip \
-    --input data/meip_samples.jsonl \
-    --output results/baselines_pred/sbert_meip.jsonl
-```
-
-MEIP baselines accept both released representations: embedded candidate
-objects and ID-only candidate lists. ID-only records are resolved from
-`data/objects.jsonl` automatically.
-
-### Compile results table
-
-```bash
-python scripts/compile_results.py --shot 0 --latex
-```
-
-This deterministically rebuilds tables from the frozen result JSON files.
-Fresh hosted-model runs require provider credentials and may differ if a
-provider has updated a model. See `results/README.md` for the documented scope
-of exact reproducibility.
 
 ---
 
